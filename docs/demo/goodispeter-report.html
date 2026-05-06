@@ -9,12 +9,12 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
   :root {
-    --glass-bg: rgba(255,255,255,0.12);
-    --glass-border: rgba(255,255,255,0.2);
-    --glass-strong: rgba(255,255,255,0.18);
+    --glass-bg: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.12);
+    --glass-strong: rgba(255,255,255,0.14);
     --text-primary: #ffffff;
     --text-secondary: rgba(255,255,255,0.8);
-    --text-muted: rgba(255,255,255,0.55);
+    --text-muted: rgba(255,255,255,0.5);
     --accent-pink: #ff6b9d;
     --accent-cyan: #4ecdc4;
     --accent-yellow: #ffe66d;
@@ -22,61 +22,27 @@
   }
 
   body {
-    background: #0f0f23;
     font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
     color: var(--text-primary);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
     position: relative;
+    overflow-x: hidden;
   }
 
-  .back-link {
-    position: relative;
-    z-index: 100;
-    color: rgba(255,255,255,0.6);
-    text-decoration: none;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.85rem;
-    align-self: flex-start;
-    margin-bottom: 16px;
-    transition: color 0.3s;
-  }
-  .back-link:hover { color: #fff; }
-
-  /* ── PHONE FRAME ── */
-  .phone {
-    position: relative;
-    width: 390px;
-    max-width: 96vw;
-    aspect-ratio: 9 / 19;
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow:
-      0 0 0 2px rgba(255,255,255,0.1),
-      0 0 0 6px #1a1a2e,
-      0 0 0 8px rgba(255,255,255,0.05),
-      0 20px 60px rgba(0,0,0,0.5),
-      0 40px 100px rgba(0,0,0,0.3);
-  }
-
-  /* ── ANIMATED MESH GRADIENT ── */
-  .gradient-bg {
-    position: absolute;
+  /* ── ANIMATED MESH GRADIENT BG ── */
+  .bg-gradient {
+    position: fixed;
     inset: 0;
     background:
       radial-gradient(circle at 20% 20%, #ff6b9d 0%, transparent 50%),
       radial-gradient(circle at 80% 30%, #4ecdc4 0%, transparent 45%),
       radial-gradient(circle at 40% 70%, #a78bfa 0%, transparent 50%),
       radial-gradient(circle at 75% 80%, #ffe66d 0%, transparent 40%),
-      radial-gradient(circle at 10% 90%, #ff6b9d 0%, transparent 35%),
       linear-gradient(135deg, #1a0533 0%, #0d1b2a 30%, #1b2838 60%, #16213e 100%);
     background-size: 200% 200%;
     animation: meshMove 12s ease-in-out infinite;
+    z-index: -1;
   }
-
   @keyframes meshMove {
     0% { background-position: 0% 0%; }
     25% { background-position: 50% 25%; }
@@ -84,558 +50,310 @@
     75% { background-position: 50% 75%; }
     100% { background-position: 0% 0%; }
   }
-
-  /* Noise overlay for texture */
-  .gradient-bg::after {
+  .bg-gradient::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
   }
 
-  /* ── STATUS BAR ── */
-  .status-bar {
-    position: relative;
-    z-index: 20;
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 24px 6px;
+    gap: 4px;
+  }
+  .lang-btn {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .status-time {
-    letter-spacing: 0.02em;
-  }
-
-  .status-icons {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  /* ── DYNAMIC ISLAND ── */
-  .dynamic-island {
-    position: relative;
-    z-index: 20;
-    width: 120px;
-    height: 32px;
-    background: #000;
+    font-weight: 500;
+    padding: 5px 14px;
     border-radius: 20px;
-    margin: 0 auto 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
   }
 
-  /* ── PHOTO HERO ── */
-  .photo-hero {
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 20px 40px;
+  }
+
+  /* ── HERO PHOTO ── */
+  .hero {
     position: relative;
-    z-index: 10;
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 3;
+    border-radius: 24px;
     overflow: hidden;
+    margin-bottom: 20px;
   }
-
-  .photo-placeholder {
+  .hero img {
     width: 100%;
     height: 100%;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(255,107,157,0.15) 0%, transparent 50%),
-      radial-gradient(circle at 70% 60%, rgba(78,205,196,0.12) 0%, transparent 50%),
-      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%),
-      linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 50%, #1a2840 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Sora', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.2em;
+    object-fit: cover;
+    display: block;
   }
-
-  /* Gradient fade at bottom of photo */
-  .photo-hero::after {
+  .hero::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to top, rgba(15,15,35,0.95) 0%, rgba(15,15,35,0.6) 40%, transparent 100%);
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
     pointer-events: none;
   }
-
-  /* ── SUBJECT NAME OVERLAY ON PHOTO ── */
-  .subject-name-overlay {
+  .hero-overlay {
     position: absolute;
-    bottom: 16px;
-    left: 20px;
-    right: 20px;
-    z-index: 15;
+    bottom: 20px;
+    left: 24px;
+    right: 24px;
+    z-index: 5;
   }
-
-  .subject-label {
+  .hero-name {
     font-family: 'Sora', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.25;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    color: #fff;
+    line-height: 1.3;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    margin-bottom: 8px;
   }
-
-  .subject-type-tag {
+  .hero-tag {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    gap: 6px;
     font-size: 0.72rem;
     font-weight: 500;
     color: var(--text-secondary);
-    background: var(--glass-bg);
+    background: rgba(0,0,0,0.35);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 5px 12px;
     border-radius: 20px;
-    margin-top: 6px;
   }
-
-  /* ── CONTENT AREA ── */
-  .content-area {
-    position: relative;
-    z-index: 10;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: -8px;
-  }
-
-  /* ── GLASS CARDS ── */
-  .glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .glass-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  }
-
-  .glass-card--accent {
-    border-color: rgba(255,107,157,0.3);
-    background: rgba(255,107,157,0.08);
-  }
-
-  .card-label {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .label-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .label-dot--pink { background: var(--accent-pink); }
-  .label-dot--cyan { background: var(--accent-cyan); }
-  .label-dot--yellow { background: var(--accent-yellow); }
-  .label-dot--purple { background: var(--accent-purple); }
-
-  .card-text {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.88rem;
-    line-height: 1.65;
-    color: var(--text-secondary);
-    font-weight: 300;
-  }
-
-  .card-text--large {
-    font-family: 'Sora', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    line-height: 1.7;
-  }
+  .hero-tag svg { flex-shrink: 0; }
 
   /* ── MOOD PILL ── */
   .mood-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255,107,157,0.15);
-    border: 1px solid rgba(255,107,157,0.3);
+    gap: 7px;
+    background: rgba(255,107,157,0.12);
+    border: 1px solid rgba(255,107,157,0.25);
     border-radius: 20px;
-    padding: 5px 14px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.75rem;
+    padding: 6px 16px;
+    font-size: 0.78rem;
     font-weight: 500;
     color: var(--accent-pink);
+    margin-bottom: 16px;
   }
-
-  .mood-pill-dot {
-    width: 7px;
-    height: 7px;
+  .mood-dot {
+    width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--accent-pink);
-    animation: blink 2s ease-in-out infinite;
+    animation: pulse 2s ease-in-out infinite;
   }
-
-  @keyframes blink {
+  @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
   }
 
-  /* ── COMPLAINTS CHIPS ── */
-  .chips-row {
+  /* ── GLASS CARDS ── */
+  .card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  }
+  .card--accent {
+    border-color: rgba(255,107,157,0.2);
+    background: rgba(255,107,157,0.06);
+  }
+  .card--wish {
+    background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(78,205,196,0.06));
+    border-color: rgba(167,139,250,0.2);
+  }
+
+  .card-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot--pink { background: var(--accent-pink); }
+  .dot--cyan { background: var(--accent-cyan); }
+  .dot--yellow { background: var(--accent-yellow); }
+  .dot--purple { background: var(--accent-purple); }
+
+  .card-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+  .card-text--large {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.75;
+  }
+
+  /* ── CHIPS ── */
+  .chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
+    gap: 8px;
   }
-
   .chip {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 400;
     color: var(--text-secondary);
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px;
-    padding: 5px 12px;
-    line-height: 1.3;
-  }
-
-  /* ── WISH HIGHLIGHT ── */
-  .wish-highlight {
-    background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(78,205,196,0.08));
-    border-color: rgba(167,139,250,0.25);
-  }
-
-  /* ── FLOATING ELEMENTS ── */
-  .floating {
-    position: absolute;
-    z-index: 5;
-    pointer-events: none;
-  }
-
-  .float-circle-1 {
-    top: 35%;
-    right: -20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.08);
-    animation: floatUp 8s ease-in-out infinite;
-  }
-
-  .float-circle-2 {
-    top: 55%;
-    left: -15px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(78,205,196,0.06);
-    animation: floatUp 10s ease-in-out infinite reverse;
-  }
-
-  @keyframes floatUp {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-16px); }
+    padding: 6px 14px;
+    line-height: 1.4;
   }
 
   /* ── SHARE FOOTER ── */
   .share-footer {
-    position: relative;
-    z-index: 10;
-    padding: 10px 16px 20px;
-  }
-
-  .share-row {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 8px 0;
-    border-top: 1px solid rgba(255,255,255,0.06);
+    gap: 20px;
   }
-
   .share-btn {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.7rem;
+    gap: 5px;
+    font-size: 0.75rem;
     color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: inherit;
   }
-
-  .share-text-bottom {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.7rem;
+  .share-btn:hover { color: #fff; }
+  .share-quote {
+    font-size: 0.78rem;
     font-style: italic;
     color: var(--text-muted);
-    line-height: 1.4;
-    margin-top: 6px;
+    line-height: 1.5;
+    margin-top: 12px;
     opacity: 0.6;
   }
 
-  /* ── HOME INDICATOR ── */
-  .home-indicator {
-    position: relative;
-    z-index: 20;
-    width: 134px;
-    height: 5px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 3px;
-    margin: 8px auto 12px;
-  }
-
-  /* ── SCENE TEXT OVERLAY ── */
-  .scene-overlay {
-    display: none;
-  }
-
-  @media (max-width: 420px) {
-    .phone {
-      width: 100%;
-      border-radius: 28px;
-    }
-    .subject-label { font-size: 1.2rem; }
+  @media (max-width: 500px) {
+    .hero { aspect-ratio: 1; border-radius: 16px; }
+    .hero-name { font-size: 1.2rem; }
+    .page { padding: 50px 12px 30px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Language Toggle -->
-<div style="position:fixed;top:12px;right:16px;z-index:9999;display:flex;gap:4px;">
-  <button class="lang-btn" onclick="setLang('zh')" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.7rem;padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all 0.2s;">中文</button>
-  <button class="lang-btn" onclick="setLang('en')" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.7rem;padding:4px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all 0.2s;">EN</button>
+<div class="bg-gradient"></div>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
 </div>
 
-<div class="phone">
+<div class="page">
 
-  <!-- ANIMATED GRADIENT BACKGROUND -->
-  <div class="gradient-bg"></div>
-
-  <!-- FLOATING ELEMENTS -->
-  <div class="floating float-circle-1"></div>
-  <div class="floating float-circle-2"></div>
-
-  <!-- STATUS BAR -->
-  <div class="status-bar">
-    <span class="status-time">21:37</span>
-    <div class="status-icons">
-      <!-- Signal bars SVG -->
-      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="8" width="3" height="4" rx="0.5" fill="white"/>
-        <rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="white"/>
-        <rect x="9" y="2" width="3" height="10" rx="0.5" fill="white"/>
-        <rect x="13" y="0" width="3" height="12" rx="0.5" fill="white" opacity="0.3"/>
-      </svg>
-      <!-- WiFi SVG -->
-      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 10.5a1 1 0 100 2 1 1 0 000-2z" fill="white"/>
-        <path d="M4.5 8.5a5 5 0 017 0" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-        <path d="M2 5.5a8 8 0 0112 0" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      </svg>
-      <!-- Battery SVG -->
-      <svg width="26" height="12" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0.5" y="0.5" width="22" height="11" rx="2" stroke="white" stroke-width="1" fill="none" opacity="0.4"/>
-        <rect x="2" y="2" width="14" height="8" rx="1" fill="white"/>
-        <rect x="23.5" y="3.5" width="2" height="5" rx="1" fill="white" opacity="0.4"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- DYNAMIC ISLAND -->
-  <div class="dynamic-island"></div>
-
-  <!-- PHOTO HERO -->
-  <div class="photo-hero">
-    <div class="photo-placeholder">
-      <img id="subject-photo" class="subject-photo" src="" alt="Subject" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Name overlay -->
-    <div class="subject-name-overlay">
-      <div class="subject-label" id="subject-label"></div>
-      <div class="subject-type-tag" id="subject-type-tag">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1" fill="none"/>
-          <circle cx="5" cy="5" r="1.5" fill="currentColor"/>
-        </svg>
+  <!-- Hero -->
+  <div class="hero">
+    <img id="subject-photo" src="" alt="Subject">
+    <div class="hero-overlay">
+      <div class="hero-name" id="subject-label"></div>
+      <div class="hero-tag" id="subject-type-tag">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="1.5" fill="currentColor"/></svg>
         <span id="subject-type-text"></span>
       </div>
     </div>
-    <div class="scene-overlay" id="scene-overlay"></div>
   </div>
 
-  <!-- CONTENT CARDS -->
-  <div class="content-area">
-
-    <!-- MOOD -->
-    <div style="padding:4px 0;">
-      <div class="mood-pill">
-        <span class="mood-pill-dot"></span>
-        <span id="mood-text"></span>
-      </div>
-    </div>
-
-    <!-- MONOLOGUE -->
-    <div class="glass-card glass-card--accent">
-      <div class="card-label">
-        <span class="label-dot label-dot--pink"></span>
-        Inner Voice
-      </div>
-      <p class="card-text card-text--large" id="monologue-text"></p>
-    </div>
-
-    <!-- COMPLAINTS -->
-    <div class="glass-card">
-      <div class="card-label">
-        <span class="label-dot label-dot--cyan"></span>
-        Grievances
-      </div>
-      <div class="chips-row" id="complaints-chips"></div>
-    </div>
-
-    <!-- MESSAGE -->
-    <div class="glass-card">
-      <div class="card-label">
-        <span class="label-dot label-dot--yellow"></span>
-        Message to Owner
-      </div>
-      <p class="card-text" id="message-text"></p>
-    </div>
-
-    <!-- WISH -->
-    <div class="glass-card wish-highlight">
-      <div class="card-label">
-        <span class="label-dot label-dot--purple"></span>
-        Deepest Wish
-      </div>
-      <p class="card-text" id="wish-text"></p>
-    </div>
-
+  <!-- Mood -->
+  <div class="mood-pill">
+    <span class="mood-dot"></span>
+    <span id="mood-text"></span>
   </div>
 
-  <!-- SHARE FOOTER -->
+  <!-- Monologue -->
+  <div class="card card--accent">
+    <div class="card-label"><span class="dot dot--pink"></span> Inner Voice</div>
+    <p class="card-text card-text--large" id="monologue-text"></p>
+  </div>
+
+  <!-- Complaints -->
+  <div class="card">
+    <div class="card-label"><span class="dot dot--cyan"></span> Grievances</div>
+    <div class="chips" id="complaints-chips"></div>
+  </div>
+
+  <!-- Message -->
+  <div class="card">
+    <div class="card-label"><span class="dot dot--yellow"></span> Message to Owner</div>
+    <p class="card-text" id="message-text"></p>
+  </div>
+
+  <!-- Wish -->
+  <div class="card card--wish">
+    <div class="card-label"><span class="dot dot--purple"></span> Deepest Wish</div>
+    <p class="card-text" id="wish-text"></p>
+  </div>
+
+  <!-- Share -->
   <div class="share-footer">
-    <div class="share-row">
-      <span class="share-btn" style="cursor:pointer" onclick="copyShare()">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7 1v8M4 4l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 9v3a1 1 0 001 1h8a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        Share
-      </span>
-      <span class="share-btn">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <path d="M4 7h6M7 4v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        Save
-      </span>
-      <span class="share-btn">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="3" cy="7" r="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <circle cx="11" cy="3" r="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <line x1="5" y1="6" x2="9" y2="4" stroke="currentColor" stroke-width="1"/>
-          <line x1="5" y1="8" x2="9" y2="10" stroke="currentColor" stroke-width="1"/>
-        </svg>
-        Send
-      </span>
-    </div>
-    <p class="share-text-bottom" id="share-text"></p>
+    <button class="share-btn" onclick="copyShare()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 4l3-3 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 9v3a1 1 0 001 1h8a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <span id="share-btn-label">Share</span>
+    </button>
   </div>
-
-  <!-- HOME INDICATOR -->
-  <div class="home-indicator"></div>
+  <p class="share-quote" id="share-text"></p>
 
 </div>
 
 <script>
-const DATA = {
-  "subjectType": {
-    "zh": "\u4eba\u985e\uff08\u7537\u6027\uff09",
-    "en": "Human (Male)"
-  },
-  "subjectName": {
-    "zh": "\u8de8\u570b\u6210\u5c31\u5c55\u793a\u59d4\u54e1\u6703\u5e38\u52d9\u7406\u4e8b \u00b7 \u5f7c\u5f97",
-    "en": "Executive Director of the Transnational Achievement Display Committee \u00b7 Peter"
-  },
-  "detectedMood": {
-    "zh": "\u734e\u724c\u5c55\u793a\u5f8c\u4e4b\u6eff\u8db3\u51dd\u8996",
-    "en": "Post-medal-display satisfaction gaze"
-  },
-  "style": {
-    "id": "classical-assessment",
-    "zh": "\u53e4\u5178\u8a55\u4f30\u578b",
-    "en": "Classical Assessment"
-  },
-  "internalNarrative": {
-    "zh": "\u6211\u77e5\u9053\u4f60\u770b\u5230\u4e86\u3002\u9019\u9762\u91d1\u724c\u3002\u6211\u7279\u5730\u628a\u5b83\u8209\u5230\u4e00\u500b\u4f60\u4e0d\u53ef\u80fd\u5ffd\u7565\u7684\u89d2\u5ea6\u3002\u7a97\u5916\u7684\u96ea\u666f\u662f\u514d\u8cbb\u9644\u8d08\u7684\u610f\u5883\u52a0\u6210\u3002\u6211\u7684\u7b11\u5bb9\u7d93\u904e\u7cbe\u5bc6\u8a08\u7b97\uff0c\u6070\u597d\u5728\u300c\u8b19\u905c\u300d\u8207\u300c\u4f60\u770b\u5230\u4e86\u55ce\u300d\u4e4b\u9593\u53d6\u5f97\u5b8c\u7f8e\u5e73\u8861\u3002\u9019\u5f35\u7167\u7247\u5c07\u4f5c\u70ba\u672a\u4f86\u4e09\u5e74\u6240\u6709\u793e\u4ea4\u5e73\u53f0\u5927\u982d\u8cbc\u7684\u5019\u9078\u7d20\u6750\u3002",
-    "en": "I know you saw it. This gold medal. I deliberately held it at an angle you cannot possibly ignore. The snowy scenery outside the window is a complimentary aesthetic bonus. My smile has been precisely calibrated to achieve perfect balance between \u2018humble\u2019 and \u2018did you see it though.\u2019 This photo will serve as candidate material for all social media profile pictures for the next three years."
-  },
-  "concerns": {
-    "zh": [
-      "\u62cd\u651d\u89d2\u5ea6\u9700\u591a\u6b21\u8abf\u6574\u65b9\u9054\u5230\u734e\u724c\u6700\u4f73\u53cd\u5149\u6548\u679c\u3002",
-      "\u65e5\u5f0f\u62c9\u9580\u7684\u80cc\u666f\u7f8e\u611f\u906d\u7a97\u5916\u505c\u8eca\u5834\u5c40\u90e8\u7834\u58de\u3002",
-      "\u773c\u93e1\u53cd\u5149\u5076\u723e\u906e\u853d\u4e86\u7d93\u904e\u6821\u6e96\u7684\u8b19\u905c\u5fae\u7b11\u3002",
-      "\u540c\u684c\u53cb\u4eba\u672a\u80fd\u5728\u6700\u4f73\u6642\u6a5f\u6309\u4e0b\u5feb\u9580\u3002"
-    ],
-    "en": [
-      "Photography angle required multiple adjustments to achieve optimal medal reflection.",
-      "The aesthetic of the shoji screen background is partially compromised by the parking lot outside the window.",
-      "Glasses reflection occasionally obscures the calibrated humble smile.",
-      "Dining companion failed to press the shutter at the optimal moment."
-    ]
-  },
-  "messageToCaretaker": {
-    "zh": "\u6211\u4e0d\u9700\u8981\u4f60\u7a31\u8b9a\u9019\u9762\u734e\u724c\u3002\u6211\u53ea\u9700\u8981\u4f60\u627f\u8a8d\u4f60\u5df2\u7d93\u770b\u5230\u5b83\u4e86\u3002\u7136\u5f8c\u6211\u5011\u53ef\u4ee5\u7e7c\u7e8c\u5047\u88dd\u9019\u662f\u4e00\u6b21\u666e\u901a\u7684\u805a\u9910\u3002",
-    "en": "I do not need you to praise this medal. I only need you to acknowledge that you have seen it. Then we can continue pretending this is an ordinary dinner."
-  },
-  "requestedAdjustment": {
-    "zh": "\u6211\u5e0c\u671b\u6240\u6709\u672a\u4f86\u7684\u805a\u9910\u5834\u5730\u90fd\u63d0\u4f9b\u540c\u7b49\u7d1a\u7684\u65e5\u5f0f\u7f8e\u5b78\u80cc\u666f\uff0c\u4ee5\u53ca\u81f3\u5c11\u4e00\u9762\u53ef\u4f9b\u96a8\u6642\u5c55\u793a\u7684\u734e\u724c\u6536\u7d0d\u67b6\u3002",
-    "en": "I wish for all future dining venues to provide equivalent Japanese aesthetic backgrounds, and at least one medal display rack available for impromptu exhibitions."
-  },
-  "shareText": {
-    "zh": "\ud83c\udfc5 \u4eca\u65e5\u89c0\u5bdf\uff1a\u4ed6\u4e0d\u662f\u5728\u7092\u8000\uff0c\u4ed6\u53ea\u662f\u5728\u9032\u884c\u4e00\u9805\u300c\u78ba\u4fdd\u6240\u6709\u4eba\u90fd\u6ce8\u610f\u5230\u734e\u724c\u300d\u7684\u74b0\u5883\u54c1\u8cea\u78ba\u8a8d\u4f5c\u696d\u3002",
-    "en": "\ud83c\udfc5 Observation of the day: he is not showing off \u2014 he is conducting an environmental quality assurance operation to ensure all parties have noticed the medal."
-  },
-  "sceneDescription": {
-    "zh": "\u4e3b\u9ad4\u5750\u65bc\u65e5\u5f0f\u5efa\u7bc9\u5ba4\u5167\uff0c\u80cc\u666f\u70ba\u6728\u6846\u7d19\u62c9\u9580\u8207\u5927\u578b\u666f\u89c0\u7a97\u3002\u7a97\u5916\u53ef\u898b\u7a4d\u96ea\u8207\u79cb\u8449\u4ea4\u7e54\u7684\u90ca\u5916\u666f\u8272\u3002\u4e3b\u9ad4\u9762\u5e36\u5fae\u7b11\uff0c\u53f3\u624b\u8209\u8d77\u4e00\u9762\u91d1\u8272\u734e\u724c\u81f3\u80f8\u524d\u9ad8\u5ea6\u3002\u8457\u6df1\u85cd\u8272\u5916\u5957\uff0c\u4f69\u6234\u900f\u660e\u6846\u773c\u93e1\u3002\u6574\u9ad4\u69cb\u5716\u50b3\u9054\u4e00\u7a2e\u300c\u523b\u610f\u4f46\u5047\u88dd\u96a8\u610f\u300d\u7684\u5c55\u793a\u610f\u5716\u3002",
-    "en": "The subject is seated inside a Japanese-style building with shoji screens and a large landscape window. Snowy scenery interwoven with autumn foliage is visible outside. The subject smiles while holding a gold medal at chest height with the right hand. Dark blue jacket, clear-frame glasses. The overall composition conveys a \u2018deliberate but pretending to be casual\u2019 display intent."
-  },
-  "template": "sns-story"
-};
+const DATA = JSON.parse('{"subjectType":{"zh":"人類（男性）","en":"Human (Male)"},"subjectName":{"zh":"跨國成就展示委員會常務理事 · 彼得","en":"Executive Director of the Transnational Achievement Display Committee · Peter"},"detectedMood":{"zh":"獎牌展示後之滿足凝視","en":"Post-medal-display satisfaction gaze"},"style":{"id":"classical-assessment","zh":"古典評估型","en":"Classical Assessment"},"internalNarrative":{"zh":"我知道你看到了。這面金牌。我特地把它舉到一個你不可能忽略的角度。窗外的雪景是免費附贈的意境加成。我的笑容經過精密計算，恰好在「謙遜」與「你看到了嗎」之間取得完美平衡。這張照片將作為未來三年所有社交平台大頭貼的候選素材。","en":"I know you saw it. This gold medal. I deliberately held it at an angle you cannot possibly ignore. The snowy scenery outside the window is a complimentary aesthetic bonus. My smile has been precisely calibrated to achieve perfect balance between ‘humble’ and ‘did you see it though.’ This photo will serve as candidate material for all social media profile pictures for the next three years."},"concerns":{"zh":["拍攝角度需多次調整方達到獎牌最佳反光效果。","日式拉門的背景美感遭窗外停車場局部破壞。","眼鏡反光偶爾遮蔽了經過校準的謙遜微笑。","同桌友人未能在最佳時機按下快門。"],"en":["Photography angle required multiple adjustments to achieve optimal medal reflection.","The aesthetic of the shoji screen background is partially compromised by the parking lot outside the window.","Glasses reflection occasionally obscures the calibrated humble smile.","Dining companion failed to press the shutter at the optimal moment."]},"messageToCaretaker":{"zh":"我不需要你稱讚這面獎牌。我只需要你承認你已經看到它了。然後我們可以繼續假裝這是一次普通的聚餐。","en":"I do not need you to praise this medal. I only need you to acknowledge that you have seen it. Then we can continue pretending this is an ordinary dinner."},"requestedAdjustment":{"zh":"我希望所有未來的聚餐場地都提供同等級的日式美學背景，以及至少一面可供隨時展示的獎牌收納架。","en":"I wish for all future dining venues to provide equivalent Japanese aesthetic backgrounds, and at least one medal display rack available for impromptu exhibitions."},"shareText":{"zh":"🏅 今日觀察：他不是在炒耀，他只是在進行一項「確保所有人都注意到獎牌」的環境品質確認作業。","en":"🏅 Observation of the day: he is not showing off — he is conducting an environmental quality assurance operation to ensure all parties have noticed the medal."},"sceneDescription":{"zh":"主體坐於日式建築室內，背景為木框紙拉門與大型景觀窗。窗外可見積雪與秋葉交織的郊外景色。主體面帶微笑，右手舉起一面金色獎牌至胸前高度。著深藍色外套，佩戴透明框眼鏡。整體構圖傳達一種「刻意但假裝隨意」的展示意圖。","en":"The subject is seated inside a Japanese-style building with shoji screens and a large landscape window. Snowy scenery interwoven with autumn foliage is visible outside. The subject smiles while holding a gold medal at chest height with the right hand. Dark blue jacket, clear-frame glasses. The overall composition conveys a ‘deliberate but pretending to be casual’ display intent."},"template":"sns-story"}');
 const IMAGE = "goodispeter.png";
 
 let currentLang = "zh";
@@ -650,7 +368,7 @@ function setLang(lang) {
   document.querySelectorAll(".lang-btn").forEach(function(b) {
     b.classList.remove("active");
     b.style.background = "rgba(255,255,255,0.05)";
-    b.style.color = "rgba(255,255,255,0.6)";
+    b.style.color = "rgba(255,255,255,0.5)";
   });
   var active = document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]');
   if (active) {
@@ -664,8 +382,7 @@ function setLang(lang) {
 function render() {
   document.getElementById("subject-photo").src = IMAGE;
   document.getElementById("subject-label").textContent = t("subjectName");
-  document.getElementById("subject-type-text").textContent = t("subjectType") + " " + (DATA.subjectType ? (DATA.subjectType[currentLang === "zh" ? "en" : "zh"] || "") : "") + " \u00B7 " + t("style");
-  document.getElementById("scene-overlay").textContent = t("sceneDescription");
+  document.getElementById("subject-type-text").textContent = t("subjectType") + " \u00B7 " + t("style");
   document.getElementById("mood-text").textContent = t("detectedMood");
   document.getElementById("monologue-text").textContent = t("internalNarrative");
 
@@ -690,10 +407,9 @@ function copyShare() {
   var text = t("shareText");
   if (navigator.clipboard && text) {
     navigator.clipboard.writeText(text).then(function() {
-      var btn = document.querySelector('.share-btn[onclick="copyShare()"]');
-      var orig = btn.innerHTML;
-      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
-      setTimeout(function() { btn.innerHTML = orig; }, 1500);
+      var el = document.getElementById("share-btn-label");
+      el.textContent = "Copied!";
+      setTimeout(function() { el.textContent = "Share"; }, 1500);
     });
   }
 }
