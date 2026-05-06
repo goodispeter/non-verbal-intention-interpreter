@@ -4,11 +4,44 @@
 
 # Non-Verbal Intention Interpreter
 
+> Give it a photo. It will tell you what they're thinking. Formally.
+
+<p align="center">
+  <img src="./docs/demo/fat-orange-report.png" width="720" />
+</p>
+
 **Non-Verbal Intention Interpreter (NVIIS)** is a structured interpretation engine for observation subjects in static images.
 
 The system accepts images containing animals, humans, characters, or anthropomorphized objects. Based on visible posture, gaze direction, physical tension, and environmental configuration, it generates bilingual observation reports with complete narrative structure.
 
-Reports cover five dimensions:
+---
+
+## Example Output
+
+Input:
+
+<img src="./docs/demo/fat-orange.png" width="300" />
+
+Output:
+
+- **Detected mood:** Resource Distribution Dissatisfaction
+- **Style:** Authority Review
+- **Template:** Terminal
+- **Report:** [`fat-orange-report.html`](./docs/demo/fat-orange-report.html)
+
+> *"This is not fat — it is the tangible result of years of strategic resource reserves. Every gram carries administrative significance."*
+
+### More Examples
+
+| Subject | Template | Report |
+|---------|----------|--------|
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal | [`fat-orange-report.html`](./docs/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" /> | Medical Chart | [`husky-report.html`](./docs/demo/husky-report.html) |
+| <img src="./docs/demo/sadaharu.png" width="80" /> | Fantasy Scroll | [`sadaharu-report.html`](./docs/demo/sadaharu-report.html) |
+
+---
+
+## Report Dimensions
 
 1. Subject's inferred internal state
 2. Formal record of subject's stated concerns
@@ -135,6 +168,14 @@ non-verbal-intention-interpreter/
 ├── SKILL.md
 ├── README.md
 ├── README.en.md
+├── docs/
+│   └── demo/
+│       ├── fat-orange.png
+│       ├── fat-orange-report.html
+│       ├── husky.png
+│       ├── husky-report.html
+│       ├── sadaharu.png
+│       └── sadaharu-report.html
 ├── prompts/
 │   └── non-verbal-intention-interpreter-prompt.md
 ├── templates/

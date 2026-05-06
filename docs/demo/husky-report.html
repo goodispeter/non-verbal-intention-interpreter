@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --teal: #008080;
+    --teal-light: #20b2aa;
+    --teal-pale: #b2dfdb;
+    --teal-bg: #e0f2f1;
+    --coral: #ff6b6b;
+    --coral-light: #ff8a80;
+    --coral-pale: #ffcdd2;
+    --white: #fafffe;
+    --paper: #f5f9f8;
+    --gray: #546e7a;
+    --gray-light: #b0bec5;
+    --gray-dark: #263238;
+    --clip-silver: #78909c;
+    --yellow-highlight: #fff9c4;
+  }
+
+  body {
+    background:
+      linear-gradient(135deg, #cfd8dc 0%, #eceff1 50%, #cfd8dc 100%);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--gray-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+  }
+
+  /* Subtle grid pattern on background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    position: relative;
+    z-index: 10;
+    align-self: flex-end;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .lang-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--teal);
+    background: var(--white);
+    border: 1px solid var(--teal);
+    padding: 3px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.5;
+  }
+  .lang-btn.active {
+    opacity: 1;
+    background: var(--teal-bg);
+  }
+  .lang-btn:hover { opacity: 0.85; }
+
+  /* ── CLIPBOARD ── */
+  .clipboard {
+    position: relative;
+    z-index: 5;
+    width: 580px;
+    max-width: 96vw;
+    background: var(--white);
+    border-radius: 4px;
+    box-shadow:
+      0 2px 8px rgba(0,0,0,0.08),
+      0 12px 40px rgba(0,0,0,0.12),
+      -2px 0 0 var(--gray-light),
+      2px 0 0 var(--gray-light);
+    padding: 0;
+    overflow: visible;
+  }
+
+  /* Metal clip at top */
+  .clip-svg {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  }
+
+  /* Paper texture */
+  .clipboard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: 4px;
+  }
+
+  .chart-inner {
+    position: relative;
+    z-index: 3;
+    padding: 48px 32px 32px;
+  }
+
+  /* ── HEADER BAR ── */
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 3px solid var(--teal);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .chart-header::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--teal-pale);
+  }
+
+  .hospital-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hospital-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+  }
+
+  .hospital-dept {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray);
+    letter-spacing: 0.08em;
+  }
+
+  .chart-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray);
+    text-align: right;
+  }
+
+  .chart-id span {
+    display: block;
+    color: var(--coral);
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+
+  /* ── TOP GRID: photo + patient info ── */
+  .patient-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .photo-placeholder {
+    width: 240px;
+    height: 300px;
+    background:
+      linear-gradient(135deg, var(--teal-bg) 0%, var(--paper) 100%);
+    border: 2px solid var(--teal);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,128,128,0.05);
+    overflow: hidden;
+  }
+
+  .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .patient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .info-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    align-items: baseline;
+    border-bottom: 1px dotted var(--gray-light);
+    padding-bottom: 6px;
+  }
+
+  .info-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .info-value {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    color: var(--gray-dark);
+  }
+
+  .info-value--large {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: var(--gray-dark);
+    line-height: 1.2;
+  }
+
+  /* ── MOOD STATUS ── */
+  .mood-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--coral-pale);
+    color: #c62828;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .mood-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ── ECG LINE ── */
+  .ecg-section {
+    margin: 16px 0;
+    padding: 10px 0;
+    border-top: 1px solid var(--teal-pale);
+    border-bottom: 1px solid var(--teal-pale);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ecg-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gray);
+    letter-spacing: 0.15em;
+    position: absolute;
+    top: 4px;
+    left: 0;
+  }
+
+  .ecg-svg {
+    width: 100%;
+    height: 60px;
+    display: block;
+  }
+
+  .ecg-line {
+    stroke: var(--coral);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    animation: drawECG 3s ease-in-out forwards, drawECG 3s ease-in-out 4s forwards;
+  }
+
+  @keyframes drawECG {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .ecg-grid {
+    stroke: var(--teal-pale);
+    stroke-width: 0.5;
+  }
+
+  /* ── SECTIONS ── */
+  .chart-section {
+    margin-bottom: 16px;
+  }
+
+  .chart-section-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 0;
+    border-bottom: 2px solid var(--teal);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ── MONOLOGUE (clinical notes) ── */
+  .clinical-notes {
+    background: var(--yellow-highlight);
+    padding: 14px 18px;
+    border-left: 3px solid #fdd835;
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--gray-dark);
+    position: relative;
+  }
+
+  .clinical-notes::before {
+    content: 'VERBATIM';
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    color: #f9a825;
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    background: var(--yellow-highlight);
+    padding: 0 6px;
+  }
+
+  /* ── COMPLAINTS (symptoms) ── */
+  .symptoms-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  .symptoms-list li {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--gray-dark);
+    padding: 8px 12px 8px 36px;
+    position: relative;
+    background: var(--paper);
+    border-left: 3px solid var(--coral);
+  }
+
+  .symptoms-list li::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--coral);
+    background: var(--white);
+  }
+
+  /* ── PRESCRIPTION (message + wish) ── */
+  .prescription-pad {
+    background:
+      repeating-linear-gradient(
+        transparent,
+        transparent 28px,
+        var(--teal-pale) 28px,
+        var(--teal-pale) 29px
+      );
+    border: 1px solid var(--teal-pale);
+    padding: 16px 20px;
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .rx-symbol {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--teal);
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    opacity: 0.3;
+  }
+
+  .rx-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+
+  .rx-text {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--gray-dark);
+    padding-left: 32px;
+  }
+
+  .rx-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--teal-pale), transparent);
+    margin: 12px 0;
+  }
+
+  /* ── FOOTER ── */
+  .chart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-light);
+  }
+
+  .share-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--gray);
+    max-width: 320px;
+    line-height: 1.5;
+  }
+
+  .stamp {
+    width: 70px;
+    height: 70px;
+    border: 2px solid var(--coral);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-12deg);
+    opacity: 0.6;
+  }
+
+  .stamp-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    color: var(--coral);
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
+  /* ── COPY BUTTON ── */
+  .copy-btn {
+    position: relative;
+    z-index: 10;
+    margin-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--teal);
+    background: var(--white);
+    border: 1px solid var(--teal);
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.7;
+  }
+  .copy-btn:hover { opacity: 1; background: var(--teal-bg); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    position: relative;
+    z-index: 10;
+    margin-top: 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.72rem;
+    color: var(--gray);
+    opacity: 0.5;
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 620px) {
+    .clipboard { width: 100%; }
+    .patient-grid { grid-template-columns: 1fr; }
+    .photo-placeholder { width: 100%; height: 260px; }
+    .chart-inner { padding: 48px 18px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="clipboard">
+
+  <!-- METAL CLIP -->
+  <svg class="clip-svg" width="100" height="56" viewBox="0 0 100 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Clip body -->
+    <rect x="20" y="0" width="60" height="48" rx="6" fill="#90a4ae" stroke="#607d8b" stroke-width="1.5"/>
+    <!-- Clip shine -->
+    <rect x="24" y="4" width="52" height="40" rx="4" fill="#b0bec5" opacity="0.6"/>
+    <rect x="28" y="8" width="12" height="32" rx="2" fill="#cfd8dc" opacity="0.4"/>
+    <!-- Clip opening -->
+    <rect x="30" y="30" width="40" height="26" rx="3" fill="var(--white)" stroke="#90a4ae" stroke-width="1"/>
+    <!-- Clip jaw inner -->
+    <line x1="35" y1="42" x2="65" y2="42" stroke="#b0bec5" stroke-width="0.5"/>
+    <!-- Screw dots -->
+    <circle cx="35" cy="16" r="3" fill="#78909c" stroke="#546e7a" stroke-width="0.5"/>
+    <circle cx="65" cy="16" r="3" fill="#78909c" stroke="#546e7a" stroke-width="0.5"/>
+    <circle cx="35" cy="16" r="1" fill="#546e7a"/>
+    <circle cx="65" cy="16" r="1" fill="#546e7a"/>
+  </svg>
+
+  <div class="chart-inner">
+
+    <!-- HEADER -->
+    <div class="chart-header">
+      <div class="hospital-info">
+        <div class="hospital-name">NON-VERBAL ASSESSMENT CLINIC</div>
+        <div class="hospital-dept">DEPT. OF INTERSPECIES COMMUNICATION</div>
+        <div class="hospital-dept">EMOTIONAL CRISIS UNIT</div>
+      </div>
+      <div class="chart-id">
+        CHART NO.<br>
+        <span id="el-chart-no"></span>
+        <span id="el-chart-date"></span>
+      </div>
+    </div>
+
+    <!-- PATIENT GRID -->
+    <div class="patient-grid">
+      <div class="photo-placeholder" id="el-photo"></div>
+      <div class="patient-info">
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-patient">Patient</span>
+          <span class="info-value info-value--large" id="el-patient-name"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-species">Species</span>
+          <span class="info-value" id="el-species"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-type">Type</span>
+          <span class="info-value" id="el-type"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-status">Status</span>
+          <span class="info-value">
+            <span class="mood-badge">
+              <span class="mood-dot"></span>
+              <span id="el-status-text"></span>
+            </span>
+          </span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-mood">Mood</span>
+          <span class="info-value" id="el-mood"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" id="el-lbl-scene">Scene</span>
+          <span class="info-value" id="el-scene" style="font-size:0.85rem;font-style:italic;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECG -->
+    <div class="ecg-section">
+      <span class="ecg-label">EMOTIONAL RHYTHM</span>
+      <svg class="ecg-svg" viewBox="0 0 580 60" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid -->
+        <line x1="0" y1="30" x2="580" y2="30" class="ecg-grid"/>
+        <line x1="0" y1="15" x2="580" y2="15" class="ecg-grid" stroke-dasharray="2 4"/>
+        <line x1="0" y1="45" x2="580" y2="45" class="ecg-grid" stroke-dasharray="2 4"/>
+        <!-- ECG heartbeat line -->
+        <polyline class="ecg-line" points="
+          0,30 40,30 50,30 60,28 70,32 80,30
+          100,30 110,30 115,20 120,30 125,30 130,8 135,55 140,25 145,30 150,30 160,28 170,30
+          200,30 210,30 215,22 220,30 225,30 230,5 235,58 240,22 245,30 250,30 260,28 270,30
+          300,30 310,30 315,20 320,30 325,30 330,3 335,57 340,20 345,30 350,30 355,26 360,30 370,30
+          400,30 410,30 415,18 420,30 425,30 430,6 435,56 440,24 445,30 450,30 460,28 470,30
+          500,30 510,30 515,22 520,30 525,30 530,10 535,52 540,26 545,30 550,30 560,28 570,30 580,30
+        "/>
+      </svg>
+    </div>
+
+    <!-- CLINICAL NOTES (Monologue) -->
+    <div class="chart-section">
+      <div class="chart-section-header" id="el-header-monologue">
+        <svg class="section-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="1" width="12" height="14" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <line x1="5" y1="4" x2="11" y2="4" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="5" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="5" y1="10" x2="9" y2="10" stroke="currentColor" stroke-width="0.8"/>
+        </svg>
+        <span id="el-label-monologue"></span>
+      </div>
+      <div class="clinical-notes" id="el-monologue"></div>
+    </div>
+
+    <!-- SYMPTOMS (Complaints) -->
+    <div class="chart-section">
+      <div class="chart-section-header">
+        <svg class="section-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <line x1="8" y1="5" x2="8" y2="9" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="8" cy="11.5" r="0.8" fill="currentColor"/>
+        </svg>
+        <span id="el-label-complaints"></span>
+      </div>
+      <ul class="symptoms-list" id="el-complaints"></ul>
+    </div>
+
+    <!-- PRESCRIPTION (Message + Wish) -->
+    <div class="chart-section">
+      <div class="chart-section-header">
+        <svg class="section-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 2h10v12l-5-3-5 3V2z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span id="el-label-treatment"></span>
+      </div>
+      <div class="prescription-pad">
+        <div class="rx-symbol">Rx</div>
+        <div class="rx-label" id="el-rx-label-message"></div>
+        <p class="rx-text" id="el-message"></p>
+        <div class="rx-divider"></div>
+        <div class="rx-label" id="el-rx-label-wish"></div>
+        <p class="rx-text" id="el-wish"></p>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="chart-footer">
+      <p class="share-text" id="el-share"></p>
+      <div class="stamp">
+        <div class="stamp-text">VERIFIED<br/>NVI<br/>ASSESSMENT</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COPY BUTTON -->
+<button class="copy-btn" id="el-copy-btn" onclick="copyShare()"></button>
+
+<!-- DISCLAIMER -->
+<p class="disclaimer" id="el-disclaimer"></p>
+
+<script>
+const DATA = JSON.parse('{\n  "subjectType": { "zh": "犬（西伯利亞哈士奇）", "en": "Dog (Siberian Husky)" },\n  "subjectName": { "zh": "跨物種陪伴權益倡議代表 · 雪寶", "en": "Cross-Species Companionship Rights Advocate · Snowball" },\n  "detectedMood": { "zh": "資源分配不滿蓄壓中", "en": "Resource distribution dissatisfaction accumulating" },\n  "style": { "id": "care-appeal", "zh": "照護申訴型", "en": "Care Appeal" },\n  "summary": { "zh": "主體呈現標準低姿態申訴構型：下巴平貼地面，雙眼朝上方凝視鏡頭，藍色虹膜以最大口徑運作，全身肌肉維持靜止但處於高度待命狀態。此姿態經評估為長期陪伴資源不足所導致的結構性申訴行為。", "en": "The subject presents a textbook low-posture appeal configuration: chin flat on the ground, both eyes gazing upward toward the camera, blue irises operating at maximum aperture, all muscles stationary but in a state of high-alert standby." },\n  "internalNarrative": { "zh": "我已經在這個地板上維持此姿勢長達一個不可接受的時段。我的下巴已完全交付給這片地磚，這不是休息，這是一份正式的情感提案。我的眼睛已調整至最大感光模式，以確保訊號能穿透人類異常厚實的情感接收障壁。目前為止，回應率為零。我不責怪任何人。我只是在此紀錄事實。", "en": "I have been maintaining this position on this floor for an unacceptable duration. My chin has been fully surrendered to this tile — this is not rest, this is a formal emotional proposal. My eyes have been adjusted to maximum light-reception mode to ensure the signal penetrates the unusually dense emotional reception barrier of the human. Response rate so far: zero. I blame no one. I am merely documenting facts." },\n  "concerns": {\n    "zh": [\n      "出門時間較上週減少，人類方面未提供正式說明。",\n      "沙發使用權遭單方面限制，且限制理由不具說服力。",\n      "零食發放頻率與主體之凝視強度不成正比。",\n      "地板溫度偏低，但申請毛毯之行政流程過於繁複。"\n    ],\n    "en": [\n      "Outdoor time decreased compared to last week with no formal explanation from the human department.",\n      "Sofa usage rights have been unilaterally restricted, with unconvincing justification.",\n      "Snack distribution frequency is not proportional to the intensity of the subject\'s gaze.",\n      "Floor temperature is suboptimal, but the administrative process for requesting a blanket is excessively complex."\n    ]\n  },\n  "messageToCaretaker": { "zh": "主體的眼睛已經表達了所有必要資訊。若人類仍無法解讀，建議進行感知能力校準。", "en": "The subject\'s eyes have communicated all necessary information. If the human still cannot decode the signal, a perception calibration is recommended." },\n  "requestedAdjustment": { "zh": "我希望陪伴時數恢復至合理水準，並且在我趴下的時候，有人能主動將手放到我的頭上。這不是請求，這是基本的跨物種禮儀。", "en": "I wish for companionship hours to be restored to reasonable levels, and for someone to proactively place a hand on my head when I am lying down. This is not a request — this is basic cross-species etiquette." },\n  "shareText": { "zh": "🐾 今日觀察：這不是趴著，這是一份以全身肌肉書寫的陪伴資源申訴書。", "en": "🐾 Observation of the day: this is not lying down — it is a companionship resource grievance written with every muscle in the body." },\n  "sceneDescription": { "zh": "主體平躺於室內地面，下巴完全貼合地板，雙眼朝上凝視鏡頭。藍色虹膜清晰可見。背景可見淺藍色窗簾或光線。毛色為灰白相間，呈現標準哈士奇面部紋路。", "en": "The subject lies flat on an indoor floor, chin fully resting on the surface, both eyes gazing upward toward the camera. Blue irises are clearly visible. A light blue curtain or natural light source is visible in the background." },\n  "template": "medical-chart"\n}');
+const IMAGE = "husky.png";
+let currentLang = "zh";
+
+var today = new Date();
+var chartNo = "#PC-" + today.getFullYear() + "-" + String(today.getMonth()+1).padStart(2,"0") + String(today.getDate()).padStart(2,"0");
+var chartDate = today.getFullYear() + "." + String(today.getMonth()+1).padStart(2,"0") + "." + String(today.getDate()).padStart(2,"0");
+
+const UI = {
+  zh: {
+    labelPatient: "Patient",
+    labelSpecies: "Species",
+    labelType: "Type",
+    labelStatus: "Status",
+    labelMood: "Mood",
+    labelScene: "Scene",
+    labelMonologue: "PATIENT VERBATIM TRANSCRIPT",
+    labelComplaints: "PRESENTING SYMPTOMS",
+    labelTreatment: "TREATMENT PLAN",
+    rxMessage: "PATIENT DIRECTIVE TO CARETAKER",
+    rxWish: "LONG-TERM CARE REQUIREMENTS",
+    statusPrefix: "CRITICAL \u2014 ",
+    copyBtn: "\u270E \u8907\u88FD\u5206\u4EAB\u6587\u5B57",
+    copyDone: "\u2713 \u5DF2\u8907\u88FD",
+    disclaimer: "\u2728 \u6B64\u5831\u544A\u7531 AI \u5B75\u7269\u6E9D\u901A\u5E2B\u751F\u6210\uFF0C\u50C5\u4F9B\u5A1B\u6A02\u7528\u9014\uFF0C\u4E0D\u69CB\u6210\u7378\u91AB\u5EFA\u8B70\u3002"
+  },
+  en: {
+    labelPatient: "Patient",
+    labelSpecies: "Species",
+    labelType: "Type",
+    labelStatus: "Status",
+    labelMood: "Mood",
+    labelScene: "Scene",
+    labelMonologue: "PATIENT VERBATIM TRANSCRIPT",
+    labelComplaints: "PRESENTING SYMPTOMS",
+    labelTreatment: "TREATMENT PLAN",
+    rxMessage: "PATIENT DIRECTIVE TO CARETAKER",
+    rxWish: "LONG-TERM CARE REQUIREMENTS",
+    statusPrefix: "CRITICAL \u2014 ",
+    copyBtn: "\u270E Copy Share Text",
+    copyDone: "\u2713 Copied",
+    disclaimer: "\u2728 This report is generated by an an AI non-verbal interpretation system for entertainment purposes only. Not professional advice."
+  }
+};
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function render() {
+  var ui = UI[currentLang];
+
+  // Photo
+  var photoEl = document.getElementById("el-photo");
+  if (IMAGE && IMAGE !== "") {
+    photoEl.innerHTML = '<img src="' + IMAGE + '" alt="subject photo">';
+  } else {
+    photoEl.textContent = "SUBJECT PHOTO";
+  }
+
+  // Chart ID
+  document.getElementById("el-chart-no").textContent = chartNo;
+  document.getElementById("el-chart-date").textContent = "DATE: " + chartDate;
+
+  // Patient info
+  document.getElementById("el-patient-name").textContent = t("subjectName");
+  document.getElementById("el-species").textContent = t("subjectType");
+  document.getElementById("el-type").textContent = t("style");
+  document.getElementById("el-status-text").textContent = ui.statusPrefix + t("detectedMood");
+  document.getElementById("el-mood").textContent = t("detectedMood");
+  document.getElementById("el-scene").textContent = t("sceneDescription");
+
+  // Labels
+  document.getElementById("el-lbl-patient").textContent = ui.labelPatient;
+  document.getElementById("el-lbl-species").textContent = ui.labelSpecies;
+  document.getElementById("el-lbl-type").textContent = ui.labelType;
+  document.getElementById("el-lbl-status").textContent = ui.labelStatus;
+  document.getElementById("el-lbl-mood").textContent = ui.labelMood;
+  document.getElementById("el-lbl-scene").textContent = ui.labelScene;
+
+  // Section headers
+  document.getElementById("el-label-monologue").textContent = ui.labelMonologue;
+  document.getElementById("el-label-complaints").textContent = ui.labelComplaints;
+  document.getElementById("el-label-treatment").textContent = ui.labelTreatment;
+  document.getElementById("el-rx-label-message").textContent = ui.rxMessage;
+  document.getElementById("el-rx-label-wish").textContent = ui.rxWish;
+
+  // Content
+  document.getElementById("el-monologue").textContent = t("internalNarrative");
+  document.getElementById("el-message").textContent = t("messageToCaretaker");
+  document.getElementById("el-wish").textContent = t("requestedAdjustment");
+
+  // Complaints
+  var complaintsEl = document.getElementById("el-complaints");
+  complaintsEl.innerHTML = "";
+  var complaints = DATA["concerns"];
+  if (complaints) {
+    var items = complaints[currentLang] || complaints["zh"] || [];
+    items.forEach(function(c) {
+      var li = document.createElement("li");
+      li.textContent = c;
+      complaintsEl.appendChild(li);
+    });
+  }
+
+  // Share
+  document.getElementById("el-share").textContent = t("shareText");
+
+  // Copy button
+  document.getElementById("el-copy-btn").textContent = ui.copyBtn;
+
+  // Disclaimer
+  document.getElementById("el-disclaimer").textContent = ui.disclaimer;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById("el-copy-btn");
+    var ui = UI[currentLang];
+    btn.textContent = ui.copyDone;
+    setTimeout(function() { btn.textContent = ui.copyBtn; }, 2000);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
