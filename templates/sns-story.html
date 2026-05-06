@@ -173,16 +173,21 @@
     position: absolute;
     bottom: 16px;
     left: 20px;
+    right: 20px;
     z-index: 15;
   }
 
   .subject-label {
     font-family: 'Sora', sans-serif;
-    font-size: 2.4rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-primary);
-    line-height: 1.1;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    line-height: 1.25;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .subject-type-tag {
@@ -414,16 +419,7 @@
 
   /* ── SCENE TEXT OVERLAY ── */
   .scene-overlay {
-    position: absolute;
-    bottom: 60px;
-    left: 20px;
-    right: 60px;
-    z-index: 15;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.75rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.5;
+    display: none;
   }
 
   @media (max-width: 420px) {
@@ -431,7 +427,7 @@
       width: 100%;
       border-radius: 28px;
     }
-    .subject-label { font-size: 1.8rem; }
+    .subject-label { font-size: 1.2rem; }
   }
 </style>
 </head>

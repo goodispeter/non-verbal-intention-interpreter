@@ -31,19 +31,7 @@
 
 > _「這不是胖，這是多年策略性資源儲備的具體成果。每一克都有其行政意義。」_
 
-### 更多範例
-
-| 主體                                                | 版型           | 報告                                                                                                                   |
-| --------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| <img src="./docs/demo/fat-orange.png" width="80" />  | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html)   |
-| <img src="./docs/demo/husky.png" width="80" />       | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)             |
-| <img src="./docs/demo/sadaharu.png" width="80" />    | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)       |
-| <img src="./docs/demo/ducks.png" width="80" />       | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/ducks-report.html)             |
-| <img src="./docs/demo/goodispeter.png" width="80" /> | SNS Story      | [`goodispeter-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/goodispeter-report.html) |
-| <img src="./docs/demo/nine.png" width="80" />        | Mystic Card    | [`nine-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/nine-report.html)               |
-| <img src="./docs/demo/bond.png" width="80" />        | Chat Bubbles   | [`bond-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/bond-report.html)               |
-
-> [**Demo Gallery**](https://goodispeter.github.io/non-verbal-intention-interpreter/) — 所有範例的互動式展示頁面
+### [Demo Gallery](https://goodispeter.github.io/non-verbal-intention-interpreter/) — 所有範例的互動式展示頁面
 
 ---
 
@@ -174,54 +162,6 @@
 
 ```
 .claude/skills/non-verbal-intention-interpreter/
-```
-
----
-
-## 目錄結構
-
-```
-non-verbal-intention-interpreter/
-├── SKILL.md
-├── README.md
-├── README.en.md
-├── docs/
-│   └── demo/
-│       ├── fat-orange.png
-│       ├── fat-orange-report.html
-│       ├── husky.png
-│       ├── husky-report.html
-│       ├── sadaharu.png
-│       ├── sadaharu-report.html
-│       ├── ducks.png
-│       ├── ducks-report.html
-│       ├── goodispeter.png
-│       ├── goodispeter-report.html
-│       ├── nine.png
-│       ├── nine-report.html
-│       ├── bond.png
-│       └── bond-report.html
-├── prompts/
-│   └── non-verbal-intention-interpreter-prompt.md
-├── templates/
-│   ├── mystic-card.html
-│   ├── medical-chart.html
-│   ├── sns-story.html
-│   ├── personal-manual.html
-│   ├── newspaper.html
-│   ├── dossier.html
-│   ├── fantasy-scroll.html
-│   ├── chat-bubbles.html
-│   ├── terminal.html
-│   └── yearbook.html
-├── examples/
-│   ├── cat-sassy.example.json
-│   ├── cat-clingy.example.json
-│   ├── dog-spiritual.example.json
-│   ├── hamster-dramatic.example.json
-│   └── rabbit-old-school.example.json
-└── schemas/
-    └── response-schema.json
 ```
 
 ---
