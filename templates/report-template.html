@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Non-Verbal Observation Report</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf9f6;--bg2:#fff;--bg3:#f0eeeb;--border:#e0ddd8;
+  --text:#1a1a1a;--text2:#6b6560;--text3:#9e9893;
+  --accent:#7c5cbf;--accent2:#9b7fd4;--accent-bg:rgba(124,92,191,0.08);
+  --success:#4caf50;--warn:#ff9800;
+  --card-shadow:0 2px 12px rgba(0,0,0,0.06);
+  --radius:16px;--radius-sm:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#141218;--bg2:#1e1c22;--bg3:#2a2830;--border:#3a3840;
+  --text:#e8e6ef;--text2:#9e9ba8;--text3:#6b6878;
+  --accent:#a78bfa;--accent2:#c4b5fd;--accent-bg:rgba(167,139,250,0.1);
+  --card-shadow:0 2px 12px rgba(0,0,0,0.3);
+}}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+
+.container{max-width:680px;margin:0 auto;padding:24px 20px 60px}
+
+/* Header */
+.header{text-align:center;padding:40px 0 20px}
+.header .icon{font-size:48px;margin-bottom:8px}
+.header h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em}
+.header .tagline{color:var(--text2);font-size:0.85rem;margin-top:4px}
+
+/* Lang toggle */
+.lang-toggle{display:flex;justify-content:center;gap:4px;margin:20px 0 28px;background:var(--bg3);border-radius:20px;padding:3px;width:fit-content;margin-left:auto;margin-right:auto}
+.lang-btn{padding:6px 20px;border-radius:17px;border:none;background:transparent;color:var(--text2);cursor:pointer;font-size:0.82rem;font-weight:500;transition:all 0.2s}
+.lang-btn.active{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+
+/* Subject image */
+.subject-image-wrap{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:24px;box-shadow:var(--card-shadow)}
+.subject-image-wrap img{width:100%;display:block;object-fit:cover;max-height:460px}
+.subject-badge{position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:500;display:flex;align-items:center;gap:6px}
+.subject-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;box-shadow:var(--card-shadow);transition:transform 0.15s}
+.card:hover{transform:translateY(-1px)}
+.card-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px;font-weight:600}
+.card-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;color:var(--accent)}
+
+/* Mood banner */
+.mood-banner{background:var(--accent-bg);border:1px solid var(--accent);border-radius:var(--radius);padding:16px 22px;margin-bottom:16px;text-align:center}
+.mood-banner .mood-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:600}
+.mood-banner .mood-text{font-size:1.1rem;font-weight:600;margin-top:4px}
+.mood-banner .style-tag{display:inline-block;margin-top:8px;padding:3px 12px;border-radius:12px;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:500}
+
+/* Monologue */
+.monologue{font-size:1.05rem;line-height:1.8;color:var(--text);position:relative;padding-left:16px;border-left:3px solid var(--accent)}
+
+/* Complaints */
+.complaints-list{list-style:none;padding:0}
+.complaints-list li{padding:10px 0;border-bottom:1px solid var(--border);font-size:0.92rem;display:flex;align-items:flex-start;gap:10px}
+.complaints-list li:last-child{border-bottom:none}
+.complaints-list .num{color:var(--accent);font-weight:700;font-size:0.8rem;min-width:20px}
+
+/* Message & wish */
+.highlight-text{font-size:1rem;line-height:1.7;text-align:center;font-style:italic;color:var(--text2)}
+
+/* Share */
+.share-card{background:var(--accent-bg);border:1px solid var(--accent);border-radius:var(--radius);padding:20px 22px;margin-top:24px;text-align:center}
+.share-text{font-size:0.92rem;color:var(--text);margin-bottom:14px;line-height:1.6}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:20px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:0.82rem;font-weight:500;transition:all 0.2s}
+.copy-btn:hover{background:var(--accent);color:#fff}
+.copy-btn.copied{background:var(--success);border-color:var(--success);color:#fff}
+
+/* Disclaimer */
+.disclaimer{text-align:center;color:var(--text3);font-size:0.72rem;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);line-height:1.6}
+
+/* Scene desc */
+.scene-desc{font-size:0.88rem;color:var(--text2);line-height:1.6}
+
+/* Animation */
+.card,.mood-banner,.subject-image-wrap,.share-card{animation:fadeUp 0.4s ease both}
+.card:nth-child(2){animation-delay:0.05s}
+.card:nth-child(3){animation-delay:0.1s}
+.card:nth-child(4){animation-delay:0.15s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:480px){
+  .container{padding:16px 14px 40px}
+  .header h1{font-size:1.3rem}
+  .subject-image-wrap img{max-height:340px}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="icon">🔮</div>
+    <h1 id="title">非語言觀察報告</h1>
+    <div class="tagline" id="tagline">由 AI 非語言解讀師為您解讀</div>
+  </div>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="subject-image-wrap">
+    <img id="subjectImage" src="" alt="Subject Photo">
+    <div class="subject-badge">
+      <span class="dot"></span>
+      <span id="badgeText">解讀中</span>
+    </div>
+  </div>
+
+  <div class="mood-banner">
+    <div class="mood-label" id="moodLabel">偵測情緒</div>
+    <div class="mood-text" id="moodText"></div>
+    <span class="style-tag" id="styleTag"></span>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="sceneLabel">場景分析</div>
+    <div class="scene-desc" id="sceneDesc"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="summaryLabel">總結</div>
+    <div class="scene-desc" id="summaryText"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="monoLabel">內心獨白</div>
+    <div class="monologue" id="monoText"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="complaintsLabel">抱怨清單</div>
+    <ol class="complaints-list" id="complaintsList"></ol>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="msgLabel">給主人的話</div>
+    <div class="highlight-text" id="msgText"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" id="wishLabel">心願</div>
+    <div class="highlight-text" id="wishText"></div>
+  </div>
+
+  <div class="share-card">
+    <div class="card-label" id="shareLabel">分享</div>
+    <div class="share-text" id="shareText"></div>
+    <button class="copy-btn" onclick="copyShare()" id="copyBtn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      <span id="copyLabel">複製分享文字</span>
+    </button>
+  </div>
+
+  <!-- Disclaimer uses static hardcoded strings only — safe to use innerHTML for <br> formatting.
+       All LLM-generated content uses textContent exclusively. Do not change this. -->
+  <div class="disclaimer" id="disclaimer">
+    此報告由 AI 非語言解讀系統生成，僅供娛樂用途，不構成專業建議。
+  </div>
+</div>
+
+<script>
+// Report data is injected as a JSON string and parsed safely.
+// This prevents script injection from LLM-generated content.
+// The Python build script escapes the JSON for safe single-quote string embedding.
+const DATA = JSON.parse('__REPORT_DATA_JSON__');
+const IMAGE = "__SUBJECT_IMAGE__";
+
+const UI = {
+  zh: {
+    title: "非語言觀察報告",
+    tagline: "由 AI 非語言解讀師為您解讀",
+    badge: "解讀中",
+    moodLabel: "偵測情緒",
+    sceneLabel: "場景分析",
+    summaryLabel: "總結",
+    monoLabel: "內心獨白",
+    complaintsLabel: "抱怨清單",
+    msgLabel: "給主人的話",
+    wishLabel: "心願",
+    shareLabel: "分享",
+    copyLabel: "複製分享文字",
+    copiedLabel: "已複製！",
+    disclaimer: "此報告由 AI 非語言解讀系統生成，僅供娛樂用途，不構成專業建議。"
+  },
+  en: {
+    title: "Non-Verbal Observation Report",
+    tagline: "Interpreted by AI Non-Verbal Interpreter",
+    badge: "Interpreting...",
+    moodLabel: "DETECTED MOOD",
+    sceneLabel: "SCENE ANALYSIS",
+    summaryLabel: "SUMMARY",
+    monoLabel: "INNER MONOLOGUE",
+    complaintsLabel: "COMPLAINTS",
+    msgLabel: "MESSAGE TO OWNER",
+    wishLabel: "WISH",
+    shareLabel: "SHARE",
+    copyLabel: "Copy share text",
+    copiedLabel: "Copied!",
+    disclaimer: "This report is generated by an AI non-verbal interpretation system for entertainment purposes only. Not professional advice."
+  }
+};
+
+let currentLang = "zh";
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function render() {
+  const ui = UI[currentLang];
+  document.getElementById("title").textContent = ui.title;
+  document.getElementById("tagline").textContent = ui.tagline;
+  document.getElementById("badgeText").textContent = ui.badge;
+  document.getElementById("moodLabel").textContent = ui.moodLabel;
+  document.getElementById("sceneLabel").textContent = ui.sceneLabel;
+  document.getElementById("summaryLabel").textContent = ui.summaryLabel;
+  document.getElementById("monoLabel").textContent = ui.monoLabel;
+  document.getElementById("complaintsLabel").textContent = ui.complaintsLabel;
+  document.getElementById("msgLabel").textContent = ui.msgLabel;
+  document.getElementById("wishLabel").textContent = ui.wishLabel;
+  document.getElementById("shareLabel").textContent = ui.shareLabel;
+  document.getElementById("copyLabel").textContent = ui.copyLabel;
+  // Disclaimer uses innerHTML because it contains <br> tags.
+  // This is safe: the source is the hardcoded UI object above, not LLM data.
+  document.getElementById("disclaimer").innerHTML = ui.disclaimer;
+
+  document.getElementById("subjectImage").src = IMAGE;
+  document.getElementById("moodText").textContent = t("detectedMood");
+  document.getElementById("styleTag").textContent = DATA.style ? DATA.style[currentLang] : "";
+  document.getElementById("sceneDesc").textContent = t("sceneDescription");
+  document.getElementById("summaryText").textContent = t("summary");
+  document.getElementById("monoText").textContent = t("internalNarrative");
+  document.getElementById("msgText").textContent = t("messageToCaretaker");
+  document.getElementById("wishText").textContent = t("requestedAdjustment");
+  document.getElementById("shareText").textContent = t("shareText");
+
+  const list = document.getElementById("complaintsList");
+  list.innerHTML = "";
+  const concerns = DATA.concerns ? DATA.concerns[currentLang] || [] : [];
+  concerns.forEach((c, i) => {
+    const li = document.createElement("li");
+    const numSpan = document.createElement("span");
+    numSpan.className = "num";
+    numSpan.textContent = String(i + 1).padStart(2, "0");
+    const textSpan = document.createElement("span");
+    textSpan.textContent = c;
+    li.appendChild(numSpan);
+    li.appendChild(textSpan);
+    list.appendChild(li);
+  });
+
+  if (DATA.subjectName && DATA.subjectName[currentLang]) {
+    const nameStr = DATA.subjectName[currentLang];
+    document.getElementById("badgeText").textContent = ui.badge + " " + nameStr;
+    document.title = (currentLang === "zh" ? "非語言觀察報告 — " : "Non-Verbal Observation Report — ") + nameStr;
+  }
+}
+
+function copyShare() {
+  const text = t("shareText");
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById("copyBtn");
+    const label = document.getElementById("copyLabel");
+    btn.classList.add("copied");
+    label.textContent = UI[currentLang].copiedLabel;
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      label.textContent = UI[currentLang].copyLabel;
+    }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

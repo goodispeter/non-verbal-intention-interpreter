@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["subjectType", "subjectName", "detectedMood", "style", "summary", "internalNarrative", "concerns", "messageToCaretaker", "requestedAdjustment", "shareText", "sceneDescription", "template"],
+  "properties": {
+    "subjectType": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "subjectName": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "detectedMood": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "enum": ["authority-review", "care-appeal", "higher-sensing", "catastrophe-report", "classical-assessment"] },
+        "zh": { "type": "string" },
+        "en": { "type": "string" }
+      },
+      "required": ["id", "zh", "en"]
+    },
+    "summary": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "internalNarrative": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "concerns": {
+      "type": "object",
+      "properties": {
+        "zh": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 5 },
+        "en": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 5 }
+      },
+      "required": ["zh", "en"]
+    },
+    "messageToCaretaker": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "requestedAdjustment": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "shareText": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "sceneDescription": {
+      "type": "object",
+      "properties": { "zh": { "type": "string" }, "en": { "type": "string" } },
+      "required": ["zh", "en"]
+    },
+    "template": {
+      "type": "string",
+      "enum": [
+        "mystic-card", "medical-chart", "sns-story",
+        "personal-manual", "newspaper", "dossier", "fantasy-scroll",
+        "chat-bubbles", "terminal", "yearbook"
+      ],
+      "description": "Auto-selected or user-specified template ID"
+    }
+  }
+}

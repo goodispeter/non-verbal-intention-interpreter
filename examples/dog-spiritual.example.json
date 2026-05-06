@@ -1,0 +1,55 @@
+{
+  "subjectType": { "zh": "狗", "en": "Dog" },
+  "subjectName": {
+    "zh": "冰箱方向環境訊號分析員・布丁",
+    "en": "Refrigerator-Direction Environmental Signal Analyst · Pudding"
+  },
+  "detectedMood": {
+    "zh": "靜止感知中",
+    "en": "Stationary signal processing"
+  },
+  "style": {
+    "id": "higher-sensing",
+    "zh": "更高感知型",
+    "en": "Higher Sensing"
+  },
+  "summary": {
+    "zh": "主體趴臥於地面並凝視遠方，呈現低動作量但高解讀空間的觀察狀態。",
+    "en": "The subject lies on the floor while gazing into the distance, showing low physical activity but high interpretive potential."
+  },
+  "internalNarrative": {
+    "zh": "我不是在放空。我正在處理來自冰箱方向的微弱環境訊號。冰箱方向環境訊號分析員・布丁判定，該訊號與肉類、散步時間延長，以及人類不應打斷我靜止程序有高度關聯。",
+    "en": "I am not zoning out. I am processing a weak environmental signal from the direction of the refrigerator. Refrigerator-Direction Environmental Signal Analyst · Pudding determines that this signal is strongly associated with meat, extended walking time, and the human obligation not to interrupt my stillness protocol."
+  },
+  "concerns": {
+    "zh": [
+      "冰箱開啟頻率與分配結果不成比例。",
+      "散步時長未反映主體實際需求。",
+      "靜止觀察程序經常被呼名中斷。",
+      "地板區域舒適度仍有改善空間。"
+    ],
+    "en": [
+      "Refrigerator opening frequency does not match distribution outcomes.",
+      "Walk duration does not reflect the subject's actual requirements.",
+      "Stationary observation procedures are frequently interrupted by name-calling.",
+      "Floor-area comfort still has room for improvement."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "主體已完成訊號判讀，結論是你應該走向冰箱。",
+    "en": "The subject has completed signal interpretation; the conclusion is that you should move toward the refrigerator."
+  },
+  "requestedAdjustment": {
+    "zh": "我要求環境秩序維持穩定，並將雞肉樣本納入今日分配。",
+    "en": "I request stable environmental order and the inclusion of a chicken sample in today's allocation."
+  },
+  "shareText": {
+    "zh": "🐾 今日觀察：牠不是放空，是在判讀冰箱方向訊號。",
+    "en": "🐾 Today's observation: this is not zoning out; this is refrigerator-direction signal analysis."
+  },
+  "sceneDescription": {
+    "zh": "一隻黃金獵犬趴在地板上，視線望向遠方，身體放鬆且維持長時間靜止。",
+    "en": "A golden retriever lies on the floor, gazing into the distance with a relaxed body and sustained stillness."
+  },
+  "template": "fantasy-scroll"
+}

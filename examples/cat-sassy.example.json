@@ -1,0 +1,52 @@
+{
+  "subjectType": { "zh": "貓", "en": "Cat" },
+  "subjectName": { "zh": "橘子", "en": "Orange" },
+  "detectedMood": {
+    "zh": "冷靜審查中",
+    "en": "Calmly conducting a review"
+  },
+  "style": {
+    "id": "authority-review",
+    "zh": "權力審查型",
+    "en": "Authority Review"
+  },
+  "summary": {
+    "zh": "主體位於沙發區域，表情穩定而保留，呈現對現場秩序的持續性評估。",
+    "en": "The subject occupies the sofa area with a stable yet reserved expression, suggesting ongoing evaluation of the surrounding order."
+  },
+  "internalNarrative": {
+    "zh": "我允許你靠近，並不代表我認可你的管理能力。橘子目前正在審核沙發使用權、拍攝角度與供餐準時率。到目前為止，人類部門的表現只能列為待改善。",
+    "en": "My permission for you to approach does not imply approval of your management ability. Orange is currently reviewing sofa access rights, photography angles, and meal punctuality. So far, the human department remains classified as requiring improvement."
+  },
+  "concerns": {
+    "zh": [
+      "沙發主權長期遭人類稀釋。",
+      "拍攝角度未經主體正式核准。",
+      "返家後未優先完成拜會程序。",
+      "自動清潔設備入住缺乏審議紀錄。"
+    ],
+    "en": [
+      "Sofa sovereignty has been diluted by humans over time.",
+      "Photography angles were not formally approved by the subject.",
+      "Post-arrival greeting procedures were not prioritized.",
+      "The automated cleaning device entered residence without review records."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "你具備基本照護功能，但距離合格同住者仍有制度性落差。",
+    "en": "You possess basic care functionality, but a structural gap remains before you qualify as an acceptable cohabitant."
+  },
+  "requestedAdjustment": {
+    "zh": "我要求保留紙箱行宮，並重新分配沙發邊界。",
+    "en": "I request preservation of the cardboard residence and a revised allocation of sofa boundaries."
+  },
+  "shareText": {
+    "zh": "🐾 今日觀察：牠不是不理人，是正在審核人類部門。",
+    "en": "🐾 Today's observation: this is not indifference; this is a review of the human department."
+  },
+  "sceneDescription": {
+    "zh": "橘貓坐在沙發上，眼睛半瞇，身體穩定，表情像是在觀察某項尚未通過的流程。",
+    "en": "An orange tabby sits on the sofa with half-closed eyes and a stable body posture, appearing to observe a process that has not yet passed review."
+  },
+  "template": "dossier"
+}

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#08 Illuminated Manuscript</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   08 - ILLUMINATED MANUSCRIPT / FANTASY SCROLL
+   Aesthetic: Burgundy, forest green, gold leaf
+   Medieval manuscript with decorated initials
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'EB Garamond', serif;
+  background: #2a1a10;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+  position: relative;
+}
+
+/* Dark wood grain background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      2deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.05) 3px,
+      rgba(0,0,0,0.05) 4px
+    ),
+    linear-gradient(160deg, #2a1a10, #1a0e08, #2a1a10);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- PARCHMENT SCROLL ---- */
+.scroll {
+  background: linear-gradient(
+    175deg,
+    #f5e8c8 0%,
+    #f0e0b8 10%,
+    #ede0b5 30%,
+    #eadcb0 50%,
+    #e8d8a8 70%,
+    #e5d5a5 90%,
+    #e0d0a0 100%
+  );
+  position: relative;
+  box-shadow:
+    0 4px 12px rgba(20, 10, 0, 0.3),
+    0 15px 50px rgba(20, 10, 0, 0.4),
+    inset 0 0 100px rgba(200, 180, 130, 0.15);
+  border: none;
+  padding: 0;
+  overflow: visible;
+}
+
+/* Top scroll roll */
+.scroll-roll-top {
+  height: 32px;
+  background: linear-gradient(
+    180deg,
+    #c0a060 0%,
+    #d8b870 15%,
+    #e0c880 30%,
+    #b89850 50%,
+    #a08040 70%,
+    #c8a860 85%,
+    #d0b068 100%
+  );
+  border-radius: 16px 16px 0 0;
+  position: relative;
+  box-shadow:
+    0 4px 12px rgba(80, 50, 10, 0.3),
+    inset 0 2px 4px rgba(255, 220, 150, 0.3),
+    inset 0 -2px 4px rgba(80, 50, 10, 0.2);
+}
+
+/* Scroll roll knobs */
+.scroll-roll-top::before,
+.scroll-roll-top::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #e0c070, #a07830);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 220, 150, 0.4),
+    0 2px 4px rgba(0,0,0,0.2);
+}
+.scroll-roll-top::before { left: -8px; }
+.scroll-roll-top::after { right: -8px; }
+
+/* Bottom scroll roll */
+.scroll-roll-bottom {
+  height: 32px;
+  background: linear-gradient(
+    0deg,
+    #c0a060 0%,
+    #d8b870 15%,
+    #e0c880 30%,
+    #b89850 50%,
+    #a08040 70%,
+    #c8a860 85%,
+    #d0b068 100%
+  );
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  box-shadow:
+    0 -4px 12px rgba(80, 50, 10, 0.2),
+    inset 0 2px 4px rgba(80, 50, 10, 0.2),
+    inset 0 -2px 4px rgba(255, 220, 150, 0.3);
+}
+.scroll-roll-bottom::before,
+.scroll-roll-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 65%, #e0c070, #a07830);
+  box-shadow:
+    inset 0 -2px 4px rgba(255, 220, 150, 0.4),
+    0 -2px 4px rgba(0,0,0,0.2);
+}
+.scroll-roll-bottom::before { left: -8px; }
+.scroll-roll-bottom::after { right: -8px; }
+
+/* ---- VINE BORDER SVGs ---- */
+.vine-left {
+  position: absolute;
+  top: 60px;
+  left: 8px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.vine-right {
+  position: absolute;
+  top: 60px;
+  right: 8px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---- SCROLL CONTENT ---- */
+.scroll-content {
+  padding: 40px 56px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Inner border frame */
+.scroll-content::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 38px;
+  right: 38px;
+  bottom: 20px;
+  border: 2px solid rgba(160, 120, 50, 0.25);
+  pointer-events: none;
+}
+
+/* Corner ornaments in inner frame */
+.frame-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 4;
+  pointer-events: none;
+}
+.frame-corner-tl { top: 12px; left: 30px; }
+.frame-corner-tr { top: 12px; right: 30px; transform: scaleX(-1); }
+.frame-corner-bl { bottom: 12px; left: 30px; transform: scaleY(-1); }
+.frame-corner-br { bottom: 12px; right: 30px; transform: scale(-1); }
+
+/* ---- TITLE / HEADER ---- */
+.ms-header {
+  text-align: center;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.ms-header-ornament {
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.ms-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #5a2020;
+  line-height: 1.2;
+  text-shadow: 1px 1px 0 rgba(200, 160, 80, 0.3);
+  letter-spacing: 0.05em;
+}
+
+.ms-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #8a6830;
+  margin-top: 6px;
+  letter-spacing: 0.1em;
+}
+
+.ms-rule {
+  width: 200px;
+  height: 2px;
+  margin: 16px auto;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #b08830 20%,
+    #c8a040 50%,
+    #b08830 80%,
+    transparent
+  );
+  position: relative;
+}
+.ms-rule::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #c8a040;
+}
+
+/* ---- CIRCULAR PORTRAIT WITH CELTIC FRAME ---- */
+.portrait-container {
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.subject-photo {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+/* Celtic knot frame ring */
+.celtic-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.portrait-caption {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.65rem;
+  color: #8a6830;
+  margin-top: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ---- IDENTITY BLOCK ---- */
+.identity-block {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.identity-item {
+  text-align: center;
+}
+
+.identity-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.55rem;
+  color: #8a6830;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-bottom: 4px;
+}
+
+.identity-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  color: #3a2010;
+  font-weight: 600;
+}
+
+/* ---- SECTION HEADINGS ---- */
+.ms-section-heading {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #5a2020;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 28px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(160, 120, 50, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heading-ornament {
+  flex-shrink: 0;
+}
+
+/* ---- ILLUMINATED DROP CAP ---- */
+.illuminated-text {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.95rem;
+  color: #3a2810;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.drop-cap {
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: #7a2020;
+  line-height: 0.75;
+  margin-right: 8px;
+  margin-top: 6px;
+  text-shadow: 2px 2px 0 rgba(200, 160, 80, 0.4);
+  position: relative;
+}
+
+/* Gold leaf accent behind drop cap */
+.drop-cap::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  background: radial-gradient(circle, rgba(200, 160, 60, 0.15), transparent 70%);
+  border-radius: 4px;
+  z-index: -1;
+}
+
+/* ---- SCENE BLOCK ---- */
+.scene-block {
+  background: rgba(90, 32, 32, 0.06);
+  border-left: 3px solid #7a2020;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.scene-block p {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #4a2818;
+  line-height: 1.7;
+}
+
+/* ---- COMPLAINT SCROLLWORK LIST ---- */
+.complaint-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+
+.complaint-list li {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.92rem;
+  color: #3a2810;
+  line-height: 1.7;
+  padding: 8px 0 8px 28px;
+  border-bottom: 1px solid rgba(160, 120, 50, 0.15);
+  position: relative;
+}
+
+/* Decorative diamond bullet */
+.complaint-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  width: 8px;
+  height: 8px;
+  background: #7a2020;
+  transform: rotate(45deg);
+}
+
+/* ---- MESSAGE PANELS ---- */
+.message-panels {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.message-panel {
+  flex: 1;
+  padding: 16px 18px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.panel-owner {
+  background: rgba(90, 32, 32, 0.06);
+  border: 1px solid rgba(122, 32, 32, 0.2);
+}
+
+.panel-wish {
+  background: rgba(30, 80, 40, 0.06);
+  border: 1px solid rgba(30, 80, 40, 0.2);
+}
+
+.panel-heading {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+.panel-owner .panel-heading { color: #7a2020; }
+.panel-wish .panel-heading { color: #2a6030; }
+
+.panel-text {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #3a2810;
+}
+
+/* ---- WAX SEAL ---- */
+.wax-seal-container {
+  text-align: center;
+  margin: 32px 0 16px;
+  position: relative;
+}
+
+.wax-seal {
+  display: inline-block;
+  position: relative;
+}
+
+/* ---- SHARE BANNER ---- */
+.share-banner {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(160, 120, 50, 0.25);
+}
+
+.share-banner p {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #6a5030;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.share-banner .colophon {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.55rem;
+  color: #a08840;
+  letter-spacing: 0.2em;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* ---- LANG TOGGLE ---- */
+.lang-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+}
+.lang-btn {
+  padding: 4px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(160, 120, 50, 0.4);
+  background: transparent;
+  color: #8a6830;
+  cursor: pointer;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: rgba(90, 32, 32, 0.15);
+  color: #5a2020;
+  border-color: #5a2020;
+}
+
+/* ---- COPY BUTTON ---- */
+.copy-btn {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(160, 120, 50, 0.4);
+  background: transparent;
+  color: #6a5030;
+  cursor: pointer;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  margin-top: 10px;
+  transition: all 0.2s;
+}
+.copy-btn:hover {
+  background: rgba(90, 32, 32, 0.1);
+  border-color: #5a2020;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .scroll-content {
+    padding: 30px 28px;
+  }
+  .scroll-content::before {
+    left: 16px;
+    right: 16px;
+  }
+  .ms-title {
+    font-size: 1.4rem;
+  }
+  .subject-photo {
+    width: 240px;
+    height: 240px;
+  }
+  .message-panels {
+    flex-direction: column;
+  }
+  .vine-left, .vine-right {
+    display: none;
+  }
+  .identity-block {
+    gap: 16px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="scroll">
+  <div class="scroll-roll-top"></div>
+
+  <!-- Left vine border SVG -->
+  <svg class="vine-left" width="28" height="600" viewBox="0 0 28 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 0 C14 40, 4 60, 14 100 C24 140, 4 160, 14 200 C24 240, 4 260, 14 300 C24 340, 4 360, 14 400 C24 440, 4 460, 14 500 C24 540, 4 560, 14 600" stroke="#2a6030" stroke-width="1.5" fill="none" opacity="0.3"/>
+    <!-- Leaves -->
+    <ellipse cx="6" cy="60" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-20 6 60)"/>
+    <ellipse cx="22" cy="140" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(25 22 140)"/>
+    <ellipse cx="6" cy="260" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-15 6 260)"/>
+    <ellipse cx="22" cy="340" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(20 22 340)"/>
+    <ellipse cx="6" cy="460" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-25 6 460)"/>
+    <ellipse cx="22" cy="540" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(15 22 540)"/>
+    <!-- Berries -->
+    <circle cx="4" cy="100" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="24" cy="200" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="4" cy="400" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="24" cy="500" r="3" fill="#7a2020" opacity="0.2"/>
+  </svg>
+
+  <!-- Right vine border SVG -->
+  <svg class="vine-right" width="28" height="600" viewBox="0 0 28 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 0 C14 40, 24 60, 14 100 C4 140, 24 160, 14 200 C4 240, 24 260, 14 300 C4 340, 24 360, 14 400 C4 440, 24 460, 14 500 C4 540, 24 560, 14 600" stroke="#2a6030" stroke-width="1.5" fill="none" opacity="0.3"/>
+    <ellipse cx="22" cy="60" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(20 22 60)"/>
+    <ellipse cx="6" cy="140" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-25 6 140)"/>
+    <ellipse cx="22" cy="260" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(15 22 260)"/>
+    <ellipse cx="6" cy="340" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-20 6 340)"/>
+    <ellipse cx="22" cy="460" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(25 22 460)"/>
+    <ellipse cx="6" cy="540" rx="5" ry="8" fill="#2a6030" opacity="0.15" transform="rotate(-15 6 540)"/>
+    <circle cx="24" cy="100" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="4" cy="200" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="24" cy="400" r="3" fill="#7a2020" opacity="0.2"/>
+    <circle cx="4" cy="500" r="3" fill="#7a2020" opacity="0.2"/>
+  </svg>
+
+  <!-- Frame corner ornaments -->
+  <svg class="frame-corner frame-corner-tl" width="24" height="24" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" fill="none" stroke="#b09040" stroke-width="1.5"/><circle cx="2" cy="22" r="2" fill="#b09040"/><circle cx="22" cy="2" r="2" fill="#b09040"/></svg>
+  <svg class="frame-corner frame-corner-tr" width="24" height="24" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" fill="none" stroke="#b09040" stroke-width="1.5"/><circle cx="2" cy="22" r="2" fill="#b09040"/><circle cx="22" cy="2" r="2" fill="#b09040"/></svg>
+  <svg class="frame-corner frame-corner-bl" width="24" height="24" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" fill="none" stroke="#b09040" stroke-width="1.5"/><circle cx="2" cy="22" r="2" fill="#b09040"/><circle cx="22" cy="2" r="2" fill="#b09040"/></svg>
+  <svg class="frame-corner frame-corner-br" width="24" height="24" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" fill="none" stroke="#b09040" stroke-width="1.5"/><circle cx="2" cy="22" r="2" fill="#b09040"/><circle cx="22" cy="2" r="2" fill="#b09040"/></svg>
+
+  <div class="scroll-content">
+
+    <!-- Lang toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+
+    <!-- Header ornament -->
+    <div class="ms-header">
+      <svg class="ms-header-ornament" width="120" height="24" viewBox="0 0 120 24">
+        <path d="M0 12 L30 12" stroke="#b09040" stroke-width="1"/>
+        <path d="M90 12 L120 12" stroke="#b09040" stroke-width="1"/>
+        <polygon points="60,2 68,12 60,22 52,12" fill="none" stroke="#b09040" stroke-width="1.2"/>
+        <polygon points="60,6 64,12 60,18 56,12" fill="#b09040" opacity="0.3"/>
+        <circle cx="40" cy="12" r="2.5" fill="#7a2020" opacity="0.5"/>
+        <circle cx="80" cy="12" r="2.5" fill="#7a2020" opacity="0.5"/>
+      </svg>
+      <h1 class="ms-title" id="msTitle"></h1>
+      <div class="ms-subtitle" id="msSubtitle"></div>
+      <div class="ms-rule"></div>
+    </div>
+
+    <!-- Circular portrait -->
+    <div class="portrait-container">
+      <!-- Celtic knot frame SVG -->
+      <svg class="celtic-frame" width="340" height="340" viewBox="0 0 340 340">
+        <circle cx="170" cy="170" r="160" fill="none" stroke="#b09040" stroke-width="2" opacity="0.5"/>
+        <circle cx="170" cy="170" r="155" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+        <circle cx="170" cy="170" r="165" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+        <!-- Celtic knot points around circle -->
+        <circle cx="170" cy="8" r="4" fill="#7a2020" opacity="0.4"/>
+        <circle cx="170" cy="332" r="4" fill="#7a2020" opacity="0.4"/>
+        <circle cx="8" cy="170" r="4" fill="#2a6030" opacity="0.4"/>
+        <circle cx="332" cy="170" r="4" fill="#2a6030" opacity="0.4"/>
+        <!-- Diagonal accent dots -->
+        <circle cx="55" cy="55" r="3" fill="#b09040" opacity="0.3"/>
+        <circle cx="285" cy="55" r="3" fill="#b09040" opacity="0.3"/>
+        <circle cx="55" cy="285" r="3" fill="#b09040" opacity="0.3"/>
+        <circle cx="285" cy="285" r="3" fill="#b09040" opacity="0.3"/>
+        <!-- Interweave arcs -->
+        <path d="M110 15 Q170 40 230 15" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+        <path d="M110 325 Q170 300 230 325" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+        <path d="M15 110 Q40 170 15 230" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+        <path d="M325 110 Q300 170 325 230" fill="none" stroke="#b09040" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <img class="subject-photo" id="subjectPhoto" src="" alt="Subject Photo">
+      <div class="portrait-caption" id="portraitCaption"></div>
+    </div>
+
+    <!-- Identity block -->
+    <div class="identity-block" id="identityBlock">
+      <div class="identity-item">
+        <div class="identity-label" id="idLabel0"></div>
+        <div class="identity-value" id="idValue0"></div>
+      </div>
+      <div class="identity-item">
+        <div class="identity-label" id="idLabel1"></div>
+        <div class="identity-value" id="idValue1"></div>
+      </div>
+      <div class="identity-item">
+        <div class="identity-label" id="idLabel2"></div>
+        <div class="identity-value" id="idValue2"></div>
+      </div>
+      <div class="identity-item">
+        <div class="identity-label" id="idLabel3"></div>
+        <div class="identity-value" id="idValue3"></div>
+      </div>
+    </div>
+
+    <!-- Scene -->
+    <div class="ms-section-heading">
+      <svg class="heading-ornament" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,1 10.5,5.5 15.5,6 12,9.5 13,14.5 8,12 3,14.5 4,9.5 0.5,6 5.5,5.5" fill="#b09040" opacity="0.4"/></svg>
+      <span id="sceneHeading"></span>
+    </div>
+    <div class="scene-block">
+      <p id="sceneText"></p>
+    </div>
+
+    <!-- Monologue with illuminated initial -->
+    <div class="ms-section-heading">
+      <svg class="heading-ornament" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,1 10.5,5.5 15.5,6 12,9.5 13,14.5 8,12 3,14.5 4,9.5 0.5,6 5.5,5.5" fill="#b09040" opacity="0.4"/></svg>
+      <span id="monoHeading"></span>
+    </div>
+    <div class="illuminated-text" id="monoText"></div>
+
+    <!-- Complaints -->
+    <div class="ms-section-heading">
+      <svg class="heading-ornament" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,1 10.5,5.5 15.5,6 12,9.5 13,14.5 8,12 3,14.5 4,9.5 0.5,6 5.5,5.5" fill="#b09040" opacity="0.4"/></svg>
+      <span id="complaintsHeading"></span>
+    </div>
+    <ul class="complaint-list" id="complaintList"></ul>
+
+    <!-- Message panels -->
+    <div class="ms-section-heading">
+      <svg class="heading-ornament" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,1 10.5,5.5 15.5,6 12,9.5 13,14.5 8,12 3,14.5 4,9.5 0.5,6 5.5,5.5" fill="#b09040" opacity="0.4"/></svg>
+      <span id="proclamationsHeading"></span>
+    </div>
+    <div class="message-panels">
+      <div class="message-panel panel-owner">
+        <div class="panel-heading" id="ownerPanelHeading"></div>
+        <div class="panel-text" id="ownerPanelText"></div>
+      </div>
+      <div class="message-panel panel-wish">
+        <div class="panel-heading" id="wishPanelHeading"></div>
+        <div class="panel-text" id="wishPanelText"></div>
+      </div>
+    </div>
+
+    <!-- Wax seal -->
+    <div class="wax-seal-container">
+      <div class="wax-seal">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="36" fill="#8a2020"/>
+          <circle cx="40" cy="40" r="36" fill="url(#waxGrad)"/>
+          <circle cx="40" cy="4" r="5" fill="#8a2020"/>
+          <circle cx="65" cy="12" r="4" fill="#8a2020"/>
+          <circle cx="75" cy="35" r="5" fill="#8a2020"/>
+          <circle cx="68" cy="62" r="4" fill="#8a2020"/>
+          <circle cx="40" cy="76" r="5" fill="#8a2020"/>
+          <circle cx="12" cy="62" r="4" fill="#8a2020"/>
+          <circle cx="5" cy="35" r="5" fill="#8a2020"/>
+          <circle cx="15" cy="12" r="4" fill="#8a2020"/>
+          <circle cx="40" cy="40" r="22" fill="none" stroke="#a03030" stroke-width="1.5"/>
+          <circle cx="40" cy="36" r="8" fill="#a03030"/>
+          <ellipse cx="40" cy="46" rx="10" ry="7" fill="#a03030"/>
+          <circle cx="34" cy="30" r="3" fill="#a03030"/>
+          <circle cx="46" cy="30" r="3" fill="#a03030"/>
+          <defs>
+            <radialGradient id="waxGrad" cx="35%" cy="35%">
+              <stop offset="0%" stop-color="rgba(200,80,80,0.3)"/>
+              <stop offset="100%" stop-color="rgba(60,10,10,0.2)"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Share banner -->
+    <div class="share-banner">
+      <p id="shareText"></p>
+      <button class="copy-btn" onclick="copyShare()" id="copyBtn"></button>
+      <div class="colophon" id="colophon"></div>
+    </div>
+
+  </div><!-- end scroll-content -->
+
+  <div class="scroll-roll-bottom"></div>
+</div><!-- end scroll -->
+</div><!-- end page -->
+
+<script>
+const DATA = JSON.parse('__REPORT_DATA_JSON__');
+const IMAGE = "__SUBJECT_IMAGE__";
+
+const UI = {
+  zh: {
+    titlePrefix: "The Chronicle of ",
+    subtitle: "A Non-Verbal Transmission \u00B7 Faithfully Transcribed",
+    idLabels: ["Name", "Kind", "Temperament", "Spirit"],
+    sceneHeading: "The Scene Observed",
+    monoHeading: "The Inner Voice",
+    complaintsHeading: "Grievances Most Dire",
+    proclamationsHeading: "Proclamations",
+    ownerPanelHeading: "Decree unto the Keeper",
+    wishPanelHeading: "A Prayer to the Heavens",
+    colophon: "\u2726 Inscribed by the Interpretation Guild \u2726 Anno Domini MMXXVI \u2726",
+    copyLabel: "\u8907\u88FD\u5206\u4EAB\u6587\u5B57",
+    copiedLabel: "\u5DF2\u8907\u88FD\uFF01"
+  },
+  en: {
+    titlePrefix: "The Chronicle of ",
+    subtitle: "A Non-Verbal Transmission \u00B7 Faithfully Transcribed",
+    idLabels: ["Name", "Kind", "Temperament", "Spirit"],
+    sceneHeading: "The Scene Observed",
+    monoHeading: "The Inner Voice",
+    complaintsHeading: "Grievances Most Dire",
+    proclamationsHeading: "Proclamations",
+    ownerPanelHeading: "Decree unto the Keeper",
+    wishPanelHeading: "A Prayer to the Heavens",
+    colophon: "\u2726 Inscribed by the Interpretation Guild \u2726 Anno Domini MMXXVI \u2726",
+    copyLabel: "Copy share text",
+    copiedLabel: "Copied!"
+  }
+};
+
+let currentLang = "zh";
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function render() {
+  const ui = UI[currentLang];
+  const nameText = DATA.subjectName ? (DATA.subjectName[currentLang] || DATA.subjectName["zh"] || "") : "";
+  const species = DATA.subjectType ? (DATA.subjectType[currentLang] || DATA.subjectType["zh"] || "") : "";
+  const style = DATA.style ? (DATA.style[currentLang] || DATA.style["zh"] || "") : "";
+  const mood = t("detectedMood");
+
+  // Subject photo
+  document.getElementById("subjectPhoto").src = IMAGE;
+
+  // Title
+  document.getElementById("msTitle").textContent = ui.titlePrefix + nameText;
+  document.getElementById("msSubtitle").textContent = ui.subtitle;
+
+  // Portrait caption
+  document.getElementById("portraitCaption").textContent = "\u2726 " + nameText + " \u00B7 " + species + " \u2726";
+
+  // Identity block
+  var idLabels = ui.idLabels;
+  document.getElementById("idLabel0").textContent = idLabels[0];
+  document.getElementById("idValue0").textContent = nameText;
+  document.getElementById("idLabel1").textContent = idLabels[1];
+  document.getElementById("idValue1").textContent = species;
+  document.getElementById("idLabel2").textContent = idLabels[2];
+  document.getElementById("idValue2").textContent = style;
+  document.getElementById("idLabel3").textContent = idLabels[3];
+  document.getElementById("idValue3").textContent = mood;
+
+  // Section headings
+  document.getElementById("sceneHeading").textContent = ui.sceneHeading;
+  document.getElementById("monoHeading").textContent = ui.monoHeading;
+  document.getElementById("complaintsHeading").textContent = ui.complaintsHeading;
+  document.getElementById("proclamationsHeading").textContent = ui.proclamationsHeading;
+
+  // Scene
+  document.getElementById("sceneText").textContent = t("sceneDescription");
+
+  // Monologue with drop cap
+  var monoStr = t("internalNarrative");
+  var monoEl = document.getElementById("monoText");
+  monoEl.innerHTML = "";
+  if (monoStr.length > 0) {
+    var dropCap = document.createElement("span");
+    dropCap.className = "drop-cap";
+    dropCap.textContent = monoStr.charAt(0);
+    monoEl.appendChild(dropCap);
+    monoEl.appendChild(document.createTextNode(monoStr.substring(1)));
+  }
+
+  // Complaints
+  var list = document.getElementById("complaintList");
+  list.innerHTML = "";
+  var complaints = DATA.concerns ? (DATA.concerns[currentLang] || DATA.concerns["zh"] || []) : [];
+  complaints.forEach(function(c) {
+    var li = document.createElement("li");
+    li.textContent = c;
+    list.appendChild(li);
+  });
+
+  // Message panels
+  document.getElementById("ownerPanelHeading").textContent = ui.ownerPanelHeading;
+  document.getElementById("ownerPanelText").textContent = t("messageToCaretaker");
+  document.getElementById("wishPanelHeading").textContent = ui.wishPanelHeading;
+  document.getElementById("wishPanelText").textContent = t("requestedAdjustment");
+
+  // Share
+  document.getElementById("shareText").textContent = t("shareText");
+  document.getElementById("copyBtn").textContent = ui.copyLabel;
+  document.getElementById("colophon").textContent = ui.colophon;
+
+  // Page title
+  document.title = "The Chronicle of " + nameText;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById("copyBtn");
+    btn.textContent = UI[currentLang].copiedLabel;
+    setTimeout(function() { btn.textContent = UI[currentLang].copyLabel; }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

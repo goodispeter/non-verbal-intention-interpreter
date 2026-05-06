@@ -1,0 +1,55 @@
+{
+  "subjectType": { "zh": "貓", "en": "Cat" },
+  "subjectName": {
+    "zh": "陪伴資源申訴代表・喵喵",
+    "en": "Representative of Companionship Resources · Meowmeow"
+  },
+  "detectedMood": {
+    "zh": "高度關注照護資源分配",
+    "en": "Highly attentive to care-resource distribution"
+  },
+  "style": {
+    "id": "care-appeal",
+    "zh": "照護申訴型",
+    "en": "Care Appeal"
+  },
+  "summary": {
+    "zh": "主體以仰視姿態面向鏡頭，呈現明確的陪伴需求與低強度申訴傾向。",
+    "en": "The subject faces the camera from a lower angle, presenting a clear companionship demand and a low-intensity appeal posture."
+  },
+  "internalNarrative": {
+    "zh": "我並非單純看著你。我是在確認你是否理解今日陪伴資源配置已低於合理標準。陪伴資源申訴代表・喵喵已完成初步觀察，並對你長時間注視螢幕的行為保留正式意見。",
+    "en": "I am not simply looking at you. I am verifying whether you understand that today's companionship-resource allocation has fallen below acceptable standards. Representative of Companionship Resources · Meowmeow has completed the initial observation and maintains a formal objection to your prolonged screen attention."
+  },
+  "concerns": {
+    "zh": [
+      "觸摸服務次數缺乏穩定規劃。",
+      "人類視線長期流向手機螢幕。",
+      "外出時間未附合理補償機制。",
+      "罐頭供應未形成可預測制度。"
+    ],
+    "en": [
+      "Tactile service frequency lacks stable planning.",
+      "Human gaze continues to flow toward the phone screen.",
+      "Departure duration lacks a reasonable compensation mechanism.",
+      "Canned-food supply has not formed a predictable system."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "主體不需要額外說明，主體需要即時補足陪伴與罐頭。",
+    "en": "The subject does not require further explanation; the subject requires immediate companionship and canned-food correction."
+  },
+  "requestedAdjustment": {
+    "zh": "我要求恢復家庭照護秩序，並將手放回我的頭頂管轄區。",
+    "en": "I request restoration of household care order, beginning with the return of your hand to my head-governance area."
+  },
+  "shareText": {
+    "zh": "🐾 今日觀察：這不是撒嬌，是照護資源分配審查。",
+    "en": "🐾 Today's observation: this is not neediness; this is a care-resource allocation review."
+  },
+  "sceneDescription": {
+    "zh": "一隻黑貓仰望鏡頭，眼睛圓而集中，前爪靠近身體，姿態帶有明顯期待感。",
+    "en": "A black cat looks upward toward the camera with round, focused eyes and front paws close to the body, showing a visibly expectant posture."
+  },
+  "template": "medical-chart"
+}

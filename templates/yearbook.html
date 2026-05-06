@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polaroid Collage Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cork-light: #c4956a;
+    --cork-mid: #a87d55;
+    --cork-dark: #8a6540;
+    --cork-shadow: #6b4f30;
+    --paper-white: #faf6f0;
+    --paper-cream: #f5edd8;
+    --paper-yellow: #fff8dc;
+    --paper-pink: #ffe8e8;
+    --paper-blue: #e8f0ff;
+    --paper-green: #e8f8e8;
+    --polaroid-shadow: rgba(80, 50, 20, 0.35);
+    --ink-dark: #2a1810;
+    --ink-blue: #1a3a6a;
+    --pin-red: #cc3333;
+    --pin-yellow: #e6b800;
+    --pin-green: #339933;
+    --pin-blue: #3366cc;
+    --tape-color: rgba(255, 245, 200, 0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Karla', sans-serif;
+    color: var(--ink-dark);
+    overflow-x: hidden;
+  }
+
+  /* Cork board background */
+  .cork-board {
+    min-height: 100vh;
+    padding: 30px;
+    position: relative;
+    background-color: var(--cork-mid);
+    background-image:
+      /* Cork grain noise via SVG */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
+      /* Subtle gradient variation */
+      radial-gradient(ellipse at 20% 30%, var(--cork-light) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, var(--cork-dark) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, var(--cork-mid) 0%, var(--cork-dark) 100%);
+    /* Wooden frame border */
+    border: 16px solid;
+    border-image: linear-gradient(
+      180deg,
+      #8B6914 0%,
+      #A0802A 15%,
+      #6B4F10 30%,
+      #8B6914 50%,
+      #A0802A 70%,
+      #6B4F10 85%,
+      #8B6914 100%
+    ) 1;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.15);
+  }
+
+  /* Cork texture dots overlay */
+  .cork-board::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle, rgba(139, 101, 20, 0.15) 1px, transparent 1px);
+    background-size: 6px 6px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .back-link {
+    font-family: 'Karla', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--paper-white);
+    text-decoration: none;
+    position: relative;
+    z-index: 50;
+    background: rgba(0,0,0,0.4);
+    padding: 6px 14px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .back-link:hover { background: rgba(0,0,0,0.6); }
+
+  /* ====== LAYOUT: Scattered collage ====== */
+  .collage {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    min-height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+  }
+
+  /* ====== PUSHPIN SVG ====== */
+  .pin {
+    position: absolute;
+    top: -10px;
+    z-index: 10;
+    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));
+  }
+  .pin.center { left: 50%; transform: translateX(-50%); }
+  .pin.left { left: 20px; }
+  .pin.right { right: 20px; }
+
+  /* ====== POLAROID FRAME ====== */
+  .polaroid {
+    background: var(--paper-white);
+    padding: 12px 12px 40px;
+    box-shadow:
+      3px 4px 12px var(--polaroid-shadow),
+      1px 1px 0 rgba(0,0,0,0.05);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  .polaroid:hover {
+    z-index: 20;
+    transform: scale(1.03) !important;
+  }
+
+  /* Hero polaroid */
+  .polaroid.hero {
+    grid-column: 2 / 7;
+    grid-row: 1 / 3;
+    transform: rotate(-2.5deg);
+    padding: 16px 16px 60px;
+    z-index: 5;
+  }
+  .polaroid.hero .photo-placeholder {
+    width: 100%;
+    height: 380px;
+  }
+  .polaroid.hero .polaroid-caption {
+    font-size: 28px;
+  }
+
+  .photo-placeholder {
+    width: 100%;
+    height: 200px;
+    background:
+      linear-gradient(135deg, #e8e0d0 0%, #d8d0c0 100%);
+    border: 1px solid #d0c8b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Karla', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #999;
+    letter-spacing: 4px;
+    position: relative;
+  }
+  .photo-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 85%,
+      rgba(0,0,0,0.03) 100%
+    );
+  }
+
+  .polaroid-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: var(--ink-dark);
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.3;
+  }
+
+  /* ====== NOTE CARDS ====== */
+  .note-card {
+    background: var(--paper-yellow);
+    padding: 20px 18px;
+    position: relative;
+    box-shadow: 2px 3px 8px rgba(80, 50, 20, 0.25);
+    transition: transform 0.3s ease;
+  }
+  .note-card:hover {
+    z-index: 20;
+    transform: scale(1.03) !important;
+  }
+
+  .note-card.pink { background: var(--paper-pink); }
+  .note-card.blue { background: var(--paper-blue); }
+  .note-card.green { background: var(--paper-green); }
+  .note-card.cream { background: var(--paper-cream); }
+
+  /* Torn paper edge effect */
+  .torn-edge {
+    position: relative;
+  }
+  .torn-edge::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: inherit;
+    clip-path: polygon(
+      0% 0%, 3% 60%, 6% 20%, 9% 70%, 12% 30%, 15% 80%, 18% 10%, 21% 60%, 24% 40%, 27% 90%,
+      30% 20%, 33% 70%, 36% 0%, 39% 50%, 42% 80%, 45% 10%, 48% 60%, 51% 30%, 54% 90%, 57% 20%,
+      60% 70%, 63% 40%, 66% 80%, 69% 0%, 72% 50%, 75% 90%, 78% 20%, 81% 60%, 84% 30%, 87% 80%,
+      90% 10%, 93% 70%, 96% 40%, 100% 0%, 100% 100%, 0% 100%
+    );
+  }
+
+  .note-title {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink-dark);
+    margin-bottom: 10px;
+    text-decoration: underline;
+    text-decoration-color: rgba(42, 24, 16, 0.3);
+    text-underline-offset: 4px;
+  }
+  .note-text {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-dark);
+  }
+  .note-text.small {
+    font-size: 17px;
+  }
+
+  /* Washi tape decoration */
+  .tape {
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    opacity: 0.65;
+    z-index: 11;
+    border-radius: 1px;
+  }
+  .tape.tape-yellow { background: repeating-linear-gradient(45deg, #fff8a0, #fff8a0 4px, #ffe850 4px, #ffe850 8px); }
+  .tape.tape-pink { background: repeating-linear-gradient(45deg, #ffccd5, #ffccd5 4px, #ffaabb 4px, #ffaabb 8px); }
+  .tape.tape-blue { background: repeating-linear-gradient(45deg, #c0d8ff, #c0d8ff 4px, #90b8ff 4px, #90b8ff 8px); }
+
+  /* ====== POSITIONED ELEMENTS ====== */
+
+  /* Title banner */
+  .title-banner {
+    grid-column: 3 / 11;
+    grid-row: 1;
+    text-align: center;
+    z-index: 15;
+    margin-bottom: -30px;
+    position: relative;
+  }
+  .title-banner h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--paper-white);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    letter-spacing: 4px;
+  }
+  .title-banner .subtitle {
+    font-family: 'Karla', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--paper-cream);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Hero photo - left side */
+  .item-hero {
+    grid-column: 1 / 6;
+    grid-row: 2 / 4;
+    transform: rotate(-2.5deg);
+    z-index: 5;
+  }
+
+  /* Monologue note - right top */
+  .item-monologue {
+    grid-column: 6 / 13;
+    grid-row: 2;
+    transform: rotate(1.8deg);
+    z-index: 4;
+  }
+
+  /* Scene - right mid */
+  .item-scene {
+    grid-column: 7 / 13;
+    grid-row: 3;
+    transform: rotate(-1.2deg);
+    z-index: 3;
+  }
+
+  /* Complaints - left bottom */
+  .item-complaints {
+    grid-column: 1 / 7;
+    grid-row: 4;
+    transform: rotate(2.1deg);
+    z-index: 4;
+  }
+
+  /* Message - right bottom */
+  .item-message {
+    grid-column: 6 / 13;
+    grid-row: 4;
+    transform: rotate(-1.5deg);
+    z-index: 3;
+  }
+
+  /* Wish - center bottom */
+  .item-wish {
+    grid-column: 2 / 8;
+    grid-row: 5;
+    transform: rotate(0.8deg);
+    z-index: 5;
+  }
+
+  /* Share - bottom */
+  .item-share {
+    grid-column: 7 / 12;
+    grid-row: 5;
+    transform: rotate(-2.3deg);
+    z-index: 4;
+  }
+
+  /* Mood mini polaroid */
+  .item-mood {
+    grid-column: 11 / 13;
+    grid-row: 2;
+    transform: rotate(5deg);
+    z-index: 6;
+  }
+
+  /* Complaint check list */
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+  .check-list li {
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    line-height: 1.8;
+    color: var(--ink-dark);
+    padding-left: 24px;
+    position: relative;
+  }
+  .check-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ink-dark);
+    border-radius: 2px;
+  }
+  .check-list li::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 10px;
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid var(--pin-red);
+    border-bottom: 2px solid var(--pin-red);
+    transform: rotate(-45deg);
+  }
+
+  /* Doodle SVG decorations */
+  .doodle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.15;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .collage {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .item-hero, .item-monologue, .item-scene, .item-complaints,
+    .item-message, .item-wish, .item-share, .item-mood, .title-banner {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      transform: rotate(0deg) !important;
+    }
+    .polaroid.hero .photo-placeholder {
+      height: 300px;
+    }
+    .title-banner h1 { font-size: 36px; }
+    .cork-board { padding: 20px; border-width: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cork-board">
+
+  <!-- Lang toggle -->
+  <div style="position:relative;z-index:50;display:inline-block;margin-bottom:12px;">
+    <button class="lang-btn active" onclick="setLang('zh')" style="font-family:'Karla',sans-serif;font-size:12px;font-weight:700;background:rgba(0,0,0,0.5);color:var(--paper-white);border:none;padding:4px 10px;border-radius:3px;cursor:pointer;">&#20013;&#25991;</button>
+    <button class="lang-btn" onclick="setLang('en')" style="font-family:'Karla',sans-serif;font-size:12px;font-weight:700;background:rgba(0,0,0,0.25);color:var(--paper-cream);border:none;padding:4px 10px;border-radius:3px;cursor:pointer;">EN</button>
+  </div>
+
+  <!-- Decorative SVG doodles scattered on cork -->
+  <svg class="doodle" style="top:5%;left:2%;width:120px;height:120px;" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="50" fill="none" stroke="#8B6914" stroke-width="1" stroke-dasharray="6 4"/>
+    <circle cx="60" cy="60" r="30" fill="none" stroke="#8B6914" stroke-width="0.5" stroke-dasharray="3 3"/>
+  </svg>
+  <svg class="doodle" style="bottom:10%;right:3%;width:100px;height:60px;" viewBox="0 0 100 60">
+    <path d="M10,50 Q25,10 50,30 Q75,50 90,10" fill="none" stroke="#8B6914" stroke-width="1.5"/>
+  </svg>
+  <svg class="doodle" style="top:40%;right:1%;width:80px;height:80px;" viewBox="0 0 80 80">
+    <polygon points="40,5 50,30 75,30 55,48 62,75 40,58 18,75 25,48 5,30 30,30" fill="none" stroke="#8B6914" stroke-width="1"/>
+  </svg>
+
+  <div class="collage">
+
+    <!-- Title banner -->
+    <div class="title-banner">
+      <h1 id="el-title"></h1>
+      <div class="subtitle">&#9671; Non-Verbal Assessment Board &#9671;</div>
+    </div>
+
+    <!-- HERO POLAROID: Subject Photo -->
+    <div class="item-hero polaroid hero">
+      <!-- Pushpin SVG -->
+      <svg class="pin center" width="28" height="28" viewBox="0 0 28 28">
+        <circle cx="14" cy="14" r="10" fill="var(--pin-red)"/>
+        <circle cx="14" cy="14" r="6" fill="#ee5555"/>
+        <circle cx="11" cy="11" r="2.5" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="14" cy="14" r="10" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+      </svg>
+      <div class="photo-placeholder" id="el-hero-photo">
+        <img class="subject-photo" src="" alt="Subject" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div class="polaroid-caption" id="el-hero-caption"></div>
+    </div>
+
+    <!-- Mood mini card -->
+    <div class="item-mood note-card pink torn-edge">
+      <svg class="pin center" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-yellow)"/>
+        <circle cx="12" cy="12" r="5" fill="#f0c800"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="note-title">MOOD</div>
+      <div class="note-text" id="el-mood"></div>
+    </div>
+
+    <!-- Monologue -->
+    <div class="item-monologue note-card cream torn-edge">
+      <svg class="pin left" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-green)"/>
+        <circle cx="12" cy="12" r="5" fill="#44bb44"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <!-- Tape decoration -->
+      <div class="tape tape-yellow" style="top:-8px;right:30px;transform:rotate(-12deg);"></div>
+      <div class="note-title" id="el-mono-title"></div>
+      <div class="note-text" id="el-monologue"></div>
+    </div>
+
+    <!-- Scene polaroid -->
+    <div class="item-scene polaroid" style="padding-bottom:30px;">
+      <svg class="pin center" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-blue)"/>
+        <circle cx="12" cy="12" r="5" fill="#4488ee"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="photo-placeholder" style="height:120px;font-size:14px;" id="el-scene-photo">
+        <img class="subject-photo" src="" alt="Subject" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div class="polaroid-caption" style="font-size:17px;" id="el-scene"></div>
+    </div>
+
+    <!-- Complaints -->
+    <div class="item-complaints note-card blue torn-edge">
+      <svg class="pin right" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-red)"/>
+        <circle cx="12" cy="12" r="5" fill="#ee5555"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="tape tape-pink" style="top:-6px;left:20px;transform:rotate(8deg);"></div>
+      <div class="note-title" id="el-complaints-title"></div>
+      <ul class="check-list" id="el-complaints"></ul>
+    </div>
+
+    <!-- Message to owner -->
+    <div class="item-message note-card green">
+      <svg class="pin center" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-yellow)"/>
+        <circle cx="12" cy="12" r="5" fill="#f0c800"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="tape tape-blue" style="top:-8px;right:25px;transform:rotate(-6deg);"></div>
+      <div class="note-title" id="el-msg-title"></div>
+      <div class="note-text" id="el-message"></div>
+    </div>
+
+    <!-- Wish -->
+    <div class="item-wish note-card pink torn-edge">
+      <svg class="pin left" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-green)"/>
+        <circle cx="12" cy="12" r="5" fill="#44bb44"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="note-title" id="el-wish-title"></div>
+      <div class="note-text" id="el-wish"></div>
+    </div>
+
+    <!-- Share -->
+    <div class="item-share note-card cream" style="cursor:pointer;" onclick="copyShare()">
+      <svg class="pin center" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="var(--pin-blue)"/>
+        <circle cx="12" cy="12" r="5" fill="#4488ee"/>
+        <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="12" cy="12" r="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+      </svg>
+      <div class="note-text small" style="font-style:italic;opacity:0.7;" id="el-share"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const DATA = JSON.parse('__REPORT_DATA_JSON__');
+const IMAGE = "__SUBJECT_IMAGE__";
+
+let currentLang = "zh";
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) {
+    b.classList.remove("active");
+    b.style.background = "rgba(0,0,0,0.25)";
+    b.style.color = "var(--paper-cream)";
+  });
+  var active = document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]');
+  active.classList.add("active");
+  active.style.background = "rgba(0,0,0,0.5)";
+  active.style.color = "var(--paper-white)";
+  render();
+}
+
+function render() {
+  // Title
+  var titleSuffix = currentLang === "zh" ? "\u7684\u5FC3\u5167\u8A71" : "'s Inner Thoughts";
+  document.getElementById("el-title").textContent = t("subjectName") + titleSuffix;
+
+  // Hero caption: name + style + subjectTypeStr
+  var sep = " \u25C7 ";
+  document.getElementById("el-hero-caption").textContent = t("subjectName") + sep + t("style") + sep + t("subjectType");
+
+  // Photos
+  document.querySelectorAll(".subject-photo").forEach(function(img) {
+    img.src = IMAGE;
+  });
+
+  // Mood
+  document.getElementById("el-mood").textContent = t("detectedMood");
+
+  // Monologue
+  var monoTitle = currentLang === "zh" ? t("subjectName") + "\u7684\u7368\u767D" : t("subjectName") + "'s Monologue";
+  document.getElementById("el-mono-title").textContent = monoTitle;
+  document.getElementById("el-monologue").textContent = t("internalNarrative");
+
+  // Scene
+  document.getElementById("el-scene").textContent = t("sceneDescription");
+
+  // Complaints
+  var compTitle = currentLang === "zh" ? "\u6295\u8A34\u6E05\u55AE" : "Complaint List";
+  document.getElementById("el-complaints-title").textContent = compTitle;
+  var complaints = DATA.concerns ? (DATA.concerns[currentLang] || DATA.concerns["zh"] || []) : [];
+  var compEl = document.getElementById("el-complaints");
+  compEl.innerHTML = "";
+  complaints.forEach(function(c) {
+    var li = document.createElement("li");
+    li.textContent = c;
+    compEl.appendChild(li);
+  });
+
+  // Message to owner
+  var msgTitle = currentLang === "zh" ? "\u7D66\u98FC\u4E3B\u7684\u8A71" : "Message to Owner";
+  document.getElementById("el-msg-title").textContent = msgTitle;
+  document.getElementById("el-message").textContent = t("messageToCaretaker");
+
+  // Wish
+  var wishTitle = currentLang === "zh" ? t("subjectName") + "\u7684\u9858\u671B" : t("subjectName") + "'s Wish";
+  document.getElementById("el-wish-title").textContent = wishTitle;
+  document.getElementById("el-wish").textContent = t("requestedAdjustment");
+
+  // Share
+  document.getElementById("el-share").textContent = t("shareText");
+}
+
+function copyShare() {
+  var text = t("shareText");
+  if (navigator.clipboard && text) {
+    navigator.clipboard.writeText(text).then(function() {
+      var el = document.getElementById("el-share");
+      var orig = el.textContent;
+      el.textContent = currentLang === "zh" ? "\u2705 \u5DF2\u8907\u88FD\uFF01" : "\u2705 Copied!";
+      setTimeout(function(){ el.textContent = orig; }, 1500);
+    });
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>

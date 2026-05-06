@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#05 Kawaii Scrapbook Journal — 手帳風觀察日記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   05 - KAWAII SCRAPBOOK JOURNAL
+   Aesthetic: Pastel cream/blush/sage/lavender
+   Inspired by: Youmi subject intro card style
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: #fdf6f0;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Paper grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Soft polka-dot background pattern */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle, #f0d9ca 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.back-link {
+  color: #b89e8a;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 16px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #7a6555; }
+
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- SCRAPBOOK CONTAINER ---- */
+.scrapbook {
+  background: #fefbf6;
+  border-radius: 18px;
+  padding: 0;
+  position: relative;
+  box-shadow:
+    0 2px 8px rgba(180, 150, 120, 0.08),
+    0 12px 40px rgba(180, 150, 120, 0.12),
+    inset 0 0 60px rgba(240, 220, 200, 0.3);
+  border: 1.5px solid #ecddd0;
+  overflow: hidden;
+}
+
+/* Kraft paper edge strip at top */
+.scrapbook::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    #e8ceb8 0px, #e8ceb8 12px,
+    #f5e6d8 12px, #f5e6d8 14px
+  );
+}
+
+/* ---- WASHI TAPE STRIPS ---- */
+.washi {
+  position: absolute;
+  height: 28px;
+  border-radius: 1px;
+  z-index: 10;
+  opacity: 0.75;
+}
+.washi-1 {
+  top: -6px; left: 40px;
+  width: 90px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #f7c8d0 0px, #f7c8d0 4px,
+    #fce0e4 4px, #fce0e4 8px
+  );
+  transform: rotate(-3deg);
+}
+.washi-2 {
+  top: -6px; right: 50px;
+  width: 80px;
+  background: repeating-linear-gradient(
+    45deg,
+    #c8e0c0 0px, #c8e0c0 4px,
+    #dff0d8 4px, #dff0d8 8px
+  );
+  transform: rotate(2deg);
+}
+.washi-3 {
+  bottom: -8px; left: 30%;
+  width: 100px;
+  background: repeating-linear-gradient(
+    -30deg,
+    #d4c8e8 0px, #d4c8e8 5px,
+    #e8e0f4 5px, #e8e0f4 10px
+  );
+  transform: rotate(1.5deg);
+}
+.washi-4 {
+  top: 45%; right: -10px;
+  width: 70px;
+  background: #fce4b8;
+  opacity: 0.6;
+  transform: rotate(88deg);
+}
+
+/* ---- HEADER AREA ---- */
+.header {
+  padding: 40px 32px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.header-ribbon {
+  display: inline-block;
+  background: #f5d5d8;
+  padding: 6px 28px;
+  border-radius: 30px;
+  font-family: 'Caveat', cursive;
+  font-size: 0.85rem;
+  color: #a86070;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  position: relative;
+}
+/* Ribbon tail SVG */
+.header-ribbon::before,
+.header-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%) rotate(45deg);
+  background: #f5d5d8;
+}
+.header-ribbon::before { left: -5px; }
+.header-ribbon::after { right: -5px; }
+
+.header h1 {
+  font-family: 'Caveat', cursive;
+  font-size: 2.4rem;
+  color: #6b4c3b;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+.header .subtitle {
+  font-family: 'Quicksand', sans-serif;
+  color: #b8978a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 6px;
+  letter-spacing: 0.12em;
+}
+
+/* ---- DASHED HAND-DRAWN DIVIDER ---- */
+.dashed-divider {
+  border: none;
+  height: 2px;
+  background-image: url("data:image/svg+xml,%3Csvg width='600' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2 Q10 0 20 2 Q30 4 40 2 Q50 0 60 2 Q70 4 80 2 Q90 0 100 2 Q110 4 120 2 Q130 0 140 2 Q150 4 160 2 Q170 0 180 2 Q190 4 200 2 Q210 0 220 2 Q230 4 240 2 Q250 0 260 2 Q270 4 280 2 Q290 0 300 2 Q310 4 320 2 Q330 0 340 2 Q350 4 360 2 Q370 0 380 2 Q390 4 400 2 Q410 0 420 2 Q430 4 440 2 Q450 0 460 2 Q470 4 480 2 Q490 0 500 2 Q510 4 520 2 Q530 0 540 2 Q550 4 560 2 Q570 0 580 2 Q590 4 600 2' stroke='%23d4c0b0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  margin: 0 28px;
+}
+
+/* ---- MAGAZINE GRID LAYOUT ---- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 16px;
+  padding: 24px 28px;
+}
+
+/* ---- HERO PHOTO ---- */
+.photo-hero {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.photo-placeholder {
+  flex: 1;
+  min-height: 340px;
+  background: linear-gradient(145deg, #f5e1d0, #f0d0c0, #e8d5c8);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: #b89080;
+  position: relative;
+  transform: rotate(-1.5deg);
+  box-shadow:
+    0 4px 16px rgba(180, 140, 120, 0.15),
+    inset 0 0 40px rgba(255, 255, 255, 0.3);
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+
+/* Paper texture inside photo */
+.photo-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Corner photo tabs */
+.photo-placeholder .tab {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: #f5e0c8;
+  opacity: 0.7;
+}
+.photo-placeholder .tab-tl { top: 0; left: 0; border-radius: 0 0 12px 0; }
+.photo-placeholder .tab-tr { top: 0; right: 0; border-radius: 0 0 0 12px; }
+.photo-placeholder .tab-bl { bottom: 0; left: 0; border-radius: 0 12px 0 0; }
+.photo-placeholder .tab-br { bottom: 0; right: 0; border-radius: 12px 0 0 0; }
+
+/* Side photo crops */
+.photo-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  width: 130px;
+}
+
+.photo-crop {
+  background: linear-gradient(135deg, #e8d5cc, #f0ddd0);
+  border-radius: 12px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Caveat', cursive;
+  font-size: 0.8rem;
+  color: #c0a090;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(180, 150, 130, 0.1);
+  transform: rotate(1deg);
+  min-height: 100px;
+  position: relative;
+}
+
+.photo-crop:nth-child(2) {
+  transform: rotate(-0.8deg);
+}
+.photo-crop:nth-child(3) {
+  transform: rotate(1.5deg);
+}
+
+/* ---- BUBBLE CARDS ---- */
+.bubble {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(180, 150, 130, 0.08);
+  border: 1.5px solid transparent;
+  transition: transform 0.2s ease;
+}
+.bubble:hover {
+  transform: translateY(-2px) rotate(0.3deg);
+}
+
+.bubble-pink {
+  background: linear-gradient(135deg, #fff5f5, #fff0f0);
+  border-color: #f5d5d8;
+}
+.bubble-green {
+  background: linear-gradient(135deg, #f5faf5, #f0f8f0);
+  border-color: #c8e0c0;
+}
+.bubble-lavender {
+  background: linear-gradient(135deg, #f8f5ff, #f4f0fa);
+  border-color: #d8cef0;
+}
+.bubble-cream {
+  background: linear-gradient(135deg, #fffcf5, #fef8ee);
+  border-color: #eadcc8;
+}
+.bubble-full {
+  grid-column: 1 / -1;
+}
+
+.bubble-label {
+  font-family: 'Caveat', cursive;
+  font-size: 0.95rem;
+  color: #b89888;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bubble-label .icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.bubble-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.85rem;
+  color: #5a4a3a;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+/* ---- STICKER ELEMENTS ---- */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8e8d8;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: 'Caveat', cursive;
+  font-size: 0.85rem;
+  color: #8a7060;
+}
+
+.sticker-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ---- COMPLAINT STICKY NOTES ---- */
+.sticky-note {
+  background: #fff9c4;
+  padding: 12px 14px;
+  border-radius: 2px 2px 2px 2px;
+  font-family: 'Caveat', cursive;
+  font-size: 0.9rem;
+  color: #6b5a00;
+  line-height: 1.5;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+  transform: rotate(-1deg);
+  margin-bottom: 8px;
+  position: relative;
+}
+.sticky-note:nth-child(even) {
+  transform: rotate(0.8deg);
+  background: #ffe0b2;
+  color: #6b4500;
+}
+.sticky-note:nth-child(3) {
+  transform: rotate(-0.5deg);
+  background: #f8e0e8;
+  color: #6b3040;
+}
+
+.sticky-note::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 10px;
+  background: rgba(180, 180, 180, 0.25);
+  border-radius: 1px;
+}
+
+/* ---- MONOLOGUE SPEECH BUBBLE ---- */
+.speech {
+  grid-column: 1 / -1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px 24px;
+  position: relative;
+  border: 2px dashed #e0d0c0;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.88rem;
+  color: #5a4a3a;
+  line-height: 1.7;
+  font-weight: 500;
+}
+.speech::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 40px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-right: 2px dashed #e0d0c0;
+  border-bottom: 2px dashed #e0d0c0;
+  transform: rotate(45deg);
+}
+
+.speech-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  color: #c0a090;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ---- MESSAGE / WISH SECTION ---- */
+.message-area {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.message-card {
+  flex: 1;
+  border-radius: 14px;
+  padding: 18px 18px;
+  position: relative;
+}
+
+.msg-to-owner {
+  background: linear-gradient(135deg, #f0e0f5, #f5e8fa);
+  border: 1.5px solid #e0c8f0;
+}
+
+.msg-wish {
+  background: linear-gradient(135deg, #e0f0e5, #e8f5eb);
+  border: 1.5px solid #c0dcc8;
+}
+
+.msg-label {
+  font-family: 'Caveat', cursive;
+  font-size: 0.9rem;
+  color: #9a80a8;
+  margin-bottom: 8px;
+}
+
+.msg-wish .msg-label {
+  color: #6a9a70;
+}
+
+.msg-text {
+  font-size: 0.82rem;
+  color: #5a4a3a;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ---- SHARE STRIP ---- */
+.share-strip {
+  grid-column: 1 / -1;
+  background: linear-gradient(90deg, #f5e0c8, #f8e8d5);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.share-strip .share-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.share-strip p {
+  font-size: 0.78rem;
+  color: #8a7060;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* ---- DECORATIVE SVGs ---- */
+.corner-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Paper clip SVG */
+.paperclip {
+  position: absolute;
+  top: -4px;
+  right: 60px;
+  z-index: 15;
+}
+
+/* ---- FOOTER ---- */
+.footer {
+  padding: 18px 28px 24px;
+  text-align: center;
+}
+
+.footer-line {
+  font-family: 'Caveat', cursive;
+  font-size: 0.85rem;
+  color: #c8b0a0;
+  letter-spacing: 0.05em;
+}
+
+/* ---- SCATTERED DECORATIONS ---- */
+.scatter-star {
+  position: absolute;
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 16px 18px;
+  }
+  .bubble-full, .speech, .message-area, .share-strip {
+    grid-column: 1;
+  }
+  .photo-hero {
+    flex-direction: column;
+  }
+  .photo-side {
+    width: 100%;
+    flex-direction: row;
+  }
+  .photo-placeholder {
+    min-height: 260px;
+  }
+  .message-area {
+    flex-direction: column;
+  }
+}
+
+/* ---- LANGUAGE TOGGLE & COPY BUTTON ---- */
+.lang-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.lang-btn {
+  border: none;
+  background: transparent;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  color: #8a7060;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: #f5d5d8;
+  color: #a86070;
+}
+.copy-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10000;
+  border: none;
+  background: linear-gradient(135deg, #f5d5d8, #f0c0c8);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #6b4c3b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+.copy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.subject-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+<button class="copy-btn" onclick="copyShare()">複製分享文字</button>
+
+<div class="page">
+
+<div class="scrapbook">
+  <!-- Washi tape strips -->
+  <div class="washi washi-1"></div>
+  <div class="washi washi-2"></div>
+  <div class="washi washi-3"></div>
+  <div class="washi washi-4"></div>
+
+  <!-- Paper clip SVG -->
+  <svg class="paperclip" width="32" height="70" viewBox="0 0 32 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 2C9 2 4 7 4 14V50C4 58 9 64 16 64C23 64 28 58 28 50V18C28 12 24 8 19 8C14 8 10 12 10 18V46" stroke="#c0a8a0" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <!-- Corner ornament SVGs -->
+  <svg class="corner-deco" style="top:12px;left:12px" width="40" height="40" viewBox="0 0 40 40"><path d="M2 38 Q2 2 38 2" stroke="#e8d0c0" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="38" cy="2" r="2.5" fill="#f5d5d8"/></svg>
+  <svg class="corner-deco" style="bottom:12px;right:12px" width="40" height="40" viewBox="0 0 40 40"><path d="M38 2 Q38 38 2 38" stroke="#c8e0c0" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="2" cy="38" r="2.5" fill="#c8e0c0"/></svg>
+
+  <!-- Scattered star decorations -->
+  <svg class="scatter-star" style="top:60px;left:20px;opacity:0.3" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6.5 11,10 12.5,15 8,12 3.5,15 5,10 1,6.5 6,6" fill="#f0c0a0"/></svg>
+  <svg class="scatter-star" style="top:35%;right:18px;opacity:0.25" width="14" height="14" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6.5 11,10 12.5,15 8,12 3.5,15 5,10 1,6.5 6,6" fill="#c8a8e0"/></svg>
+  <svg class="scatter-star" style="bottom:15%;left:16px;opacity:0.2" width="12" height="12" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6.5 11,10 12.5,15 8,12 3.5,15 5,10 1,6.5 6,6" fill="#a0d0a0"/></svg>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-ribbon" id="headerRibbon">&#10038; Observation Journal &#10038;</div>
+    <h1 id="headerTitle"></h1>
+    <div class="subtitle" id="headerSubtitle"></div>
+  </div>
+
+  <hr class="dashed-divider">
+
+  <!-- Main grid layout -->
+  <div class="grid">
+
+    <!-- Hero photo area -->
+    <div class="photo-hero">
+      <div class="photo-placeholder">
+        <span class="tab tab-tl"></span>
+        <span class="tab tab-tr"></span>
+        <span class="tab tab-bl"></span>
+        <span class="tab tab-br"></span>
+        <img class="subject-photo" id="mainPhoto" src="" alt="Subject Photo">
+      </div>
+      <div class="photo-side">
+        <div class="photo-crop">close-up</div>
+        <div class="photo-crop">side view</div>
+        <div class="photo-crop">action shot</div>
+      </div>
+    </div>
+
+    <!-- Identity bubble -->
+    <div class="bubble bubble-pink">
+      <div class="bubble-label" id="profileLabel">
+        <svg class="icon" viewBox="0 0 18 18"><circle cx="9" cy="7" r="4" fill="none" stroke="#d09090" stroke-width="1.5"/><path d="M2 16c0-4 3.5-6 7-6s7 2 7 6" fill="none" stroke="#d09090" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Profile
+      </div>
+      <div class="bubble-text">
+        <strong id="subjectNameDisplay"></strong> <span id="subjectSpeciesDisplay"></span>
+        <div class="sticker-row" id="personalityStickers"></div>
+      </div>
+    </div>
+
+    <!-- Mood bubble -->
+    <div class="bubble bubble-lavender">
+      <div class="bubble-label" id="moodLabel">
+        <svg class="icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="none" stroke="#a088c0" stroke-width="1.5"/><circle cx="6.5" cy="8" r="1" fill="#a088c0"/><circle cx="11.5" cy="8" r="1" fill="#a088c0"/><path d="M6 12.5c1.5-1.5 4.5-1.5 6 0" fill="none" stroke="#a088c0" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Current Mood
+      </div>
+      <div class="bubble-text" id="moodText"></div>
+    </div>
+
+    <!-- Scene - speech bubble style -->
+    <div class="speech">
+      <span class="speech-label" id="sceneLabel">
+        <svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="14" height="10" rx="2" fill="none" stroke="#c0a890" stroke-width="1.3"/><path d="M5 11v4l3-4" fill="none" stroke="#c0a890" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Scene Observed
+      </span>
+      <span id="sceneText"></span>
+    </div>
+
+    <!-- Monologue - full width -->
+    <div class="bubble bubble-cream bubble-full" style="border:2px dashed #e8d5c0;border-radius:18px">
+      <div class="bubble-label" id="monologueLabel">
+        <svg class="icon" viewBox="0 0 18 18"><path d="M3 14V5a2 2 0 012-2h8a2 2 0 012 2v6a2 2 0 01-2 2H7l-4 3v-2z" fill="none" stroke="#c0a080" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Inner Monologue
+      </div>
+      <div class="bubble-text" style="font-size:0.92rem" id="monologueText"></div>
+    </div>
+
+    <!-- Complaints as sticky notes -->
+    <div class="bubble-full" style="padding:0 4px">
+      <div class="bubble-label" style="padding:0 8px 8px" id="complaintsLabel">
+        <svg class="icon" viewBox="0 0 18 18"><path d="M9 2v10M5 8l4 4 4-4" fill="none" stroke="#c09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="14" width="12" height="2" rx="1" fill="#c09060" opacity="0.5"/></svg>
+        Complaint Box
+      </div>
+      <div id="complaintsContainer"></div>
+    </div>
+
+    <!-- Message to owner + Wish -->
+    <div class="message-area">
+      <div class="message-card msg-to-owner">
+        <div class="msg-label" id="messageLabel">
+          <svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle;margin-right:3px"><path d="M7 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="#c8a0d0" opacity="0.6"/></svg>
+          Message to Hooman
+        </div>
+        <div class="msg-text" id="messageText"></div>
+      </div>
+      <div class="message-card msg-wish">
+        <div class="msg-label" id="wishLabel">
+          <svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle;margin-right:3px"><circle cx="7" cy="7" r="5" fill="none" stroke="#80b888" stroke-width="1.3"/><path d="M7 4v6M4 7h6" stroke="#80b888" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Secret Wish
+        </div>
+        <div class="msg-text" id="wishText"></div>
+      </div>
+    </div>
+
+    <!-- Share strip -->
+    <div class="share-strip">
+      <svg class="share-icon" viewBox="0 0 22 22"><circle cx="17" cy="4" r="3" fill="none" stroke="#a08870" stroke-width="1.5"/><circle cx="5" cy="11" r="3" fill="none" stroke="#a08870" stroke-width="1.5"/><circle cx="17" cy="18" r="3" fill="none" stroke="#a08870" stroke-width="1.5"/><line x1="7.8" y1="9.8" x2="14.2" y2="5.2" stroke="#a08870" stroke-width="1.3"/><line x1="7.8" y1="12.2" x2="14.2" y2="16.8" stroke="#a08870" stroke-width="1.3"/></svg>
+      <p id="shareStripText"></p>
+    </div>
+
+  </div><!-- end grid -->
+
+  <div class="footer">
+    <div class="footer-line">&#10045; made with love &amp; a little bit of magic &#10045;</div>
+  </div>
+
+</div><!-- end scrapbook -->
+</div><!-- end page -->
+
+<script>
+const DATA = JSON.parse('__REPORT_DATA_JSON__');
+const IMAGE = "__SUBJECT_IMAGE__";
+let currentLang = "zh";
+
+const UI = {
+  zh: {
+    profileLabel: "基本資料",
+    moodLabel: "當前心情",
+    sceneLabel: "觀察場景",
+    monologueLabel: "內心獨白",
+    complaintsLabel: "投訴信箱",
+    messageLabel: "想對主人說",
+    wishLabel: "秘密願望",
+    copyBtn: "複製分享文字",
+    copiedBtn: "已複製！"
+  },
+  en: {
+    profileLabel: "Profile",
+    moodLabel: "Current Mood",
+    sceneLabel: "Scene Observed",
+    monologueLabel: "Inner Monologue",
+    complaintsLabel: "Complaint Box",
+    messageLabel: "Message to Hooman",
+    wishLabel: "Secret Wish",
+    copyBtn: "Copy share text",
+    copiedBtn: "Copied!"
+  }
+};
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function render() {
+  var ui = UI[currentLang];
+
+  // Photo
+  document.getElementById("mainPhoto").src = IMAGE;
+
+  // Header
+  var nameText = t("subjectName");
+  document.getElementById("headerTitle").textContent = nameText + (currentLang === "zh" ? "的使用說明書" : "'s Personal Manual");
+  document.getElementById("headerSubtitle").textContent = (t("subjectType") || "").toUpperCase() + " \u00B7 PERSONAL MANUAL \u00B7 VOL.01";
+
+  // Profile bubble
+  document.getElementById("profileLabel").innerHTML = '<svg class="icon" viewBox="0 0 18 18"><circle cx="9" cy="7" r="4" fill="none" stroke="#d09090" stroke-width="1.5"/><path d="M2 16c0-4 3.5-6 7-6s7 2 7 6" fill="none" stroke="#d09090" stroke-width="1.5" stroke-linecap="round"/></svg>' + ui.profileLabel;
+  document.getElementById("subjectNameDisplay").textContent = nameText;
+  document.getElementById("subjectSpeciesDisplay").textContent = " \u00B7 " + t("subjectType");
+
+  // Personality stickers
+  var stickersEl = document.getElementById("personalityStickers");
+  stickersEl.innerHTML = "";
+  var personality = t("style");
+  if (personality) {
+    var sticker = document.createElement("span");
+    sticker.className = "sticker";
+    sticker.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l1.5 3 3.5.5-2.5 2.5.6 3.5L6 9l-3.1 1.5.6-3.5L1 4.5 4.5 4z" fill="#e0a860"/></svg>' + personality;
+    stickersEl.appendChild(sticker);
+  }
+
+  // Mood
+  document.getElementById("moodLabel").innerHTML = '<svg class="icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="none" stroke="#a088c0" stroke-width="1.5"/><circle cx="6.5" cy="8" r="1" fill="#a088c0"/><circle cx="11.5" cy="8" r="1" fill="#a088c0"/><path d="M6 12.5c1.5-1.5 4.5-1.5 6 0" fill="none" stroke="#a088c0" stroke-width="1.2" stroke-linecap="round"/></svg>' + ui.moodLabel;
+  document.getElementById("moodText").textContent = t("detectedMood");
+
+  // Scene
+  document.getElementById("sceneLabel").innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="14" height="10" rx="2" fill="none" stroke="#c0a890" stroke-width="1.3"/><path d="M5 11v4l3-4" fill="none" stroke="#c0a890" stroke-width="1.3" stroke-linejoin="round"/></svg>' + ui.sceneLabel;
+  document.getElementById("sceneText").textContent = t("sceneDescription");
+
+  // Monologue
+  document.getElementById("monologueLabel").innerHTML = '<svg class="icon" viewBox="0 0 18 18"><path d="M3 14V5a2 2 0 012-2h8a2 2 0 012 2v6a2 2 0 01-2 2H7l-4 3v-2z" fill="none" stroke="#c0a080" stroke-width="1.5" stroke-linejoin="round"/></svg>' + ui.monologueLabel;
+  document.getElementById("monologueText").textContent = t("internalNarrative");
+
+  // Complaints
+  document.getElementById("complaintsLabel").innerHTML = '<svg class="icon" viewBox="0 0 18 18"><path d="M9 2v10M5 8l4 4 4-4" fill="none" stroke="#c09060" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="14" width="12" height="2" rx="1" fill="#c09060" opacity="0.5"/></svg>' + ui.complaintsLabel;
+  var container = document.getElementById("complaintsContainer");
+  container.innerHTML = "";
+  var complaints = DATA.concerns || [];
+  complaints.forEach(function(c) {
+    var note = document.createElement("div");
+    note.className = "sticky-note";
+    note.textContent = "\u25C6 " + (c[currentLang] || c["zh"] || "");
+    container.appendChild(note);
+  });
+
+  // Message to owner
+  document.getElementById("messageLabel").innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle;margin-right:3px"><path d="M7 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z" fill="#c8a0d0" opacity="0.6"/></svg>' + ui.messageLabel;
+  document.getElementById("messageText").textContent = t("messageToCaretaker");
+
+  // Wish
+  document.getElementById("wishLabel").innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle;margin-right:3px"><circle cx="7" cy="7" r="5" fill="none" stroke="#80b888" stroke-width="1.3"/><path d="M7 4v6M4 7h6" stroke="#80b888" stroke-width="1.3" stroke-linecap="round"/></svg>' + ui.wishLabel;
+  document.getElementById("wishText").textContent = t("requestedAdjustment");
+
+  // Share strip
+  document.getElementById("shareStripText").textContent = t("shareText");
+
+  // Copy button label
+  document.querySelector(".copy-btn").textContent = ui.copyBtn;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.querySelector(".copy-btn");
+    btn.textContent = UI[currentLang].copiedBtn;
+    setTimeout(function() { btn.textContent = UI[currentLang].copyBtn; }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

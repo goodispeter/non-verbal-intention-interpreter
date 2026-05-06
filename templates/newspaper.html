@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#06 Vintage Broadsheet — 復古報紙</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   06 - VINTAGE BROADSHEET NEWSPAPER
+   Aesthetic: Yellowed newsprint, sepia, black
+   True newspaper column layout
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Libre Baskerville', serif;
+  background: #d5c8a8;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+  position: relative;
+}
+
+/* Aged paper background texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(160, 130, 80, 0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 30%, rgba(140, 110, 60, 0.1), transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(120, 100, 50, 0.08), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Noise grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.back-link {
+  color: #8a7a5a;
+  font-size: 0.75rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 12px;
+  font-family: 'Libre Baskerville', serif;
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #4a3a20; }
+
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- NEWSPAPER SHEET ---- */
+.newspaper {
+  background: linear-gradient(
+    170deg,
+    #f5ecd0 0%,
+    #f0e5c5 20%,
+    #ece0bb 50%,
+    #e8dab5 80%,
+    #e0d2a8 100%
+  );
+  padding: 0;
+  position: relative;
+  box-shadow:
+    0 2px 4px rgba(80, 60, 20, 0.1),
+    0 8px 30px rgba(80, 60, 20, 0.15),
+    inset 0 0 80px rgba(200, 180, 140, 0.3);
+  border: 1px solid #c8b890;
+}
+
+/* Foxing stains on aged paper */
+.newspaper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(160, 120, 60, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 85% 70%, rgba(140, 100, 50, 0.06) 0%, transparent 25%),
+    radial-gradient(circle at 60% 15%, rgba(150, 110, 55, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 30% 85%, rgba(130, 95, 45, 0.07) 0%, transparent 28%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ---- MASTHEAD ---- */
+.masthead {
+  text-align: center;
+  padding: 28px 32px 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Ornate top rule */
+.ornate-rule {
+  height: 6px;
+  background:
+    linear-gradient(to right, transparent, #3a3020 10%, #3a3020 90%, transparent);
+  margin-bottom: 2px;
+  position: relative;
+}
+.ornate-rule::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #3a3020 10%, #3a3020 90%, transparent);
+  margin-top: 3px;
+}
+
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6rem;
+  color: #6a5a40;
+  padding: 8px 0 4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.masthead h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: #2a2010;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.masthead-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #5a4a30;
+  margin-bottom: 8px;
+  letter-spacing: 0.15em;
+}
+
+/* Ornate bottom rule with diamond center */
+.ornate-rule-bottom {
+  height: 2px;
+  background: linear-gradient(to right, transparent, #3a3020 5%, #3a3020 95%, transparent);
+  position: relative;
+  margin-bottom: 4px;
+}
+.ornate-rule-bottom::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #3a3020;
+}
+.ornate-rule-thin {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #5a4a30 10%, #5a4a30 90%, transparent);
+}
+
+/* ---- HEADLINE ---- */
+.headline-area {
+  padding: 20px 32px 12px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a1005;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.subheadline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #4a3a20;
+  line-height: 1.3;
+}
+
+.byline {
+  font-size: 0.65rem;
+  color: #8a7a5a;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Thin rule under headline */
+.headline-rule {
+  height: 1px;
+  background: #3a3020;
+  margin: 12px 32px 0;
+}
+
+/* ---- PHOTO WITH CAPTION ---- */
+.photo-section {
+  padding: 16px 32px;
+  position: relative;
+  z-index: 2;
+}
+
+.photo-placeholder {
+  width: 100%;
+  min-height: 340px;
+  background: linear-gradient(135deg, #d8c8a0, #c8b890, #d0c098);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #8a7a5a;
+  position: relative;
+  border: 1px solid #b0a080;
+}
+
+.photo-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.03) 0%, transparent 40%),
+    linear-gradient(225deg, rgba(0,0,0,0.02) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.photo-caption {
+  font-size: 0.68rem;
+  font-style: italic;
+  color: #6a5a40;
+  margin-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid #c0b090;
+  line-height: 1.5;
+}
+
+/* ---- COLUMN CONTENT ---- */
+.columns {
+  padding: 8px 32px 24px;
+  column-count: 3;
+  column-gap: 24px;
+  column-rule: 1px solid #c0b090;
+  position: relative;
+  z-index: 2;
+}
+
+.columns p {
+  font-size: 0.78rem;
+  color: #3a3020;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Drop cap */
+.drop-cap::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  font-weight: 900;
+  float: left;
+  line-height: 0.8;
+  margin-right: 6px;
+  margin-top: 4px;
+  color: #2a2010;
+}
+
+/* Pull quote */
+.pull-quote {
+  border-top: 2px solid #3a3020;
+  border-bottom: 2px solid #3a3020;
+  padding: 10px 0;
+  margin: 12px 0;
+  text-align: center;
+  break-inside: avoid;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #2a2010;
+  line-height: 1.4;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.pull-quote .attribution {
+  font-size: 0.6rem;
+  color: #8a7a5a;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 4px;
+  font-style: normal;
+}
+
+/* Section heading inside columns */
+.col-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2a2010;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #3a3020;
+  break-after: avoid;
+}
+
+/* ---- CLASSIFIED AD BOX ---- */
+.classified-box {
+  border: 2px solid #3a3020;
+  padding: 14px;
+  break-inside: avoid;
+  margin: 12px 0;
+  position: relative;
+}
+
+.classified-box::before {
+  content: 'CLASSIFIEDS';
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  background: linear-gradient(170deg, #f0e5c5, #ece0bb);
+  padding: 0 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #3a3020;
+  text-transform: uppercase;
+}
+
+.classified-item {
+  font-size: 0.7rem;
+  color: #3a3020;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 0.5px dotted #b0a080;
+  line-height: 1.5;
+}
+.classified-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.classified-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #2a2010;
+}
+
+/* ---- WISH / MESSAGE BOXES ---- */
+.editorial-box {
+  break-inside: avoid;
+  margin: 12px 0;
+  padding: 12px 0;
+  border-top: 1px solid #3a3020;
+}
+
+.editorial-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #2a2010;
+  margin-bottom: 6px;
+}
+
+/* ---- SHARE FOOTER ---- */
+.share-footer {
+  padding: 0 32px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.share-footer-rule {
+  height: 2px;
+  background: #3a3020;
+  margin-bottom: 2px;
+}
+.share-footer-rule-thin {
+  height: 0.5px;
+  background: #5a4a30;
+  margin-bottom: 10px;
+}
+
+.share-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.share-text {
+  flex: 1;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: #5a4a30;
+  line-height: 1.5;
+}
+
+.edition-info {
+  font-size: 0.55rem;
+  color: #8a7a5a;
+  text-align: right;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+  white-space: nowrap;
+}
+
+/* ---- DECORATIVE ELEMENTS ---- */
+.section-ornament {
+  text-align: center;
+  margin: 8px 0;
+  break-inside: avoid;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 700px) {
+  .columns {
+    column-count: 2;
+    padding: 8px 20px 24px;
+  }
+  .masthead h1 {
+    font-size: 2.2rem;
+  }
+  .headline {
+    font-size: 1.5rem;
+  }
+  .photo-section, .headline-area, .masthead, .share-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .columns {
+    column-count: 1;
+  }
+  .masthead h1 {
+    font-size: 1.8rem;
+  }
+  .headline {
+    font-size: 1.3rem;
+  }
+  .photo-placeholder {
+    min-height: 240px;
+  }
+}
+
+/* ---- LANGUAGE TOGGLE & COPY BUTTON ---- */
+.lang-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+  display: flex;
+  gap: 4px;
+  background: rgba(245,236,208,0.9);
+  border-radius: 4px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: 1px solid #c8b890;
+}
+.lang-btn {
+  border: none;
+  background: transparent;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: #8a7a5a;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.lang-btn.active {
+  background: #3a3020;
+  color: #f5ecd0;
+}
+.copy-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10000;
+  border: 2px solid #3a3020;
+  background: linear-gradient(170deg, #f5ecd0, #e8dab5);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: #3a3020;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.copy-btn:hover {
+  background: #3a3020;
+  color: #f5ecd0;
+}
+
+.subject-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+<button class="copy-btn" onclick="copyShare()">複製分享文字</button>
+
+<div class="page">
+
+<div class="newspaper">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="ornate-rule"></div>
+    <div class="masthead-top">
+      <span>VOL. CXII &#183; No. 4,721</span>
+      <span>&#9830; FINAL EDITION &#9830;</span>
+      <span id="mastheadPrice">PRICE: 3 SUNFLOWER SEEDS</span>
+    </div>
+    <h1 id="mastheadTitle"></h1>
+    <div class="masthead-subtitle" id="mastheadSubtitle"></div>
+    <div class="ornate-rule-bottom"></div>
+    <div class="ornate-rule-thin"></div>
+  </div>
+
+  <!-- Headline -->
+  <div class="headline-area">
+    <div class="headline" id="headlineText"></div>
+    <div class="subheadline" id="subheadlineText"></div>
+    <div class="byline" id="bylineText">By Our Non-Verbal Correspondent &#183; Exclusive Report</div>
+  </div>
+  <div class="headline-rule"></div>
+
+  <!-- Photo -->
+  <div class="photo-section">
+    <div class="photo-placeholder">
+      <img class="subject-photo" id="mainPhoto" src="" alt="Subject Photo">
+    </div>
+    <div class="photo-caption" id="photoCaption"></div>
+  </div>
+
+  <!-- Column content -->
+  <div class="columns" id="columnsContent"></div>
+
+  <!-- Share footer -->
+  <div class="share-footer">
+    <div class="share-footer-rule"></div>
+    <div class="share-footer-rule-thin"></div>
+    <div class="share-footer-content">
+      <div class="share-text" id="shareFooterText">
+        <svg width="14" height="14" viewBox="0 0 14 14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="3" width="12" height="9" rx="1" fill="none" stroke="#5a4a30" stroke-width="1"/><path d="M1 4l6 4 6-4" fill="none" stroke="#5a4a30" stroke-width="1"/></svg>
+        <span id="shareTextSpan"></span>
+      </div>
+      <div class="edition-info" id="editionInfo">
+        THE HAMSTER HERALD<br>
+        EST. MMXXVI<br>
+        &#9830; NON-VERBAL INTELLIGENCE DIVISION &#9830;
+      </div>
+    </div>
+  </div>
+
+</div><!-- end newspaper -->
+</div><!-- end page -->
+
+<script>
+const DATA = JSON.parse('__REPORT_DATA_JSON__');
+const IMAGE = "__SUBJECT_IMAGE__";
+let currentLang = "zh";
+
+const UI = {
+  zh: {
+    mastheadTitle: "非語言觀察報",
+    mastheadSubtitle: "所有塞得進頰囊的新聞",
+    byline: "本報非語言觀察特派員 \u00B7 獨家報導",
+    sceneHeading: "事發現場",
+    editorialHeading: "讀者來函",
+    copyBtn: "複製分享文字",
+    copiedBtn: "已複製！"
+  },
+  en: {
+    mastheadTitle: "The Observer Herald",
+    mastheadSubtitle: "All the News That Fits in a Cheek Pouch",
+    byline: "By Our Non-Verbal Correspondent \u00B7 Exclusive Report",
+    sceneHeading: "Scene of the Crime",
+    editorialHeading: "Letters to the Editor",
+    copyBtn: "Copy share text",
+    copiedBtn: "Copied!"
+  }
+};
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function escapeHtml(str) {
+  var div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function render() {
+  var ui = UI[currentLang];
+  var nameText = t("subjectName");
+  var species = t("subjectType");
+  var personality = t("style");
+  var mood = t("detectedMood");
+  var scene = t("sceneDescription");
+  var monologue = t("internalNarrative");
+  var messageToOwner = t("messageToCaretaker");
+  var wish = t("requestedAdjustment");
+  var shareText = t("shareText");
+
+  // Photo
+  document.getElementById("mainPhoto").src = IMAGE;
+
+  // Masthead
+  document.getElementById("mastheadTitle").textContent = ui.mastheadTitle;
+  document.getElementById("mastheadSubtitle").textContent = ui.mastheadSubtitle;
+
+  // Headline
+  var headline = DATA.headline ? (DATA.headline[currentLang] || DATA.headline["zh"] || "") : "";
+  document.getElementById("headlineText").textContent = headline || (monologue ? monologue.substring(0, 30) + "..." : "");
+
+  var subheadline = DATA.subheadline ? (DATA.subheadline[currentLang] || DATA.subheadline["zh"] || "") : "";
+  document.getElementById("subheadlineText").textContent = subheadline;
+
+  document.getElementById("bylineText").textContent = ui.byline;
+
+  // Photo caption
+  var caption = DATA.photoCaption ? (DATA.photoCaption[currentLang] || DATA.photoCaption["zh"] || "") : "";
+  document.getElementById("photoCaption").innerHTML = "<strong>ABOVE:</strong> " + escapeHtml(caption);
+
+  // Build column content dynamically
+  var cols = document.getElementById("columnsContent");
+  cols.innerHTML = "";
+
+  // Opening paragraph with drop cap (monologue + intro)
+  var p1 = document.createElement("p");
+  p1.className = "drop-cap";
+  p1.textContent = monologue + " So declared the subject, one " + nameText + " of the species " + species + ", in an intercepted non-verbal transmission that rattled this correspondent to the very core.";
+  cols.appendChild(p1);
+
+  // Personality paragraph
+  var p2 = document.createElement("p");
+  p2.textContent = (currentLang === "zh"
+    ? "這隻寵物被認識牠的人歸類為「" + personality + "」人格類型，被觀察到正處於一種深刻的存在危機之中。"
+    : 'The subject, described by acquaintances as belonging to the "' + personality + '" personality classification, was observed in a state of profound existential crisis.');
+  cols.appendChild(p2);
+
+  // Pull quote (message to owner)
+  var pullQuote = document.createElement("div");
+  pullQuote.className = "pull-quote";
+  var pqP = document.createElement("p");
+  pqP.textContent = "\u201C" + messageToOwner + "\u201D";
+  pullQuote.appendChild(pqP);
+  var pqAttr = document.createElement("div");
+  pqAttr.className = "attribution";
+  pqAttr.textContent = "\u2014 " + nameText + (currentLang === "zh" ? "，致管理層的正式聲明" : ", in a formal statement to management");
+  pullQuote.appendChild(pqAttr);
+  cols.appendChild(pullQuote);
+
+  // Mood paragraph
+  var p3 = document.createElement("p");
+  p3.textContent = (currentLang === "zh"
+    ? "家中的氣氛已被評估為「" + mood + "」——本報自去年秋天的大跑輪事件以來從未動用過此等級。"
+    : 'The mood of the household has been assessed at "' + mood + '" \u2014 a classification this paper has not deployed since the Great Wheel Incident of last autumn.');
+  cols.appendChild(p3);
+
+  // Scene heading
+  var h4 = document.createElement("h4");
+  h4.className = "col-heading";
+  h4.textContent = ui.sceneHeading;
+  cols.appendChild(h4);
+
+  // Scene paragraph
+  var p4 = document.createElement("p");
+  p4.textContent = scene + (currentLang === "zh"
+    ? " 法醫分析師將此場景描述為「極度戲劇化，卻令人著迷地上鏡」。"
+    : ' The scene was described by forensic analysts as "deeply dramatic, yet hauntingly photogenic."');
+  cols.appendChild(p4);
+
+  var p5 = document.createElement("p");
+  p5.textContent = currentLang === "zh"
+    ? "對犯罪者的身份調查仍在進行中，儘管所有證據都指向一位僅被稱為「主人」的人物，其動機仍然不可捉摸。"
+    : 'Investigations continue into the identity of the perpetrator, though all evidence points to a figure known only as "the Owner," whose motives remain inscrutable.';
+  cols.appendChild(p5);
+
+  // Classified complaints
+  var complaints = DATA.concerns || [];
+  if (complaints.length > 0) {
+    var box = document.createElement("div");
+    box.className = "classified-box";
+    complaints.forEach(function(c, i) {
+      var item = document.createElement("div");
+      item.className = "classified-item";
+      var num = document.createElement("span");
+      num.className = "classified-num";
+      num.textContent = String(i + 1).padStart(3, "0");
+      item.appendChild(num);
+      item.appendChild(document.createTextNode(" \u2014 " + (c[currentLang] || c["zh"] || "")));
+      box.appendChild(item);
+    });
+    cols.appendChild(box);
+  }
+
+  // Editorial box (wish)
+  var editBox = document.createElement("div");
+  editBox.className = "editorial-box";
+  var editH = document.createElement("h4");
+  editH.className = "editorial-heading";
+  editH.textContent = ui.editorialHeading;
+  editBox.appendChild(editH);
+  var editP = document.createElement("p");
+  editP.textContent = wish;
+  editBox.appendChild(editP);
+  cols.appendChild(editBox);
+
+  // Ornament
+  var orn = document.createElement("div");
+  orn.className = "section-ornament";
+  orn.innerHTML = '<svg width="60" height="12" viewBox="0 0 60 12"><line x1="0" y1="6" x2="22" y2="6" stroke="#3a3020" stroke-width="0.8"/><polygon points="30,1 33,6 30,11 27,6" fill="#3a3020"/><line x1="38" y1="6" x2="60" y2="6" stroke="#3a3020" stroke-width="0.8"/></svg>';
+  cols.appendChild(orn);
+
+  // Closing paragraph
+  var p6 = document.createElement("p");
+  p6.textContent = currentLang === "zh"
+    ? "本報將持續關注事態發展。建議讀者檢查自己的墊材庫存，並確保所有地下食物儲藏免受未經授權的干預。"
+    : "This publication shall continue to monitor the situation. Readers are advised to check their own bedding supplies and secure all underground food stores against unauthorized interference.";
+  cols.appendChild(p6);
+
+  // Share text
+  document.getElementById("shareTextSpan").textContent = shareText;
+
+  // Copy button label
+  document.querySelector(".copy-btn").textContent = ui.copyBtn;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.querySelector(".copy-btn");
+    btn.textContent = UI[currentLang].copiedBtn;
+    setTimeout(function() { btn.textContent = UI[currentLang].copyBtn; }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

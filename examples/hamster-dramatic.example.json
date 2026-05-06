@@ -1,0 +1,52 @@
+{
+  "subjectType": { "zh": "倉鼠", "en": "Hamster" },
+  "subjectName": { "zh": "小圓", "en": "Mochi" },
+  "detectedMood": {
+    "zh": "高強度事件通報狀態",
+    "en": "High-intensity incident-reporting state"
+  },
+  "style": {
+    "id": "catastrophe-report",
+    "zh": "危機評估型",
+    "en": "Catastrophe Report"
+  },
+  "summary": {
+    "zh": "主體站立於木屑區域，雙眼張大並持有食物資源，呈現事件升級前兆。",
+    "en": "The subject stands within the bedding area with widened eyes while holding a food resource, indicating signs of incident escalation."
+  },
+  "internalNarrative": {
+    "zh": "這不是普通的木屑異動。這是小圓既有地下資產配置遭遇重大重整的現場。我的葵花子位置、逃生路線與睡眠凹槽全部需要重新審核，而你稱之為清理。",
+    "en": "This is not a routine bedding change. This is a major restructuring of Mochi's existing underground asset allocation. My sunflower-seed locations, escape routes, and sleep depressions all require renewed review, while you refer to it as cleaning."
+  },
+  "concerns": {
+    "zh": [
+      "木屑更換造成地下資產重置。",
+      "跑輪異音已達設備風險通報標準。",
+      "葵花子庫存位置遭迫重新規劃。",
+      "鄰近貓科視線構成環境壓力。"
+    ],
+    "en": [
+      "Bedding replacement caused a reset of underground assets.",
+      "Wheel noise has reached equipment-risk reporting standards.",
+      "Sunflower-seed inventory locations require forced replanning.",
+      "Nearby feline gaze creates environmental pressure."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "主體不反對清潔，但反對未經協商的地貌重建。",
+    "en": "The subject does not oppose cleaning, but objects to unconsulted terrain reconstruction."
+  },
+  "requestedAdjustment": {
+    "zh": "我要求恢復地貌穩定，並立即提供葵花子作為重建補助。",
+    "en": "I request restoration of terrain stability and immediate sunflower-seed support as reconstruction compensation."
+  },
+  "shareText": {
+    "zh": "🐾 今日觀察：這不是換木屑，是微型領土重建事件。",
+    "en": "🐾 Today's observation: this is not bedding replacement; this is a micro-territorial reconstruction event."
+  },
+  "sceneDescription": {
+    "zh": "一隻倉鼠站在木屑上，前爪抱著葵花子，雙眼張大，姿態呈現高度警覺。",
+    "en": "A hamster stands on bedding while holding a sunflower seed with widened eyes, displaying a highly alert posture."
+  },
+  "template": "newspaper"
+}

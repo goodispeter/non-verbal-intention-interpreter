@@ -1,0 +1,55 @@
+{
+  "subjectType": { "zh": "兔子", "en": "Rabbit" },
+  "subjectName": {
+    "zh": "牧草品質古典評議官・白玉丸",
+    "en": "Classical Assessor of Hay Quality · Shiratama"
+  },
+  "detectedMood": {
+    "zh": "沈穩評議中",
+    "en": "Composed formal assessment"
+  },
+  "style": {
+    "id": "classical-assessment",
+    "zh": "古典評估型",
+    "en": "Classical Assessment"
+  },
+  "summary": {
+    "zh": "主體端坐於毯面上，姿態穩定，呈現對環境品質與人類禮節的長期觀察傾向。",
+    "en": "The subject sits upright on the blanket with a stable posture, suggesting long-term observation of environmental quality and human etiquette."
+  },
+  "internalNarrative": {
+    "zh": "我並未召見你，但既然你已抵達，就請保持適當音量。牧草品質古典評議官・白玉丸目前正在審視地面菜葉處理、抱持姿勢莊重度，以及你對安靜環境的基本理解。",
+    "en": "I did not summon you, but since you have arrived, maintain an appropriate volume. Classical Assessor of Hay Quality · Shiratama is currently reviewing floor-leaf handling, the solemnity of holding posture, and your basic understanding of a quiet environment."
+  },
+  "concerns": {
+    "zh": [
+      "牧草新鮮度需建立每日審核制度。",
+      "抱起主體時缺乏足夠莊重感。",
+      "高音量對話干擾環境穩定。",
+      "地面菜葉處理流程尚未標準化。"
+    ],
+    "en": [
+      "Hay freshness requires a daily review system.",
+      "The act of lifting the subject lacks sufficient solemnity.",
+      "High-pitched speech disrupts environmental stability.",
+      "Floor-leaf handling procedures remain non-standardized."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "主體要求不多，只要求新鮮牧草、安靜環境與合格禮節。",
+    "en": "The subject asks for little: fresh hay, a quiet environment, and acceptable etiquette."
+  },
+  "requestedAdjustment": {
+    "zh": "我要求擴大活動範圍，並停止使用不成比例的高音問候。",
+    "en": "I request expanded movement range and the discontinuation of disproportionately high-pitched greetings."
+  },
+  "shareText": {
+    "zh": "🐾 今日觀察：牠不是端坐，是在評議牧草與人類禮節。",
+    "en": "🐾 Today's observation: this is not sitting upright; this is an assessment of hay and human etiquette."
+  },
+  "sceneDescription": {
+    "zh": "一隻白色垂耳兔端坐在毯子上，姿態端正，眼神平穩，整體呈現安靜而穩重的存在感。",
+    "en": "A white lop-eared rabbit sits upright on a blanket with a composed posture and steady gaze, presenting a quiet and dignified presence."
+  },
+  "template": "fantasy-scroll"
+}
