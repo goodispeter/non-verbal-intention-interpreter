@@ -35,9 +35,9 @@ Output:
 
 | Subject | Template | Report |
 |---------|----------|--------|
-| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal | [`fat-orange-report.html`](./docs/demo/fat-orange-report.html) |
-| <img src="./docs/demo/husky.png" width="80" /> | Medical Chart | [`husky-report.html`](./docs/demo/husky-report.html) |
-| <img src="./docs/demo/sadaharu.png" width="80" /> | Fantasy Scroll | [`sadaharu-report.html`](./docs/demo/sadaharu-report.html) |
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
+| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
 
 ---
 
