@@ -35,9 +35,10 @@ Output:
 
 | Subject | Template | Report |
 |---------|----------|--------|
-| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
-| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
-| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/husky-report.html)           |
+| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/ducks-report.html)           |
 
 ---
 
@@ -66,6 +67,15 @@ All inferences are derived from visual information visible in the image. The sys
 /non-verbal-intention-interpreter ~/pictures/dog.png Mochi
 /non-verbal-intention-interpreter D:\images\hamster.jpg Sesame
 ```
+
+**Multiple subjects in one photo?** The system treats all visible subjects as a group and generates a joint report:
+
+```
+/non-verbal-intention-interpreter ~/pictures/ducks.png
+```
+
+> The system automatically identifies multiple subjects in the frame and selects an interpretation framework based on group dynamics.
+> For example, two ducks advancing in single-file formation will be interpreted as a joint patrol committee.
 
 ---
 
@@ -175,7 +185,9 @@ non-verbal-intention-interpreter/
 │       ├── husky.png
 │       ├── husky-report.html
 │       ├── sadaharu.png
-│       └── sadaharu-report.html
+│       ├── sadaharu-report.html
+│       ├── ducks.png
+│       └── ducks-report.html
 ├── prompts/
 │   └── non-verbal-intention-interpreter-prompt.md
 ├── templates/
@@ -198,3 +210,9 @@ non-verbal-intention-interpreter/
 └── schemas/
     └── response-schema.json
 ```
+
+---
+
+## License
+
+[MIT License](./LICENSE)

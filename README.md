@@ -35,9 +35,10 @@
 
 | 主體                                                | 版型           | 報告                                                           |
 | --------------------------------------------------- | -------------- | -------------------------------------------------------------- |
-| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
-| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
-| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/husky-report.html)           |
+| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/ducks-report.html)           |
 
 ---
 
@@ -66,6 +67,15 @@
 /non-verbal-intention-interpreter ~/pictures/dog.png 橘子
 /non-verbal-intention-interpreter D:\images\hamster.jpg Mochi
 ```
+
+**一張照片有多個主體？** 系統會將所有可見主體視為一個群體，生成一份聯合報告：
+
+```
+/non-verbal-intention-interpreter ~/pictures/ducks.png
+```
+
+> 系統會自動識別畫面中的多名主體，並依據群體動態選擇詮釋框架。
+> 例如兩隻鴨子以縱列隊形行進，會被詮釋為一組聯合巡邏委員會。
 
 ---
 
@@ -177,7 +187,9 @@ non-verbal-intention-interpreter/
 │       ├── husky.png
 │       ├── husky-report.html
 │       ├── sadaharu.png
-│       └── sadaharu-report.html
+│       ├── sadaharu-report.html
+│       ├── ducks.png
+│       └── ducks-report.html
 ├── prompts/
 │   └── non-verbal-intention-interpreter-prompt.md
 ├── templates/
@@ -200,3 +212,9 @@ non-verbal-intention-interpreter/
 └── schemas/
     └── response-schema.json
 ```
+
+---
+
+## 授權
+
+[MIT License](./LICENSE)
