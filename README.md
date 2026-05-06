@@ -33,12 +33,12 @@
 
 ### 更多範例
 
-| 主體                                                | 版型           | 報告                                                           |
-| --------------------------------------------------- | -------------- | -------------------------------------------------------------- |
-| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/fat-orange-report.html) |
-| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/husky-report.html)           |
-| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/sadaharu-report.html)     |
-| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/ducks-report.html)           |
+| 主體                                                | 版型           | 報告                                                                                                                   |
+| --------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
+| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/ducks-report.html)           |
 
 ---
 

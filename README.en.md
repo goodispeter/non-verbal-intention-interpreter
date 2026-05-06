@@ -29,16 +29,16 @@ Output:
 - **Template:** Terminal
 - **Report:** [`fat-orange-report.html`](./docs/demo/fat-orange-report.html)
 
-> *"This is not fat — it is the tangible result of years of strategic resource reserves. Every gram carries administrative significance."*
+> _"This is not fat — it is the tangible result of years of strategic resource reserves. Every gram carries administrative significance."_
 
 ### More Examples
 
-| Subject | Template | Report |
-|---------|----------|--------|
-| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/fat-orange-report.html) |
-| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/husky-report.html)           |
-| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/sadaharu-report.html)     |
-| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/docs/demo/ducks-report.html)           |
+| Subject                                             | Template       | Report                                                                                                                 |
+| --------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
+| <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
+| <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
+| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/ducks-report.html)           |
 
 ---
 
@@ -101,10 +101,10 @@ Examples:
 
 ## Output
 
-| File | Description |
-|------|-------------|
+| File                 | Description                                                 |
+| -------------------- | ----------------------------------------------------------- |
 | `{name}-report.html` | Interactive interpretation report, open directly in browser |
-| `{name}.{ext}` | Subject image (referenced by HTML via relative path) |
+| `{name}.{ext}`       | Subject image (referenced by HTML via relative path)        |
 
 Reports are output to `non-verbal-intention/` under the project root. Each report includes a language toggle (Traditional Chinese / English).
 
@@ -112,18 +112,18 @@ Reports are output to `non-verbal-intention/` under the project root. Each repor
 
 ## Available Templates
 
-| Template ID | Name | Aesthetic | Best For |
-|-------------|------|-----------|----------|
-| `mystic-card` | Mystic Card | Dark navy/gold card frame, art deco borders, celestial motifs | Elegant, distant, or high-presence subjects |
-| `medical-chart` | Medical Chart | Clinical teal/coral, clipboard frame, structured diagnosis-like layout | Care appeals, visible tension, formalized complaints |
-| `sns-story` | SNS Story | Glassmorphism, vivid mesh gradient, phone-shaped 9:16 | Humans, 2D characters, modern images |
-| `personal-manual` | Personal Manual | Scrapbook manual, soft layout, labels and notes | Cute or highly domestic subjects |
-| `newspaper` | Newspaper | Vintage broadsheet, columns, headline framing | Incident-style reports or dramatic visual posture |
-| `dossier` | Dossier | Manila folder, typewriter, redactions, rubber stamps | Authority review, suspicious gaze, character subjects |
-| `fantasy-scroll` | Fantasy Scroll | Illuminated manuscript, burgundy/gold, ornamental borders | Grand titles and elevated interpretive framing |
-| `chat-bubbles` | Chat Bubbles | Pixel RPG dialogue, retro UI, status bars | Direct internal narrative and care complaints |
-| `terminal` | Terminal | Retro CRT, scanlines, phosphor glow | Cold assessments, technical framing, audit-like reports |
-| `yearbook` | Yearbook | Polaroid collage, cork board, handwriting | Human subjects, social scenes, group-like images |
+| Template ID       | Name            | Aesthetic                                                              | Best For                                                |
+| ----------------- | --------------- | ---------------------------------------------------------------------- | ------------------------------------------------------- |
+| `mystic-card`     | Mystic Card     | Dark navy/gold card frame, art deco borders, celestial motifs          | Elegant, distant, or high-presence subjects             |
+| `medical-chart`   | Medical Chart   | Clinical teal/coral, clipboard frame, structured diagnosis-like layout | Care appeals, visible tension, formalized complaints    |
+| `sns-story`       | SNS Story       | Glassmorphism, vivid mesh gradient, phone-shaped 9:16                  | Humans, 2D characters, modern images                    |
+| `personal-manual` | Personal Manual | Scrapbook manual, soft layout, labels and notes                        | Cute or highly domestic subjects                        |
+| `newspaper`       | Newspaper       | Vintage broadsheet, columns, headline framing                          | Incident-style reports or dramatic visual posture       |
+| `dossier`         | Dossier         | Manila folder, typewriter, redactions, rubber stamps                   | Authority review, suspicious gaze, character subjects   |
+| `fantasy-scroll`  | Fantasy Scroll  | Illuminated manuscript, burgundy/gold, ornamental borders              | Grand titles and elevated interpretive framing          |
+| `chat-bubbles`    | Chat Bubbles    | Pixel RPG dialogue, retro UI, status bars                              | Direct internal narrative and care complaints           |
+| `terminal`        | Terminal        | Retro CRT, scanlines, phosphor glow                                    | Cold assessments, technical framing, audit-like reports |
+| `yearbook`        | Yearbook        | Polaroid collage, cork board, handwriting                              | Human subjects, social scenes, group-like images        |
 
 ---
 
@@ -131,13 +131,13 @@ Reports are output to `non-verbal-intention/` under the project root. Each repor
 
 The system automatically selects the most fitting interpretation framework based on visible behavioral features. Five styles are available.
 
-| Style | Trigger | Framework |
-|-------|---------|-----------|
-| **Authority Review** | Narrowed eyes, side gaze, elevated position, evaluative stare | Governance audit framing assessing environmental order and resource compliance |
-| **Care Appeal** | Wide eyes, upward gaze, tucked ears, expectant posture | Formal petition format documenting long-term care resource imbalance |
-| **Higher Sensing** | Vacant gaze, stillness, half-closed eyes, sunbathing | Environmental signal reception framing interpreting the subject's sensing direction and target |
-| **Catastrophe Report** | Wide eyes, sudden turn, frozen posture, alert state | Incident report framing formally documenting the event that triggered high alertness |
-| **Classical Assessment** | Upright posture, dignified expression, composed presence | Senior consultant appraisal framing providing a comprehensive assessment of household order |
+| Style                    | Trigger                                                       | Framework                                                                                      |
+| ------------------------ | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Authority Review**     | Narrowed eyes, side gaze, elevated position, evaluative stare | Governance audit framing assessing environmental order and resource compliance                 |
+| **Care Appeal**          | Wide eyes, upward gaze, tucked ears, expectant posture        | Formal petition format documenting long-term care resource imbalance                           |
+| **Higher Sensing**       | Vacant gaze, stillness, half-closed eyes, sunbathing          | Environmental signal reception framing interpreting the subject's sensing direction and target |
+| **Catastrophe Report**   | Wide eyes, sudden turn, frozen posture, alert state           | Incident report framing formally documenting the event that triggered high alertness           |
+| **Classical Assessment** | Upright posture, dignified expression, composed presence      | Senior consultant appraisal framing providing a comprehensive assessment of household order    |
 
 ---
 
