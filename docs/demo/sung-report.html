@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#07 Redacted Intelligence File</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   07 - REDACTED INTELLIGENCE DOSSIER
+   Aesthetic: Manila folder, typewriter, stamps
+   Coffee stains, paper clips, rubber stamps
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+  background: #8a8070;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+  position: relative;
+}
+
+/* Desktop surface texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.015) 2px,
+      rgba(0,0,0,0.015) 4px
+    ),
+    linear-gradient(135deg, #7a7060, #8a8070, #7a7060);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.back-link {
+  color: #c0b8a0;
+  font-size: 0.75rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #f0e8d0; }
+
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- MANILA FOLDER ---- */
+.folder {
+  background: linear-gradient(
+    175deg,
+    #f0deb0 0%,
+    #e8d5a0 15%,
+    #e4d098 50%,
+    #dcc890 80%,
+    #d8c488 100%
+  );
+  position: relative;
+  box-shadow:
+    0 2px 6px rgba(60, 40, 10, 0.15),
+    0 10px 40px rgba(60, 40, 10, 0.2),
+    inset 0 0 100px rgba(220, 200, 150, 0.2);
+  border: 1px solid #c8b880;
+}
+
+/* Folder tab at top */
+.folder::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 60px;
+  width: 140px;
+  height: 22px;
+  background: linear-gradient(180deg, #e8d5a0, #e4d098);
+  border: 1px solid #c8b880;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Folder tab label */
+.folder::after {
+  content: 'CASE FILE';
+  position: absolute;
+  top: -16px;
+  left: 80px;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.65rem;
+  color: #6a5a30;
+  letter-spacing: 0.2em;
+  z-index: 3;
+}
+
+/* Coffee ring stain 1 */
+.coffee-ring-1 {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 32px,
+    rgba(120, 80, 30, 0.06) 33px,
+    rgba(120, 80, 30, 0.04) 38px,
+    transparent 40px
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Coffee ring stain 2 */
+.coffee-ring-2 {
+  position: absolute;
+  bottom: 120px;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 24px,
+    rgba(100, 60, 20, 0.05) 25px,
+    rgba(100, 60, 20, 0.03) 30px,
+    transparent 32px
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ---- PAPER CLIP SVG ---- */
+.paperclip {
+  position: absolute;
+  top: -8px;
+  right: 40px;
+  z-index: 10;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.15));
+}
+
+/* ---- CLASSIFIED STAMP ---- */
+.stamp {
+  position: absolute;
+  top: 100px;
+  right: 40px;
+  font-family: 'Special Elite', monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #c02020;
+  border: 3px solid #c02020;
+  padding: 4px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transform: rotate(-12deg);
+  opacity: 0.7;
+  z-index: 5;
+  pointer-events: none;
+  /* Rubber stamp texture */
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+  background-blend-mode: multiply;
+}
+
+.stamp-secondary {
+  position: absolute;
+  bottom: 80px;
+  left: 30px;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.7rem;
+  color: #2060a0;
+  border: 2px solid #2060a0;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transform: rotate(5deg);
+  opacity: 0.5;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ---- DOCUMENT PAGES ---- */
+.doc-page {
+  padding: 36px 40px;
+  position: relative;
+  z-index: 3;
+}
+
+/* Typed page feel - faint horizontal lines */
+.doc-page::before {
+  content: '';
+  position: absolute;
+  inset: 30px 35px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 23px,
+    rgba(0, 0, 0, 0.03) 23px,
+    rgba(0, 0, 0, 0.03) 24px
+  );
+  pointer-events: none;
+}
+
+/* Staple marks */
+.staple {
+  position: absolute;
+  top: 50px;
+  left: 18px;
+  width: 4px;
+  height: 16px;
+  background: linear-gradient(90deg, #a0a0a0, #c8c8c8, #a0a0a0);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  z-index: 6;
+}
+.staple::after {
+  content: '';
+  position: absolute;
+  top: 80px;
+  width: 4px;
+  height: 16px;
+  background: linear-gradient(90deg, #a0a0a0, #c8c8c8, #a0a0a0);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* ---- DOCUMENT HEADER ---- */
+.doc-header {
+  border-bottom: 2px solid #4a3a20;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.doc-agency {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.7rem;
+  color: #6a5a30;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+
+.doc-ref {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: #8a7a50;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.doc-title {
+  font-family: 'Special Elite', monospace;
+  font-size: 1.3rem;
+  color: #2a2010;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ---- PHOTO ID SECTION ---- */
+.id-section {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  align-items: flex-start;
+}
+
+.photo-placeholder {
+  width: 220px;
+  height: 280px;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #d8c8a0, #c8b890);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 1rem;
+  color: #8a7a5a;
+  position: relative;
+  border: 1px solid #b0a070;
+  overflow: hidden;
+}
+
+/* Corner tabs on photo */
+.photo-placeholder .corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #c8b880;
+  z-index: 2;
+}
+.photo-placeholder .corner-tl {
+  top: -1px; left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.photo-placeholder .corner-tr {
+  top: -1px; right: -1px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.photo-placeholder .corner-bl {
+  bottom: -1px; left: -1px;
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+}
+.photo-placeholder .corner-br {
+  bottom: -1px; right: -1px;
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+}
+
+/* ID data table */
+.id-data {
+  flex: 1;
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+.id-row {
+  display: flex;
+  border-bottom: 1px dotted #c0b080;
+  padding: 4px 0;
+}
+
+.id-label {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #8a7a50;
+  width: 100px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding-top: 2px;
+}
+
+.id-value {
+  font-family: 'Special Elite', monospace;
+  color: #2a2010;
+  font-size: 0.8rem;
+}
+
+/* ---- REDACTED TEXT EFFECT ---- */
+.redacted {
+  background: #1a1005;
+  color: #1a1005;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  user-select: none;
+  border-radius: 1px;
+  max-width: 180px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+.redacted:hover {
+  background: transparent;
+  color: #2a2010;
+}
+.redacted::after {
+  content: '[REDACTED]';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.45rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.2em;
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.redacted:hover::after {
+  opacity: 0;
+}
+
+/* ---- SECTION DIVIDERS ---- */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 16px;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #a09070;
+}
+
+.section-divider-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  color: #8a7a50;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+/* ---- TYPED CONTENT SECTIONS ---- */
+.typed-section {
+  margin-bottom: 20px;
+}
+
+.typed-heading {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.85rem;
+  color: #3a3020;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.typed-text {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  color: #3a3020;
+  line-height: 1.9;
+  /* Typewriter text wobble effect via letter-spacing variation */
+}
+
+/* Typewriter strikethrough annotation */
+.typed-annotation {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: #c02020;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* ---- COMPLAINT LOG TABLE ---- */
+.complaint-log {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.72rem;
+}
+
+.complaint-log th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6a5a30;
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 2px solid #a09070;
+  white-space: nowrap;
+}
+
+.complaint-log td {
+  font-family: 'Special Elite', monospace;
+  padding: 8px 8px;
+  border-bottom: 1px dotted #c0b080;
+  color: #3a3020;
+  vertical-align: top;
+  font-size: 0.78rem;
+}
+
+.complaint-log .severity {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.severity-high {
+  color: #c02020;
+  background: rgba(192, 32, 32, 0.08);
+  border: 1px solid rgba(192, 32, 32, 0.2);
+}
+.severity-med {
+  color: #a07000;
+  background: rgba(160, 112, 0, 0.08);
+  border: 1px solid rgba(160, 112, 0, 0.2);
+}
+.severity-low {
+  color: #2060a0;
+  background: rgba(32, 96, 160, 0.08);
+  border: 1px solid rgba(32, 96, 160, 0.2);
+}
+
+/* ---- MESSAGE BLOCKS ---- */
+.message-block {
+  border-left: 3px solid #a09070;
+  padding: 12px 16px;
+  margin: 12px 0;
+  background: rgba(240, 230, 200, 0.3);
+}
+
+.message-block-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #8a7a50;
+  margin-bottom: 6px;
+}
+
+.message-block-text {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  color: #3a3020;
+  line-height: 1.8;
+}
+
+/* ---- SHARE / FOOTER ---- */
+.doc-footer {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 2px solid #4a3a20;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.doc-footer-left {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: #8a7a50;
+  line-height: 1.8;
+}
+
+.doc-footer-right {
+  text-align: right;
+}
+
+.share-line {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.7rem;
+  color: #5a4a30;
+  line-height: 1.6;
+  max-width: 320px;
+  margin-top: 8px;
+}
+
+/* Stamp graphic at footer */
+.approval-stamp {
+  display: inline-block;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.65rem;
+  color: #208040;
+  border: 2px solid #208040;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+  transform: rotate(-8deg);
+  opacity: 0.6;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .doc-page {
+    padding: 28px 20px;
+  }
+  .id-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  .photo-placeholder {
+    width: 100%;
+    min-height: 260px;
+  }
+  .id-data {
+    width: 100%;
+  }
+  .stamp {
+    font-size: 1rem;
+    top: 40px;
+    right: 20px;
+  }
+  .doc-footer {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Language Toggle -->
+<div style="display:flex;gap:4px;margin-bottom:8px;">
+  <button class="lang-btn" onclick="setLang('zh')" style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:3px 10px;border-radius:2px;border:1px solid #a09070;background:#e4d098;color:#3a3020;cursor:pointer;letter-spacing:0.05em;transition:all 0.2s;">中文</button>
+  <button class="lang-btn" onclick="setLang('en')" style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:3px 10px;border-radius:2px;border:1px solid #a09070;background:transparent;color:#5a4a30;cursor:pointer;letter-spacing:0.05em;transition:all 0.2s;">EN</button>
+</div>
+
+<div class="folder">
+  <!-- Paper clip -->
+  <svg class="paperclip" width="40" height="80" viewBox="0 0 40 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 5C12 5 6 11 6 19V55C6 65 12 72 20 72C28 72 34 65 34 55V23C34 15 29 10 23 10C17 10 12 15 12 23V50" stroke="#a8a8a8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <!-- Coffee stains -->
+  <div class="coffee-ring-1"></div>
+  <div class="coffee-ring-2"></div>
+
+  <!-- CLASSIFIED stamp -->
+  <div class="stamp">CLASSIFIED</div>
+  <div class="stamp-secondary">EYES ONLY</div>
+
+  <!-- Staple marks -->
+  <div class="staple"></div>
+
+  <div class="doc-page">
+
+    <!-- Document header -->
+    <div class="doc-header">
+      <div class="doc-header-top">
+        <div class="doc-agency">
+          Subject Intelligence Bureau<br>
+          Non-Verbal Intelligence Division<br>
+          <span class="redacted">Sector 7-G</span> Field Office
+        </div>
+        <div class="doc-ref">
+          CASE: PIB-2026-04721<br>
+          DATE: <span class="redacted">2026.05.05</span><br>
+          CLEARANCE: LEVEL 3
+        </div>
+      </div>
+      <div class="doc-title" id="doc-title"></div>
+    </div>
+
+    <!-- ID Section with photo -->
+    <div class="id-section">
+      <div class="photo-placeholder">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <img id="subject-photo" class="subject-photo" src="" alt="Subject" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1">
+      </div>
+      <div class="id-data">
+        <div class="id-row">
+          <span class="id-label">Subject</span>
+          <span class="id-value" id="id-subject"></span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Species</span>
+          <span class="id-value" id="id-species"></span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Profile</span>
+          <span class="id-value" id="id-profile"></span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Threat</span>
+          <span class="id-value severity severity-high">HIGH</span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Mood</span>
+          <span class="id-value" id="id-mood"></span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Status</span>
+          <span class="id-value">ACTIVE / DISTRESSED</span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Handler</span>
+          <span class="id-value"><span class="redacted">The Owner</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene report -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Field Observation Report</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="typed-section">
+      <div class="typed-heading">Scene Description</div>
+      <div class="typed-text" id="scene-text"></div>
+    </div>
+
+    <!-- Monologue / Intercepted transmission -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Intercepted Non-Verbal Transmission</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="typed-section">
+      <div class="typed-text" id="monologue-text"></div>
+      <div class="typed-annotation">&#9654; Transmission intercepted via non-verbal relay. Authenticity confirmed.</div>
+    </div>
+
+    <!-- Complaints as incident log -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Incident Log / Formal Complaints</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <table class="complaint-log">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Severity</th>
+        </tr>
+      </thead>
+      <tbody id="complaints-tbody">
+      </tbody>
+    </table>
+
+    <!-- Message to handler -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Communication to Handler</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="message-block">
+      <div class="message-block-header">Direct Statement from Subject</div>
+      <div class="message-block-text" id="message-text"></div>
+    </div>
+
+    <div class="message-block">
+      <div class="message-block-header">Subject's Stated Demands</div>
+      <div class="message-block-text" id="wish-text"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <div class="doc-footer-left">
+        DISTRIBUTION: <span class="redacted">RESTRICTED</span><br>
+        COPIES: 1 of <span class="redacted">3</span><br>
+        DESTROY AFTER READING<br>
+        <br>
+        <div class="share-line" id="share-line" style="cursor:pointer" onclick="copyShare()">
+          <svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M1 8v2a1 1 0 001 1h8a1 1 0 001-1V8M8 4L6 1 4 4M6 1v7" fill="none" stroke="#5a4a30" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="share-text"></span>
+        </div>
+      </div>
+      <div class="doc-footer-right">
+        <div class="approval-stamp">
+          FILED<br>&#10003;
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end doc-page -->
+</div><!-- end folder -->
+</div><!-- end page -->
+
+<script>
+const DATA = JSON.parse('{\n  "subjectType": {\n    "zh": "人類觀察對象",\n    "en": "Human Subject"\n  },\n  "subjectName": {\n    "zh": "都市階梯領域高級戰略顧問 · 小宋",\n    "en": "Senior Strategic Advisor of Urban Stairwell Territories · Sung"\n  },\n  "detectedMood": {\n    "zh": "沉穩評估中，對現場一切了然於胸",\n    "en": "Composedly assessing; fully aware of all on-site variables"\n  },\n  "style": {\n    "id": "classical-assessment",\n    "zh": "古典評估型",\n    "en": "Classical Assessment"\n  },\n  "summary": {\n    "zh": "主體以穩定坐姿佔據工業風階梯的戰略中段位置，身著全套高機能運動裝備，卻未展現任何即將從事運動的跡象。此姿態表明，裝備本身即為一種治理宣言，而非功能性工具。視線平穩朝向鏡頭，語義清晰：此領域已被納入管轄。",\n    "en": "The subject occupies the strategic mid-section of an industrial stairwell in full high-performance athletic gear, yet exhibits no indication of imminent physical exertion. This posture suggests the equipment functions as a governance declaration rather than a functional tool. The gaze is level and directed at the camera, semantically unambiguous: this territory has been claimed."\n  },\n  "internalNarrative": {\n    "zh": "我並非在休息。我正在對這整片階梯空間進行年度績效評估。從混凝土的裂紋紋理到牆面那幾道隨意的彩色刮痕——顯然有人試圖在未經本顧問審批的情況下進行美學干預。結果不甚理想。至於這雙鞋，它們並非穿來跑步的。它們是空間主權的視覺憑證。每一步踏在這階梯上，都是一份蓋過章的領土聲明。我已在此完成了至少三輪完整的環境治理審查，而鏡頭那邊的人類甚至還沒意識到自己正在被評估。",\n    "en": "I am not resting. I am conducting the annual performance review of this entire stairwell territory. From the fracture patterns in the concrete to those haphazard colour streaks on the wall — someone has clearly attempted an aesthetic intervention without this advisor\'s prior approval. The results are suboptimal. As for these shoes, they are not for running. They are visual credentials of spatial sovereignty. Each step placed upon these stairs constitutes a stamped territorial declaration. I have completed no fewer than three full cycles of environmental governance review, and the human behind the camera has not yet realised they are the one being assessed."\n  },\n  "concerns": {\n    "zh": [\n      "牆面美學改造工程未經本顧問書面核可即擅自施工。",\n      "階梯表面混凝土維護排程嚴重滯後，已超出容許標準。",\n      "運動服飾的戰略展示價值長期遭到周圍環境的視覺稀釋。",\n      "攝影行為已連續進行，但尚未收到正式的肖像授權回饋表。"\n    ],\n    "en": [\n      "Wall aesthetic renovation was executed without written approval from this advisor.",\n      "Stairwell concrete surface maintenance schedule is critically overdue beyond acceptable standards.",\n      "Strategic display value of athletic apparel has been visually diluted by the surrounding environment.",\n      "Photography has been ongoing, yet no formal portrait authorisation feedback form has been received."\n    ]\n  },\n  "messageToCaretaker": {\n    "zh": "本顧問不需要他人提供評語。本顧問提供評語。建議攝影方在下次拍攝前先提交場地美學改善方案，否則階梯使用權將進入重新審議程序。",\n    "en": "This advisor does not receive feedback. This advisor provides it. The photography party is advised to submit a venue aesthetic improvement proposal before the next session, or stairwell access privileges will enter re-evaluation proceedings."\n  },\n  "requestedAdjustment": {\n    "zh": "我希望階梯的混凝土品質能達到與這雙鞋相稱的水準，以及牆上那些未經授權的色彩痕跡在下週前被納入正式的公共藝術審批流程。",\n    "en": "I wish for the concrete quality of these stairs to meet a standard befitting these shoes, and for those unauthorised colour marks on the wall to be submitted to the formal public art approval process by next week."\n  },\n  "shareText": {\n    "zh": "📋 今日評估紀錄：她不是在階梯上休息，是在對整棟建築進行年度績效考核。",\n    "en": "📋 Assessment log of the day: she is not resting on the stairs — she is conducting the annual performance review of the entire building."\n  },\n  "sceneDescription": {\n    "zh": "主體坐於工業風格混凝土階梯的中段位置，身著黑色Nike連帽上衣搭配深紫色運動褲及淺色Nike運動鞋。背景為未經修飾的混凝土牆面，牆上可見數道彩色漆痕。整體場景呈現都市工業美學與高端運動裝備之間的視覺張力。",\n    "en": "The subject is seated on the mid-section of industrial-style concrete stairs, wearing a black Nike hoodie paired with dark purple athletic pants and light-coloured Nike sneakers. The background features an unfinished concrete wall with several streaks of coloured paint visible. The overall scene presents a visual tension between urban industrial aesthetics and premium athletic apparel."\n  },\n  "template": "dossier"\n}');
+const IMAGE = "sung.png";
+
+let currentLang = "zh";
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) {
+    b.classList.remove("active");
+    b.style.background = "transparent";
+    b.style.color = "#5a4a30";
+  });
+  var active = document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]');
+  if (active) {
+    active.classList.add("active");
+    active.style.background = "#e4d098";
+    active.style.color = "#3a3020";
+  }
+  render();
+}
+
+function render() {
+  document.getElementById("subject-photo").src = IMAGE;
+
+  var subjectNameDisplay = t("subjectName");
+  var subjectNameEn = DATA.subjectName ? (DATA.subjectName.en || "") : "";
+  document.getElementById("doc-title").innerHTML = "SUBJECT DOSSIER: " + subjectNameDisplay + " (CODENAME: <span class='redacted'>" + subjectNameEn.toUpperCase().replace(/ /g, " ") + "</span>)";
+
+  document.getElementById("id-subject").textContent = t("subjectName");
+  document.getElementById("id-species").textContent = (DATA.subjectType ? (DATA.subjectType.zh || "") : "") + " / " + (DATA.subjectType ? (DATA.subjectType.en || "") : "");
+  document.getElementById("id-profile").textContent = t("style");
+  document.getElementById("id-mood").textContent = t("detectedMood");
+
+  document.getElementById("scene-text").textContent = t("sceneDescription");
+  document.getElementById("monologue-text").textContent = t("internalNarrative");
+
+  // Concerns table
+  var tbody = document.getElementById("complaints-tbody");
+  tbody.innerHTML = "";
+  var concerns = DATA.concerns ? (DATA.concerns[currentLang] || DATA.concerns["zh"] || []) : [];
+  var severities = ["severity-high", "severity-med", "severity-low"];
+  var severityLabels = ["CRITICAL", "WARNING", "MONITOR"];
+  concerns.forEach(function(c, i) {
+    var tr = document.createElement("tr");
+    var tdId = document.createElement("td");
+    tdId.textContent = "INC-" + String(i + 1).padStart(3, "0");
+    var tdDesc = document.createElement("td");
+    tdDesc.textContent = c;
+    var tdSev = document.createElement("td");
+    var sevIdx = Math.min(i, severities.length - 1);
+    tdSev.innerHTML = '<span class="severity ' + severities[sevIdx] + '">' + severityLabels[sevIdx] + '</span>';
+    tr.appendChild(tdId);
+    tr.appendChild(tdDesc);
+    tr.appendChild(tdSev);
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("message-text").textContent = t("messageToCaretaker");
+  document.getElementById("wish-text").textContent = t("requestedAdjustment");
+  document.getElementById("share-text").textContent = t("shareText");
+
+  document.title = "Dossier \u2014 " + t("subjectName");
+}
+
+function copyShare() {
+  var text = t("shareText");
+  if (navigator.clipboard && text) {
+    navigator.clipboard.writeText(text).then(function() {
+      var el = document.getElementById("share-text");
+      var orig = el.textContent;
+      el.textContent = "\u2713 Copied!";
+      setTimeout(function() { el.textContent = orig; }, 1500);
+    });
+  }
+}
+
+render();
+</script>
+</body>
+</html>
