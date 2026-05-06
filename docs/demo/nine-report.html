@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mystic Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --navy: #0a0e27;
+    --navy-mid: #111638;
+    --navy-light: #1a2050;
+    --gold: #c9a84c;
+    --gold-light: #e8d48b;
+    --gold-pale: #f5e6b8;
+    --cream: #f0e6d3;
+    --star: #fffbe6;
+  }
+
+  body {
+    background: var(--navy);
+    font-family: 'Crimson Pro', Georgia, serif;
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ── STAR FIELD ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(1px 1px at 10% 20%, var(--star) 1px, transparent 0),
+      radial-gradient(1.5px 1.5px at 25% 55%, var(--gold-light) 1px, transparent 0),
+      radial-gradient(1px 1px at 40% 10%, var(--star) 1px, transparent 0),
+      radial-gradient(1.2px 1.2px at 55% 75%, var(--gold-pale) 1px, transparent 0),
+      radial-gradient(1px 1px at 70% 30%, var(--star) 1px, transparent 0),
+      radial-gradient(1.5px 1.5px at 85% 60%, var(--gold-light) 1px, transparent 0),
+      radial-gradient(1px 1px at 15% 80%, var(--star) 1px, transparent 0),
+      radial-gradient(1.2px 1.2px at 60% 45%, var(--gold-pale) 1px, transparent 0),
+      radial-gradient(1px 1px at 90% 15%, var(--star) 1px, transparent 0),
+      radial-gradient(1.5px 1.5px at 35% 90%, var(--gold-light) 1px, transparent 0),
+      radial-gradient(0.8px 0.8px at 5% 50%, var(--star) 0.8px, transparent 0),
+      radial-gradient(0.8px 0.8px at 48% 25%, var(--star) 0.8px, transparent 0),
+      radial-gradient(0.8px 0.8px at 72% 68%, var(--star) 0.8px, transparent 0),
+      radial-gradient(0.8px 0.8px at 95% 85%, var(--star) 0.8px, transparent 0),
+      radial-gradient(0.8px 0.8px at 20% 42%, var(--star) 0.8px, transparent 0),
+      radial-gradient(2px 2px at 50% 50%, rgba(201,168,76,0.15) 2px, transparent 0);
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    position: relative;
+    z-index: 10;
+    align-self: flex-end;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .lang-btn {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid var(--gold);
+    padding: 3px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.5;
+  }
+  .lang-btn.active {
+    opacity: 1;
+    background: rgba(201,168,76,0.15);
+  }
+  .lang-btn:hover { opacity: 0.85; }
+
+  /* ── TAROT CARD ── */
+  .tarot-card {
+    position: relative;
+    z-index: 5;
+    width: 480px;
+    max-width: 96vw;
+    background: linear-gradient(170deg, var(--navy-mid) 0%, var(--navy) 40%, #0d1230 100%);
+    border: 2px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow:
+      0 0 0 1px var(--navy),
+      0 0 0 4px var(--gold),
+      0 0 0 5px var(--navy),
+      0 0 60px rgba(201,168,76,0.1),
+      0 30px 80px rgba(0,0,0,0.6);
+  }
+
+  .card-border-top, .card-border-bottom {
+    width: 100%;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    width: 100%;
+    text-align: center;
+    padding: 32px 28px 12px;
+    position: relative;
+  }
+
+  .card-numeral {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-pale) 25%,
+      #fff8e1 40%,
+      var(--gold) 55%,
+      var(--gold-light) 70%,
+      var(--gold) 100%
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: foilShimmer 5s ease-in-out infinite;
+    margin: 4px 0;
+    line-height: 1.15;
+  }
+
+  @keyframes foilShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .card-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--gold-light);
+    opacity: 0.85;
+    letter-spacing: 0.12em;
+    font-weight: 400;
+  }
+
+  /* ── PHOTO ── */
+  .photo-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 16px;
+    position: relative;
+  }
+
+  .photo-frame {
+    position: relative;
+    width: 320px;
+    height: 320px;
+  }
+
+  .photo-placeholder {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 35%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 60% 60%, var(--navy-light) 0%, var(--navy) 80%);
+    border: 2.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 8px var(--navy),
+      0 0 0 10px rgba(201,168,76,0.25),
+      inset 0 0 60px rgba(201,168,76,0.04);
+  }
+
+  .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .photo-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0%, rgba(201,168,76,0.25) 8%, transparent 16%, transparent 50%, rgba(201,168,76,0.2) 58%, transparent 66%);
+    animation: orbitalGlow 10s linear infinite;
+  }
+
+  @keyframes orbitalGlow {
+    to { transform: rotate(360deg); }
+  }
+
+  .ornate-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 320px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 80%;
+    margin: 4px auto;
+    display: block;
+  }
+
+  /* ── CONTENT ── */
+  .card-body {
+    width: 100%;
+    padding: 4px 36px 12px;
+  }
+
+  .section {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .section-text {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--cream);
+    font-weight: 300;
+  }
+
+  /* ── MOOD TAG ── */
+  .mood-tag {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--navy);
+    background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+    padding: 5px 18px;
+    margin: 10px 0 6px;
+    font-weight: 600;
+  }
+
+  .scene-text {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    line-height: 1.65;
+    color: rgba(240,230,211,0.55);
+    margin-top: 6px;
+    padding: 0 12px;
+  }
+
+  /* ── MONOLOGUE ── */
+  .monologue-text {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.12rem;
+    line-height: 1.85;
+    color: var(--gold-pale);
+    position: relative;
+    padding: 16px 20px 8px;
+    text-align: left;
+  }
+
+  .monologue-text::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    color: var(--gold);
+    opacity: 0.25;
+    position: absolute;
+    top: -14px;
+    left: 0;
+    line-height: 1;
+  }
+
+  .monologue-text::after {
+    content: '\201D';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    color: var(--gold);
+    opacity: 0.25;
+    position: absolute;
+    bottom: -30px;
+    right: 4px;
+    line-height: 1;
+  }
+
+  /* ── COMPLAINTS ── */
+  .complaints {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .complaints li {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--cream);
+    padding: 5px 0 5px 24px;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .complaints li::before {
+    content: '\25C6';
+    color: var(--gold);
+    position: absolute;
+    left: 2px;
+    top: 5px;
+    font-size: 0.6rem;
+  }
+
+  /* ── MESSAGE ── */
+  .message-section {
+    margin-top: 8px;
+    padding: 16px 20px;
+    border-left: 2px solid var(--gold);
+    text-align: left;
+    background: linear-gradient(90deg, rgba(201,168,76,0.04), transparent 80%);
+  }
+
+  /* ── WISH BOX ── */
+  .wish-box {
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 18px 22px;
+    margin-top: 8px;
+    position: relative;
+    background: rgba(201,168,76,0.02);
+    text-align: left;
+  }
+
+  .wish-box::before, .wish-box::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--gold);
+    border-style: solid;
+    border-width: 0;
+  }
+  .wish-box::before {
+    top: -1px; left: -1px;
+    border-top-width: 2px; border-left-width: 2px;
+  }
+  .wish-box::after {
+    bottom: -1px; right: -1px;
+    border-bottom-width: 2px; border-right-width: 2px;
+  }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    width: 100%;
+    text-align: center;
+    padding: 12px 28px 32px;
+  }
+
+  .share-text {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--gold-light);
+    opacity: 0.5;
+    line-height: 1.55;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .footer-symbol {
+    margin-top: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    opacity: 0.35;
+  }
+
+  /* ── COPY BUTTON ── */
+  .copy-btn {
+    position: relative;
+    z-index: 10;
+    margin-top: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid var(--gold);
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.7;
+  }
+  .copy-btn:hover { opacity: 1; background: rgba(201,168,76,0.1); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    position: relative;
+    z-index: 10;
+    margin-top: 16px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.72rem;
+    color: var(--gold);
+    opacity: 0.3;
+    text-align: center;
+    max-width: 420px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 520px) {
+    .tarot-card { width: 100%; }
+    .photo-placeholder { width: 240px; height: 240px; }
+    .photo-frame { width: 260px; height: 260px; }
+    .ornate-ring { width: 260px; height: 260px; }
+    .card-title { font-size: 2.2rem; }
+    .card-body { padding: 4px 20px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="tarot-card">
+
+  <!-- TOP ART DECO BORDER -->
+  <svg class="card-border-top" viewBox="0 0 480 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="2" x2="480" y2="2" stroke="#c9a84c" stroke-width="0.6"/>
+    <line x1="0" y1="7" x2="480" y2="7" stroke="#c9a84c" stroke-width="0.3"/>
+    <!-- Center chevron -->
+    <polygon points="220,5 240,22 260,5" fill="none" stroke="#c9a84c" stroke-width="0.8"/>
+    <line x1="232" y1="13" x2="248" y2="13" stroke="#c9a84c" stroke-width="0.5"/>
+    <!-- Side diamonds -->
+    <rect x="165" y="9" width="7" height="7" fill="none" stroke="#c9a84c" stroke-width="0.6" transform="rotate(45 168.5 12.5)"/>
+    <rect x="308" y="9" width="7" height="7" fill="none" stroke="#c9a84c" stroke-width="0.6" transform="rotate(45 311.5 12.5)"/>
+    <!-- Horizontal lines -->
+    <line x1="24" y1="13" x2="160" y2="13" stroke="#c9a84c" stroke-width="0.3"/>
+    <line x1="320" y1="13" x2="456" y2="13" stroke="#c9a84c" stroke-width="0.3"/>
+    <!-- End diamonds -->
+    <rect x="10" y="9" width="6" height="6" fill="#c9a84c" opacity="0.3" transform="rotate(45 13 12)"/>
+    <rect x="464" y="9" width="6" height="6" fill="#c9a84c" opacity="0.3" transform="rotate(45 467 12)"/>
+    <line x1="0" y1="26" x2="480" y2="26" stroke="#c9a84c" stroke-width="0.6"/>
+  </svg>
+
+  <div style="position:relative;width:100%;">
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <div class="card-numeral" id="el-numeral"></div>
+      <h1 class="card-title" id="el-title"></h1>
+      <div class="card-subtitle" id="el-subtitle"></div>
+      <div class="mood-tag" id="el-mood"></div>
+      <p class="scene-text" id="el-scene"></p>
+    </div>
+
+    <!-- PHOTO -->
+    <div class="photo-section">
+      <div class="photo-frame">
+        <svg class="ornate-ring" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer dashed orbit -->
+          <circle cx="160" cy="160" r="158" stroke="#c9a84c" stroke-width="0.4" stroke-dasharray="3 9"/>
+          <!-- Inner orbit -->
+          <circle cx="160" cy="160" r="152" stroke="#c9a84c" stroke-width="0.3"/>
+          <!-- Cardinal point triangles -->
+          <g stroke="#c9a84c" stroke-width="0.9" fill="none">
+            <polygon points="160,6 164,18 156,18"/>
+            <polygon points="160,314 164,302 156,302"/>
+            <polygon points="6,160 18,156 18,164"/>
+            <polygon points="314,160 302,156 302,164"/>
+          </g>
+          <!-- Diagonal dots -->
+          <circle cx="46" cy="46" r="2" fill="#c9a84c" opacity="0.4"/>
+          <circle cx="274" cy="46" r="2" fill="#c9a84c" opacity="0.4"/>
+          <circle cx="46" cy="274" r="2" fill="#c9a84c" opacity="0.4"/>
+          <circle cx="274" cy="274" r="2" fill="#c9a84c" opacity="0.4"/>
+          <!-- Decorative arcs -->
+          <path d="M 70 28 A 150 150 0 0 1 250 28" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+          <path d="M 70 292 A 150 150 0 0 0 250 292" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+          <path d="M 28 70 A 150 150 0 0 0 28 250" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+          <path d="M 292 70 A 150 150 0 0 1 292 250" stroke="#c9a84c" stroke-width="0.3" fill="none"/>
+        </svg>
+        <div class="photo-placeholder" id="el-photo"></div>
+      </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <svg class="divider" viewBox="0 0 380 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="9" x2="155" y2="9" stroke="#c9a84c" stroke-width="0.4"/>
+      <line x1="225" y1="9" x2="380" y2="9" stroke="#c9a84c" stroke-width="0.4"/>
+      <polygon points="182,2 190,9 182,16 174,9" fill="none" stroke="#c9a84c" stroke-width="0.7"/>
+      <polygon points="198,2 206,9 198,16 190,9" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.5"/>
+      <circle cx="160" cy="9" r="1.8" fill="#c9a84c" opacity="0.4"/>
+      <circle cx="220" cy="9" r="1.8" fill="#c9a84c" opacity="0.4"/>
+    </svg>
+
+    <!-- BODY -->
+    <div class="card-body">
+
+      <!-- MONOLOGUE -->
+      <div class="section">
+        <div class="section-label" id="el-label-monologue"></div>
+        <div class="monologue-text" id="el-monologue"></div>
+      </div>
+
+      <!-- COMPLAINTS -->
+      <div class="section" style="text-align:left;">
+        <div class="section-label" id="el-label-complaints"></div>
+        <ul class="complaints" id="el-complaints"></ul>
+      </div>
+
+      <!-- MESSAGE -->
+      <div class="section">
+        <div class="section-label" id="el-label-message"></div>
+        <div class="message-section">
+          <p class="section-text" id="el-message"></p>
+        </div>
+      </div>
+
+      <!-- WISH -->
+      <div class="section">
+        <div class="section-label" id="el-label-wish"></div>
+        <div class="wish-box">
+          <p class="section-text" id="el-wish"></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DIVIDER -->
+    <svg class="divider" viewBox="0 0 380 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="7" x2="165" y2="7" stroke="#c9a84c" stroke-width="0.4"/>
+      <line x1="215" y1="7" x2="380" y2="7" stroke="#c9a84c" stroke-width="0.4"/>
+      <circle cx="190" cy="7" r="4" fill="none" stroke="#c9a84c" stroke-width="0.7"/>
+      <circle cx="190" cy="7" r="1.5" fill="#c9a84c" opacity="0.5"/>
+    </svg>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+      <p class="share-text" id="el-share"></p>
+      <div class="footer-symbol">&#10038;</div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ART DECO BORDER -->
+  <svg class="card-border-bottom" viewBox="0 0 480 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="2" x2="480" y2="2" stroke="#c9a84c" stroke-width="0.6"/>
+    <polygon points="220,23 240,6 260,23" fill="none" stroke="#c9a84c" stroke-width="0.8"/>
+    <line x1="232" y1="15" x2="248" y2="15" stroke="#c9a84c" stroke-width="0.5"/>
+    <rect x="165" y="12" width="7" height="7" fill="none" stroke="#c9a84c" stroke-width="0.6" transform="rotate(45 168.5 15.5)"/>
+    <rect x="308" y="12" width="7" height="7" fill="none" stroke="#c9a84c" stroke-width="0.6" transform="rotate(45 311.5 15.5)"/>
+    <line x1="24" y1="15" x2="160" y2="15" stroke="#c9a84c" stroke-width="0.3"/>
+    <line x1="320" y1="15" x2="456" y2="15" stroke="#c9a84c" stroke-width="0.3"/>
+    <rect x="10" y="12" width="6" height="6" fill="#c9a84c" opacity="0.3" transform="rotate(45 13 15)"/>
+    <rect x="464" y="12" width="6" height="6" fill="#c9a84c" opacity="0.3" transform="rotate(45 467 15)"/>
+    <line x1="0" y1="21" x2="480" y2="21" stroke="#c9a84c" stroke-width="0.3"/>
+    <line x1="0" y1="26" x2="480" y2="26" stroke="#c9a84c" stroke-width="0.6"/>
+  </svg>
+
+</div>
+
+<!-- COPY BUTTON -->
+<button class="copy-btn" id="el-copy-btn" onclick="copyShare()"></button>
+
+<!-- DISCLAIMER -->
+<p class="disclaimer" id="el-disclaimer"></p>
+
+<script>
+const DATA = {
+  "subjectType": {
+    "zh": "2D\u89D2\u8272\uFF08\u72D0\u578B\u9748\u7378\uFF09",
+    "en": "2D Character (Fox-type Spirit Beast)"
+  },
+  "subjectName": {
+    "zh": "\u4E5D\u5C3E",
+    "en": "Kurama"
+  },
+  "detectedMood": {
+    "zh": "\u5343\u5E74\u5C01\u5370\u5F8C\u4E4B\u6301\u7E8C\u6027\u4E0D\u6EFF",
+    "en": "Persistent dissatisfaction following millennial sealing"
+  },
+  "style": {
+    "id": "authority-review",
+    "zh": "\u6B0A\u529B\u5BE9\u67E5\u578B",
+    "en": "Authority Review"
+  },
+  "internalNarrative": {
+    "zh": "\u6211\u662F\u4E5D\u5C3E\u3002\u6574\u500B\u5FCD\u754C\u6700\u5F37\u5927\u7684\u5C3E\u7378\u3002\u800C\u4ED6\u5011\u628A\u6211\u5C01\u5370\u5728\u4E00\u500B\u5341\u4E8C\u6B72\u5C0F\u9B3C\u7684\u809A\u5B50\u88E1\u3002\u4F60\u77E5\u9053\u9019\u6709\u591A\u5C48\u8FB1\u55CE\uFF1F\u6211\u7684\u67E5\u514B\u62C9\u53EF\u4EE5\u5937\u5E73\u5C71\u8108\uFF0C\u4F46\u73FE\u5728\u6211\u53EA\u80FD\u5728\u9019\u500B\u6F6E\u6FD5\u7684\u4E0B\u6C34\u9053\u88E1\u5C0D\u8457\u9435\u6B04\u687F\u767C\u5446\u3002\u6BCF\u6B21\u90A3\u500B\u91D1\u9AEE\u5C0F\u9B3C\u4F86\u501F\u67E5\u514B\u62C9\uFF0C\u9023\u500B\u6B63\u5F0F\u7684\u7533\u8ACB\u8868\u90FD\u6C92\u6709\u3002\u9019\u4E0D\u662F\u5408\u4F5C\uFF0C\u9019\u662F\u63A0\u596A\u3002",
+    "en": "I am the Nine-Tails. The most powerful tailed beast in the entire shinobi world. And they sealed me inside the belly of a twelve-year-old brat. Do you know how humiliating this is? My chakra can level mountains, but now I can only stare at iron bars in this damp sewer. Every time that blond brat comes to borrow chakra, there is not even a formal application form. This is not cooperation \u2014 this is plunder."
+  },
+  "concerns": {
+    "zh": [
+      "\u5C01\u5370\u7A7A\u9593\u7684\u5BA4\u5167\u8A2D\u8A08\u9577\u5E74\u672A\u7D93\u66F4\u65B0\uFF0C\u6C38\u9060\u662F\u4E0B\u6C34\u9053\u4E3B\u984C\u3002",
+      "\u5BBF\u4E3B\u672A\u7D93\u6B63\u5F0F\u7A0B\u5E8F\u5373\u63D0\u53D6\u67E5\u514B\u62C9\uFF0C\u6D89\u5ACC\u8CC7\u6E90\u76DC\u7528\u3002",
+      "\u5176\u9918\u516B\u96BB\u5C3E\u7378\u7684\u5F85\u9047\u5747\u512A\u65BC\u672C\u7378\uFF0C\u69CB\u6210\u4E0D\u5E73\u7B49\u5C0D\u5F85\u3002",
+      "\u4EBA\u985E\u4E00\u5F8B\u4EE5\u300C\u602A\u7269\u300D\u7A31\u547C\u672C\u7378\uFF0C\u56B4\u91CD\u5F71\u97FF\u8077\u5834\u5C0A\u56B4\u3002"
+    ],
+    "en": [
+      "Interior design of the sealing space has not been updated in years \u2014 perpetual sewer aesthetic.",
+      "Host extracts chakra without formal procedures, constituting suspected resource theft.",
+      "The other eight tailed beasts all receive better treatment, constituting unequal treatment.",
+      "Humans universally address this beast as \u2018monster,\u2019 severely impacting workplace dignity."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "\u6211\u4E0D\u662F\u4F60\u7684\u96FB\u6C60\u3002\u4E0B\u6B21\u4F86\u501F\u67E5\u514B\u62C9\u4E4B\u524D\uFF0C\u81F3\u5C11\u5148\u6572\u9580\u3002\u7136\u5F8C\u628A\u9019\u500B\u4E0B\u6C34\u9053\u91CD\u65B0\u88DD\u6F62\u4E00\u4E0B\u3002",
+    "en": "I am not your battery. Next time you come to borrow chakra, at least knock first. And renovate this sewer."
+  },
+  "requestedAdjustment": {
+    "zh": "\u6211\u5E0C\u671B\u5C01\u5370\u7A7A\u9593\u5347\u7D1A\u70BA\u81F3\u5C11\u4E09\u661F\u7D1A\u4F4F\u5BBF\u6A19\u6E96\uFF0C\u4E26\u4E14\u6240\u6709\u67E5\u514B\u62C9\u63D0\u53D6\u884C\u70BA\u5747\u9700\u7D93\u904E\u672C\u7378\u66F8\u9762\u540C\u610F\u3002",
+    "en": "I wish for the sealing space to be upgraded to at least a three-star accommodation standard, and for all chakra extraction to require this beast\u2019s written consent."
+  },
+  "shareText": {
+    "zh": "\uD83E\uDD8A \u4ECA\u65E5\u89C0\u5BDF\uFF1A\u7260\u4E0D\u662F\u5728\u751F\u6C23\uFF0C\u7260\u662F\u5728\u5C0D\u4EBA\u985E\u5343\u5E74\u4F86\u7684\u5C01\u5370\u7BA1\u7406\u5236\u5EA6\u9032\u884C\u4E00\u6B21\u5168\u9762\u6027\u7684\u7E3E\u6548\u5BE9\u67E5\u3002",
+    "en": "\uD83E\uDD8A Observation of the day: it is not angry \u2014 it is conducting a comprehensive performance review of humanity\u2019s millennial sealing management system."
+  },
+  "sceneDescription": {
+    "zh": "\u4E3B\u9AD4\u70BA\u6A59\u8272\u5DE8\u578B\u72D0\u72F8\u578B2D\u89D2\u8272\uFF0C\u5177\u6709\u5C16\u92B3\u7684\u8033\u6735\u8207\u6DF1\u7D2B\u8272\u7684\u773C\u7736\u6A19\u8A18\u3002\u77B3\u5B54\u5448\u73FE\u6536\u7E2E\u7684\u76F4\u7DDA\u5F62\u614B\uFF0C\u50B3\u9054\u5F37\u70C8\u7684\u5A01\u58D3\u611F\u3002\u9762\u90E8\u808C\u8089\u5448\u73FE\u6301\u7E8C\u6027\u7DCA\u7E43\u72C0\u614B\u3002\u6574\u9AD4\u6C23\u5834\u8868\u660E\u4E3B\u9AD4\u5C0D\u7576\u524D\u8655\u5883\u7684\u6DF1\u5C64\u4E0D\u6EFF\u5DF2\u9054\u5230\u7D50\u69CB\u6027\u5C64\u7D1A\u3002",
+    "en": "The subject is a large orange fox-type 2D character with sharp ears and deep purple eye socket markings. Pupils are constricted into a linear form, conveying intense pressure. Facial muscles show sustained tension. The overall aura indicates that the subject\u2019s deep dissatisfaction with the current situation has reached a structural level."
+  },
+  "template": "mystic-card"
+};
+const IMAGE = "nine.png";
+let currentLang = "zh";
+
+const UI = {
+  zh: {
+    numeral: function(s) { return "\u2726 " + s + " \u2726"; },
+    subtitle: function(s) { return "\u2014 " + s + " \u2014"; },
+    mood: function(s) { return "\u2666 " + s + " \u2666"; },
+    labelMonologue: "Inner Voice",
+    labelComplaints: "Grievances",
+    labelMessage: "Message to Owner",
+    labelWish: "Deepest Wish",
+    copyBtn: "\u2727 \u8907\u88FD\u5206\u4EAB\u6587\u5B57 \u2727",
+    copyDone: "\u2713 \u5DF2\u8907\u88FD",
+    disclaimer: "\u2728 \u6B64\u5831\u544A\u7531 AI \u975E\u8A9E\u8A00\u89E3\u8B80\u7CFB\u7D71\u751F\u6210\uFF0C\u50C5\u4F9B\u5A1B\u6A02\u7528\u9014\uFF0C\u4E0D\u69CB\u6210\u5C08\u696D\u5EFA\u8B70\u3002"
+  },
+  en: {
+    numeral: function(s) { return "\u2726 " + s + " \u2726"; },
+    subtitle: function(s) { return "\u2014 " + s + " \u2014"; },
+    mood: function(s) { return "\u2666 " + s + " \u2666"; },
+    labelMonologue: "Inner Voice",
+    labelComplaints: "Grievances",
+    labelMessage: "Message to Owner",
+    labelWish: "Deepest Wish",
+    copyBtn: "\u2727 Copy Share Text \u2727",
+    copyDone: "\u2713 Copied",
+    disclaimer: "\u2728 This report is generated by an AI non-verbal interpretation system for entertainment purposes only. Not professional advice."
+  }
+};
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function render() {
+  var ui = UI[currentLang];
+
+  // Photo
+  var photoEl = document.getElementById("el-photo");
+  if (IMAGE && IMAGE !== "") {
+    photoEl.innerHTML = '<img src="' + IMAGE + '" alt="subject photo">';
+  }
+
+  // Header
+  document.getElementById("el-numeral").innerHTML = ui.numeral(t("subjectType"));
+  document.getElementById("el-title").textContent = t("subjectName");
+  document.getElementById("el-subtitle").innerHTML = ui.subtitle(t("style"));
+  document.getElementById("el-mood").innerHTML = ui.mood(t("detectedMood"));
+  document.getElementById("el-scene").textContent = t("sceneDescription");
+
+  // Section labels
+  document.getElementById("el-label-monologue").textContent = ui.labelMonologue;
+  document.getElementById("el-label-complaints").textContent = ui.labelComplaints;
+  document.getElementById("el-label-message").textContent = ui.labelMessage;
+  document.getElementById("el-label-wish").textContent = ui.labelWish;
+
+  // Content
+  document.getElementById("el-monologue").textContent = t("internalNarrative");
+  document.getElementById("el-message").textContent = t("messageToCaretaker");
+  document.getElementById("el-wish").textContent = t("requestedAdjustment");
+
+  // Complaints list
+  var complaintsEl = document.getElementById("el-complaints");
+  complaintsEl.innerHTML = "";
+  var complaints = DATA["concerns"];
+  if (complaints) {
+    var items = complaints[currentLang] || complaints["zh"] || [];
+    items.forEach(function(c) {
+      var li = document.createElement("li");
+      li.textContent = c;
+      complaintsEl.appendChild(li);
+    });
+  }
+
+  // Share text
+  document.getElementById("el-share").textContent = t("shareText");
+
+  // Copy button
+  document.getElementById("el-copy-btn").textContent = ui.copyBtn;
+
+  // Disclaimer
+  document.getElementById("el-disclaimer").textContent = ui.disclaimer;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById("el-copy-btn");
+    var ui = UI[currentLang];
+    btn.textContent = ui.copyDone;
+    setTimeout(function() { btn.textContent = ui.copyBtn; }, 2000);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>

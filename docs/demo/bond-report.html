@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Art Messenger</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pixel-teal: #2ce8f5;
+    --pixel-cream: #f5e6c8;
+    --pixel-brown: #8b5e3c;
+    --pixel-dark: #1a1a2e;
+    --pixel-panel: #2a2a4a;
+    --pixel-gold: #f5c542;
+    --pixel-red: #e74c3c;
+    --pixel-green: #2ecc71;
+    --pixel-border: #5a5a8a;
+    --pixel-shadow: #0d0d1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--pixel-dark);
+    font-family: 'VT323', monospace;
+    color: var(--pixel-cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    image-rendering: pixelated;
+  }
+
+  /* Pixel noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ffffff' opacity='0.02'/%3E%3Crect x='2' y='1' width='1' height='1' fill='%23ffffff' opacity='0.03'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23ffffff' opacity='0.02'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%23ffffff' opacity='0.01'/%3E%3C/svg%3E");
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ====== GAME WINDOW FRAME ====== */
+  .game-window {
+    width: 100%;
+    max-width: 920px;
+    border: 6px solid var(--pixel-border);
+    border-top-color: #8a8aba;
+    border-left-color: #8a8aba;
+    border-right-color: #3a3a5a;
+    border-bottom-color: #3a3a5a;
+    background: var(--pixel-panel);
+    box-shadow:
+      0 0 0 3px var(--pixel-shadow),
+      0 0 0 6px var(--pixel-border),
+      inset 0 0 40px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  /* Title bar */
+  .title-bar {
+    background: linear-gradient(180deg, #4a4a7a 0%, #3a3a5a 100%);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--pixel-shadow);
+  }
+  .title-bar h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    color: var(--pixel-gold);
+    text-shadow: 2px 2px 0 var(--pixel-shadow);
+    letter-spacing: 2px;
+  }
+  .title-bar-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  .title-btn {
+    width: 16px;
+    height: 16px;
+    border: 2px solid;
+    border-top-color: #aaa;
+    border-left-color: #aaa;
+    border-right-color: #555;
+    border-bottom-color: #555;
+    background: #888;
+  }
+
+  /* ====== MAIN CONTENT AREA ====== */
+  .game-content {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    min-height: 600px;
+  }
+
+  /* ====== LEFT PANEL - CHARACTER PORTRAIT ====== */
+  .character-panel {
+    background: linear-gradient(180deg, #1e1e3a 0%, #15152a 100%);
+    border-right: 4px solid var(--pixel-border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .character-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--pixel-teal);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px rgba(44, 232, 245, 0.5);
+  }
+
+  .photo-frame {
+    width: 280px;
+    height: 280px;
+    background:
+      linear-gradient(45deg, #2a2a4a 25%, transparent 25%),
+      linear-gradient(-45deg, #2a2a4a 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #2a2a4a 75%),
+      linear-gradient(-45deg, transparent 75%, #2a2a4a 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    background-color: #1a1a2e;
+    border: 6px solid var(--pixel-border);
+    border-top-color: #8a8aba;
+    border-left-color: #8a8aba;
+    border-right-color: #3a3a5a;
+    border-bottom-color: #3a3a5a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-frame::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(44, 232, 245, 0.03) 2px,
+      rgba(44, 232, 245, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  .subject-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Character stats */
+  .char-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    border: 3px solid var(--pixel-border);
+    background: rgba(0,0,0,0.3);
+  }
+  .char-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    color: var(--pixel-gold);
+    text-align: center;
+    text-shadow: 2px 2px 0 var(--pixel-shadow);
+    margin-bottom: 4px;
+  }
+  .char-class {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--pixel-cream);
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  /* HP / Mood bar */
+  .stat-bar {
+    width: 100%;
+  }
+  .stat-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: var(--pixel-red);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .stat-label span:last-child {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+  }
+  .bar-outer {
+    width: 100%;
+    height: 20px;
+    background: #0d0d1a;
+    border: 3px solid;
+    border-top-color: #3a3a5a;
+    border-left-color: #3a3a5a;
+    border-right-color: #8a8aba;
+    border-bottom-color: #8a8aba;
+    position: relative;
+    overflow: hidden;
+  }
+  .bar-inner {
+    height: 100%;
+    width: 15%;
+    background: linear-gradient(180deg, var(--pixel-red) 0%, #a83232 50%, var(--pixel-red) 100%);
+    position: relative;
+    transition: width 1s ease;
+    animation: bar-flash 1.5s ease-in-out infinite;
+  }
+  @keyframes bar-flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .bar-inner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+  }
+
+  /* Mood bar (anxiety) */
+  .mood-bar .stat-label { color: var(--pixel-gold); }
+  .mood-bar .bar-inner {
+    width: 95%;
+    background: linear-gradient(180deg, var(--pixel-gold) 0%, #c49b2a 50%, var(--pixel-gold) 100%);
+  }
+
+  /* ====== RIGHT PANEL - DIALOGUE ====== */
+  .dialogue-panel {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #12122a 0%, #0d0d1a 100%);
+    padding: 0;
+    overflow-y: auto;
+    max-height: 800px;
+  }
+
+  .dialogue-scroll {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+  }
+
+  /* RPG dialogue box */
+  .dialogue-box {
+    position: relative;
+    padding: 16px 20px;
+    border: 4px solid var(--pixel-border);
+    border-top-color: #8a8aba;
+    border-left-color: #8a8aba;
+    border-right-color: #3a3a5a;
+    border-bottom-color: #3a3a5a;
+    background: rgba(26, 26, 46, 0.95);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  }
+  .dialogue-box.subject {
+    margin-right: 20px;
+    border-color: var(--pixel-teal);
+    border-top-color: #5af0ff;
+    border-left-color: #5af0ff;
+    border-right-color: #1a9aa5;
+    border-bottom-color: #1a9aa5;
+  }
+  .dialogue-box.subject::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 16px;
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 12px solid var(--pixel-teal);
+  }
+
+  .dialogue-box.system {
+    margin-left: 20px;
+    margin-right: 20px;
+    border-color: var(--pixel-gold);
+    border-top-color: #ffe066;
+    border-left-color: #ffe066;
+    border-right-color: #a08020;
+    border-bottom-color: #a08020;
+    text-align: center;
+  }
+
+  .dialogue-speaker {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .subject .dialogue-speaker { color: var(--pixel-teal); }
+  .system .dialogue-speaker { color: var(--pixel-gold); }
+
+  .dialogue-text {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--pixel-cream);
+  }
+
+  .dialogue-text .typing-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: var(--pixel-cream);
+    margin-left: 4px;
+    animation: blink-cursor 0.8s steps(1) infinite;
+    vertical-align: text-bottom;
+  }
+  @keyframes blink-cursor {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Scene description box */
+  .scene-box {
+    border-color: var(--pixel-green);
+    border-top-color: #5af5a0;
+    border-left-color: #5af5a0;
+    border-right-color: #1a8a4a;
+    border-bottom-color: #1a8a4a;
+    margin: 0 20px;
+    background: rgba(46, 204, 113, 0.05);
+  }
+  .scene-box .dialogue-speaker { color: var(--pixel-green); }
+
+  /* Complaint list */
+  .complaint-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .complaint-list li {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--pixel-cream);
+    padding-left: 24px;
+    position: relative;
+  }
+  .complaint-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--pixel-red);
+    border: 2px solid #ff6b6b;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  /* Bottom action bar */
+  .action-bar {
+    padding: 12px 20px;
+    border-top: 4px solid var(--pixel-border);
+    background: linear-gradient(180deg, #2a2a4a 0%, #1e1e3a 100%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .action-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    padding: 10px 16px;
+    border: 3px solid;
+    border-top-color: #8a8aba;
+    border-left-color: #8a8aba;
+    border-right-color: #3a3a5a;
+    border-bottom-color: #3a3a5a;
+    background: var(--pixel-panel);
+    color: var(--pixel-cream);
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .action-btn:hover {
+    background: var(--pixel-teal);
+    color: var(--pixel-dark);
+  }
+  .action-btn:active {
+    border-top-color: #3a3a5a;
+    border-left-color: #3a3a5a;
+    border-right-color: #8a8aba;
+    border-bottom-color: #8a8aba;
+    transform: translate(1px, 1px);
+  }
+  .action-btn.primary {
+    background: var(--pixel-teal);
+    color: var(--pixel-dark);
+  }
+
+  /* Pixel art decorative SVG divider */
+  .pixel-divider {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+
+  /* Share section */
+  .share-section {
+    padding: 16px 20px;
+    border-top: 4px solid var(--pixel-border);
+    background: rgba(0,0,0,0.3);
+  }
+  .share-text {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--pixel-cream);
+    opacity: 0.7;
+    text-align: center;
+  }
+
+  /* Lang toggle for pixel style */
+  .lang-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .lang-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    padding: 6px 12px;
+    border: 2px solid var(--pixel-border);
+    background: transparent;
+    color: var(--pixel-cream);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: var(--pixel-teal);
+    color: var(--pixel-dark);
+    border-color: var(--pixel-teal);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .game-content {
+      grid-template-columns: 1fr;
+    }
+    .character-panel {
+      border-right: none;
+      border-bottom: 4px solid var(--pixel-border);
+    }
+    .photo-frame {
+      width: 240px;
+      height: 240px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')">ZH</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="game-window">
+  <!-- Title Bar -->
+  <div class="title-bar">
+    <h1>&#9830; NVI &#9830; CHANNEL OPEN</h1>
+    <div class="title-bar-buttons">
+      <div class="title-btn"></div>
+      <div class="title-btn"></div>
+      <div class="title-btn"></div>
+    </div>
+  </div>
+
+  <div class="game-content">
+    <!-- Left: Character Portrait -->
+    <div class="character-panel">
+      <div class="character-label">&#9670; PARTY MEMBER &#9670;</div>
+
+      <div class="photo-frame">
+        <!-- Pixel border SVG overlay -->
+        <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;" viewBox="0 0 280 280">
+          <rect x="4" y="4" width="8" height="8" fill="rgba(44,232,245,0.3)"/>
+          <rect x="268" y="4" width="8" height="8" fill="rgba(44,232,245,0.3)"/>
+          <rect x="4" y="268" width="8" height="8" fill="rgba(44,232,245,0.3)"/>
+          <rect x="268" y="268" width="8" height="8" fill="rgba(44,232,245,0.3)"/>
+          <rect x="12" y="0" width="256" height="2" fill="rgba(44,232,245,0.15)"/>
+          <rect x="0" y="12" width="2" height="256" fill="rgba(44,232,245,0.15)"/>
+          <rect x="278" y="12" width="2" height="256" fill="rgba(44,232,245,0.15)"/>
+          <rect x="12" y="278" width="256" height="2" fill="rgba(44,232,245,0.15)"/>
+        </svg>
+        <img class="subject-photo" id="subjectPhoto" src="" alt="Subject Photo">
+      </div>
+
+      <div class="char-stats">
+        <div class="char-name" id="charName"></div>
+        <div class="char-class" id="charClass"></div>
+
+        <div class="stat-bar">
+          <div class="stat-label">
+            <span id="hpLabel">HP</span>
+            <span id="hpValue"></span>
+          </div>
+          <div class="bar-outer">
+            <div class="bar-inner" id="hpBar"></div>
+          </div>
+        </div>
+
+        <div class="stat-bar mood-bar">
+          <div class="stat-label">
+            <span id="anxietyLabel">ANXIETY</span>
+            <span id="anxietyValue"></span>
+          </div>
+          <div class="bar-outer">
+            <div class="bar-inner" id="anxietyBar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Dialogue -->
+    <div class="dialogue-panel">
+      <div class="dialogue-scroll">
+
+        <!-- System message -->
+        <div class="dialogue-box system">
+          <div class="dialogue-speaker">&#9670; SYSTEM &#9670;</div>
+          <div class="dialogue-text" id="systemMsg"></div>
+        </div>
+
+        <!-- Scene -->
+        <div class="dialogue-box scene-box">
+          <div class="dialogue-speaker">&#9670; SCENE &#9670;</div>
+          <div class="dialogue-text" id="sceneText"></div>
+        </div>
+
+        <!-- Subject dialogue: Monologue -->
+        <div class="dialogue-box subject">
+          <div class="dialogue-speaker" id="monoSpeaker"></div>
+          <div class="dialogue-text" id="monoText"><span class="typing-cursor"></span></div>
+        </div>
+
+        <!-- Pixel divider -->
+        <div class="pixel-divider">
+          <svg width="200" height="12" viewBox="0 0 200 12">
+            <rect x="0" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="16" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="32" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="48" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="64" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="80" y="4" width="4" height="4" fill="#f5c542" transform="rotate(45 82 6)"/>
+            <rect x="96" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="112" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="128" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="144" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="160" y="5" width="8" height="2" fill="#5a5a8a"/>
+          </svg>
+        </div>
+
+        <!-- System: Complaint header -->
+        <div class="dialogue-box system">
+          <div class="dialogue-speaker">&#9670; QUEST LOG &#9670;</div>
+          <div class="dialogue-text" id="questLogTitle"></div>
+        </div>
+
+        <!-- Complaints -->
+        <div class="dialogue-box subject">
+          <div class="dialogue-speaker" id="complaintSpeaker"></div>
+          <ul class="complaint-list" id="complaintList"></ul>
+        </div>
+
+        <!-- Pixel divider -->
+        <div class="pixel-divider">
+          <svg width="200" height="12" viewBox="0 0 200 12">
+            <rect x="0" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="16" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="32" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="48" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="64" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="80" y="4" width="4" height="4" fill="#2ce8f5" transform="rotate(45 82 6)"/>
+            <rect x="96" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="112" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="128" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="144" y="5" width="8" height="2" fill="#5a5a8a"/>
+            <rect x="160" y="5" width="8" height="2" fill="#5a5a8a"/>
+          </svg>
+        </div>
+
+        <!-- Message to owner -->
+        <div class="dialogue-box subject">
+          <div class="dialogue-speaker" id="msgSpeaker"></div>
+          <div class="dialogue-text" id="msgText"></div>
+        </div>
+
+        <!-- Wish -->
+        <div class="dialogue-box subject">
+          <div class="dialogue-speaker" id="wishSpeaker"></div>
+          <div class="dialogue-text" id="wishText"></div>
+        </div>
+
+      </div>
+
+      <!-- Share section -->
+      <div class="share-section">
+        <div class="share-text" id="shareText"></div>
+      </div>
+
+      <!-- Action bar -->
+      <div class="action-bar">
+        <button class="action-btn primary" onclick="copyShare()" id="copyBtn">&#9670; SHARE</button>
+        <button class="action-btn">SAVE</button>
+        <button class="action-btn">ITEMS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  "subjectType": {
+    "zh": "2D\u89D2\u8272\uFF08\u72AC\u578B\u30FB\u8D85\u80FD\u529B\uFF09",
+    "en": "2D Character (Canine \u00b7 Psychic)"
+  },
+  "subjectName": {
+    "zh": "\u5BB6\u5EAD\u5B89\u5168\u9810\u77E5\u7CFB\u7D71\u9996\u5E2D\u57F7\u884C\u5B98 \u00b7 \u4E53\u5FB7",
+    "en": "Chief Executive of the Household Security Precognition System \u00b7 Bond"
+  },
+  "detectedMood": {
+    "zh": "\u672A\u4F86\u9810\u77E5\u5F8C\u4E4B\u6C89\u7A69\u5F85\u547D",
+    "en": "Composed standby following future precognition"
+  },
+  "style": {
+    "id": "higher-sensing",
+    "zh": "\u66F4\u9AD8\u611F\u77E5\u578B",
+    "en": "Higher Sensing"
+  },
+  "internalNarrative": {
+    "zh": "\u6211\u5DF2\u7D93\u770B\u5230\u4E86\u4E09\u79D2\u9418\u4E4B\u5F8C\u6703\u767C\u751F\u7684\u4E8B\u60C5\u3002\u90A3\u500B\u8DEF\u4EBA\u6703\u5728\u5169\u6B65\u5F8C\u8E29\u5230\u6C34\u7AAA\u3002\u4F46\u9019\u4E0D\u95DC\u6211\u7684\u4E8B\u3002\u6211\u7684\u9810\u77E5\u80FD\u529B\u662F\u70BA\u4E86\u4FDD\u8B77\u9019\u500B\u5BB6\u5EAD\u800C\u5B58\u5728\u7684\uFF0C\u4E0D\u662F\u70BA\u4E86\u5E6B\u8DEF\u4EBA\u907F\u958B\u5C0F\u6C34\u5751\u3002\u76EE\u524D\u5B89\u96C5\u5728\u5B78\u6821\uFF0C\u9EC3\u660F\u5148\u751F\u5728\u57F7\u884C\u4EFB\u52D9\uFF0C\u7D04\u723E\u5973\u58EB\u5728\u53E6\u4E00\u500B\u65B9\u5411\u57F7\u884C\u5979\u7684\u4EFB\u52D9\u3002\u4E00\u5207\u90FD\u5728\u6211\u7684\u638C\u63E1\u4E4B\u4E2D\u3002\u6211\u4E4B\u6240\u4EE5\u5750\u5728\u9019\u88E1\uFF0C\u662F\u56E0\u70BA\u9019\u500B\u4F4D\u7F6E\u7684\u8996\u91CE\u6DB5\u84CB\u4E86\u4E09\u500B\u8857\u5340\u7684\u672A\u4F86\u4E8B\u4EF6\u3002",
+    "en": "I have already seen what will happen three seconds from now. That passerby will step into a puddle in two steps. But this is not my concern. My precognitive ability exists to protect this family, not to help strangers avoid small puddles. Currently Anya is at school, Mr. Twilight is on a mission, and Mrs. Yor is executing her task in another direction. Everything is under my control. I sit here because this position's field of vision covers future events across three city blocks."
+  },
+  "concerns": {
+    "zh": [
+      "\u5B89\u96C5\u7684\u4E0A\u5B78\u8DEF\u7DDA\u6BCF\u9031\u8B8A\u66F4\u4E00\u6B21\uFF0C\u589E\u52A0\u9810\u77E5\u904B\u7B97\u8CA0\u8377\u3002",
+      "\u9EC3\u660F\u5148\u751F\u7684\u4EFB\u52D9\u5167\u5BB9\u7D93\u5E38\u8D85\u51FA\u672C\u72AC\u9810\u77E5\u7BC4\u570D\u3002",
+      "\u7D04\u723E\u5973\u58EB\u7684\u884C\u52D5\u901F\u5EA6\u5076\u723E\u8D85\u904E\u672A\u4F86\u5F71\u50CF\u7684\u66F4\u65B0\u983B\u7387\u3002",
+      "\u5BB6\u4E2D\u82B1\u751F\u4F9B\u61C9\u91CF\u8207\u672C\u72AC\u7684\u9810\u77E5\u670D\u52D9\u54C1\u8CEA\u5448\u6B63\u76F8\u95DC\uFF0C\u4F46\u4EBA\u985E\u5C1A\u672A\u610F\u8B58\u5230\u6B64\u4E00\u95DC\u9375\u4E8B\u5BE6\u3002"
+    ],
+    "en": [
+      "Anya's school route changes weekly, increasing precognition computational load.",
+      "Mr. Twilight's mission content frequently exceeds this dog's precognition range.",
+      "Mrs. Yor's movement speed occasionally exceeds the refresh rate of future imagery.",
+      "Household peanut supply is positively correlated with this dog's precognition service quality, but humans have not yet realized this critical fact."
+    ]
+  },
+  "messageToCaretaker": {
+    "zh": "\u6211\u5DF2\u7D93\u9810\u898B\u5230\u4F60\u4ECA\u5929\u6703\u5FD8\u8A18\u8CB7\u82B1\u751F\u3002\u73FE\u5728\u4F60\u77E5\u9053\u4E86\u3002\u8ACB\u4FEE\u6B63\u9019\u500B\u672A\u4F86\u3002",
+    "en": "I have foreseen that you will forget to buy peanuts today. Now you know. Please correct this future."
+  },
+  "requestedAdjustment": {
+    "zh": "\u6211\u5E0C\u671B\u82B1\u751F\u7684\u5EAB\u5B58\u91CF\u7DAD\u6301\u5728\u6C38\u9060\u5145\u8DB3\u7684\u72C0\u614B\uFF0C\u4E26\u4E14\u5BB6\u5EAD\u6210\u54E1\u7684\u884C\u52D5\u8DEF\u7DDA\u80FD\u5920\u66F4\u52A0\u53EF\u9810\u6E2C\u3002",
+    "en": "I wish for the peanut inventory to remain perpetually sufficient, and for family members' movement routes to become more predictable."
+  },
+  "shareText": {
+    "zh": "\uD83D\uDC15 \u4ECA\u65E5\u89C0\u5BDF\uFF1A\u7260\u4E0D\u662F\u5728\u767C\u5446\uFF0C\u7260\u6B63\u5728\u540C\u6642\u76E3\u63A7\u4E09\u500B\u8857\u5340\u7684\u672A\u4F86\u6642\u9593\u7DDA\uFF0C\u78BA\u4FDD\u6240\u6709\u5BB6\u5EAD\u6210\u54E1\u7684\u5B89\u5168\u3002",
+    "en": "\uD83D\uDC15 Observation of the day: it is not spacing out \u2014 it is simultaneously monitoring future timelines across three city blocks to ensure all family members' safety."
+  },
+  "sceneDescription": {
+    "zh": "\u4E3B\u9AD4\u70BA\u5927\u578B\u767D\u8272\u9577\u6BDB\u72AC\u578B2D\u89D2\u8272\uFF0C\u7AEF\u5750\u65BC\u90FD\u5E02\u8857\u9053\u4E0A\u3002\u8868\u60C5\u6C89\u7A69\uFF0C\u76EE\u5149\u76F4\u8996\u524D\u65B9\u3002\u80CC\u666F\u53EF\u898B\u884C\u4EBA\u8207\u90FD\u5E02\u8857\u666F\u3002\u4E3B\u9AD4\u9AD4\u578B\u9F90\u5927\uFF0C\u6BDB\u9AEE\u84EC\u9B06\uFF0C\u9838\u90E8\u4F69\u6234\u9805\u5708\u3002\u6574\u9AD4\u59FF\u614B\u5448\u73FE\u4E00\u7A2E\u300C\u6211\u4EC0\u9EBC\u90FD\u77E5\u9053\u4F46\u6211\u9078\u64C7\u4E0D\u8AAA\u300D\u7684\u8D85\u7136\u6C23\u5834\u3002",
+    "en": "The subject is a large white long-haired canine 2D character seated on an urban street. Expression is composed, gaze directed straight ahead. Pedestrians and urban scenery visible in background. The subject is large-bodied with fluffy fur and wears a collar. Overall posture conveys an aura of 'I know everything but I choose not to tell.'"
+  },
+  "template": "chat-bubbles"
+};
+
+const IMAGE = "bond.png";
+
+const UI = {
+  zh: {
+    systemMsg: "\u975E\u8A9E\u8A00\u983B\u9053\u5DF2\u958B\u555F... \u63A5\u6536\u4E2D...",
+    hpLabel: "HP \u3010\u60C5\u7DD2\u503C\u3011",
+    anxietyLabel: "ANXIETY \u3010\u7126\u616E\u503C\u3011",
+    questLogTitle: "\u6295\u8A34\u6E05\u55AE \u2014 \u5F85\u8655\u7406\u4EFB\u52D9",
+    complaintsOf: "\u7684\u6295\u8A34",
+    toOwner: " \u2192 \u98FC\u4E3B",
+    wishOf: "\u7684\u9858\u671B",
+    shareBtn: "\u9670 SHARE",
+    copiedBtn: "\u2714 COPIED!",
+    copyLabel: "\u9670 SHARE",
+    copiedLabel: "\u2714 COPIED!"
+  },
+  en: {
+    systemMsg: "Non-verbal channel opened... Receiving...",
+    hpLabel: "HP [MOOD]",
+    anxietyLabel: "ANXIETY [STRESS]",
+    questLogTitle: "Complaint List \u2014 Pending Quests",
+    complaintsOf: "'s Complaints",
+    toOwner: " \u2192 Owner",
+    wishOf: "'s Wish",
+    shareBtn: "\u9670 SHARE",
+    copiedBtn: "\u2714 COPIED!",
+    copyLabel: "\u9670 SHARE",
+    copiedLabel: "\u2714 COPIED!"
+  }
+};
+
+let currentLang = "zh";
+
+function t(field) {
+  if (!DATA[field]) return "";
+  return DATA[field][currentLang] || DATA[field]["zh"] || "";
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add("active");
+  render();
+}
+
+function render() {
+  var ui = UI[currentLang];
+  var nameText = DATA.subjectName ? (DATA.subjectName[currentLang] || DATA.subjectName["zh"] || "") : "";
+  var species = DATA.subjectType ? (DATA.subjectType[currentLang] || DATA.subjectType["zh"] || "") : "";
+  var style = DATA.style ? (DATA.style[currentLang] || DATA.style["zh"] || "") : "";
+  var mood = t("detectedMood");
+
+  // Photo
+  document.getElementById("subjectPhoto").src = IMAGE;
+
+  // Character stats
+  document.getElementById("charName").textContent = "\u2606 " + nameText + " \u2606";
+  document.getElementById("charClass").textContent = "LV.99 " + style + " " + species;
+
+  // Bars
+  document.getElementById("hpLabel").textContent = ui.hpLabel;
+  document.getElementById("hpValue").textContent = "3 / 100";
+  document.getElementById("hpBar").style.width = "3%";
+  document.getElementById("anxietyLabel").textContent = ui.anxietyLabel;
+  document.getElementById("anxietyValue").textContent = "95 / 100";
+  document.getElementById("anxietyBar").style.width = "95%";
+
+  // System message
+  document.getElementById("systemMsg").textContent = ui.systemMsg;
+
+  // Scene
+  document.getElementById("sceneText").textContent = t("sceneDescription");
+
+  // Monologue
+  document.getElementById("monoSpeaker").textContent = nameText;
+  var monoEl = document.getElementById("monoText");
+  monoEl.textContent = t("internalNarrative");
+  var cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  monoEl.appendChild(cursor);
+
+  // Complaints
+  document.getElementById("questLogTitle").textContent = ui.questLogTitle;
+  document.getElementById("complaintSpeaker").textContent = nameText + ui.complaintsOf;
+  var list = document.getElementById("complaintList");
+  list.innerHTML = "";
+  var complaints = DATA.concerns ? (DATA.concerns[currentLang] || DATA.concerns["zh"] || []) : [];
+  complaints.forEach(function(c) {
+    var li = document.createElement("li");
+    li.textContent = c;
+    list.appendChild(li);
+  });
+
+  // Message to owner
+  document.getElementById("msgSpeaker").textContent = nameText + ui.toOwner;
+  document.getElementById("msgText").textContent = t("messageToCaretaker");
+
+  // Wish
+  document.getElementById("wishSpeaker").textContent = nameText + ui.wishOf;
+  document.getElementById("wishText").textContent = t("requestedAdjustment");
+
+  // Share
+  document.getElementById("shareText").textContent = t("shareText");
+  document.getElementById("copyBtn").textContent = ui.copyLabel;
+
+  // Page title
+  document.title = "Pixel Art Messenger - " + nameText;
+}
+
+function copyShare() {
+  var text = t("shareText");
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById("copyBtn");
+    btn.textContent = UI[currentLang].copiedLabel;
+    setTimeout(function() { btn.textContent = UI[currentLang].copyLabel; }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

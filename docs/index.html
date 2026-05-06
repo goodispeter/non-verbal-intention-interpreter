@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIIS Demo Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .header p {
+    font-size: 1.05rem;
+    color: #888;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .header a {
+    color: #888;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+    transition: all 0.2s;
+  }
+  .header a:hover {
+    color: #fff;
+    border-color: #fff;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  /* Card */
+  .card {
+    background: #151515;
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .card:hover {
+    border-color: #444;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    background: #1a1a1a;
+  }
+
+  .card-body {
+    padding: 16px 20px 20px;
+  }
+
+  .card-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #aaa;
+    white-space: nowrap;
+  }
+  .tag--template {
+    background: rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.25);
+    color: #a5b4fc;
+  }
+  .tag--style {
+    background: rgba(251,191,36,0.1);
+    border-color: rgba(251,191,36,0.2);
+    color: #fbbf24;
+  }
+
+  .card-quote {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #1a1a1a;
+    font-size: 0.82rem;
+    color: #555;
+  }
+  .footer a {
+    color: #777;
+    text-decoration: none;
+    border-bottom: 1px solid #333;
+  }
+  .footer a:hover { color: #fff; border-color: #fff; }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Non-Verbal Intention Interpreter</h1>
+    <p>Give it a photo. It will tell you what they're thinking. Formally.</p>
+    <p style="margin-top:12px;font-size:0.85rem;">
+      <a href="https://github.com/goodispeter/non-verbal-intention-interpreter">GitHub</a>
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="demo/fat-orange-report.html">
+      <img class="card-image" src="demo/fat-orange.png" alt="Fat Orange">
+      <div class="card-body">
+        <div class="card-name">家庭資產重新分配委員會主席 · 肥橘</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Terminal</span>
+          <span class="tag tag--style">Authority Review</span>
+          <span class="tag">Cat</span>
+        </div>
+        <div class="card-quote">"This is not fat — it is strategic resource reserves."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/husky-report.html">
+      <img class="card-image" src="demo/husky.png" alt="Husky">
+      <div class="card-body">
+        <div class="card-name">居家醫療資源申訴代表 · 哈士奇</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Medical Chart</span>
+          <span class="tag tag--style">Care Appeal</span>
+          <span class="tag">Dog</span>
+        </div>
+        <div class="card-quote">"Clinical-grade observation of domestic care deficiency."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/sadaharu-report.html">
+      <img class="card-image" src="demo/sadaharu.png" alt="Sadaharu">
+      <div class="card-body">
+        <div class="card-name">暖桌結界守護聖獸 · 定春</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Fantasy Scroll</span>
+          <span class="tag tag--style">Higher Sensing</span>
+          <span class="tag">2D Character</span>
+        </div>
+        <div class="card-quote">"Not sleeping — conducting full-spectrum signal monitoring."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/ducks-report.html">
+      <img class="card-image" src="demo/ducks.png" alt="Ducks">
+      <div class="card-body">
+        <div class="card-name">室內地磚巡運聯合特別委員會 · 麻糬與湯圓</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Newspaper</span>
+          <span class="tag tag--style">Authority Review</span>
+          <span class="tag">Duck x2</span>
+        </div>
+        <div class="card-quote">"Bread Disappearance Incident now under full investigation."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/goodispeter-report.html">
+      <img class="card-image" src="demo/goodispeter.png" alt="Peter">
+      <div class="card-body">
+        <div class="card-name">跨國成就展示委員會常務理事 · 彼得</div>
+        <div class="card-meta">
+          <span class="tag tag--template">SNS Story</span>
+          <span class="tag tag--style">Classical Assessment</span>
+          <span class="tag">Human</span>
+        </div>
+        <div class="card-quote">"He's not showing off — it's an environmental quality assurance operation."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/nine-report.html">
+      <img class="card-image" src="demo/nine.png" alt="Nine-Tails">
+      <div class="card-body">
+        <div class="card-name">九尾</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Mystic Card</span>
+          <span class="tag tag--style">Authority Review</span>
+          <span class="tag">2D Character</span>
+        </div>
+        <div class="card-quote">"I am not your battery. At least knock first."</div>
+      </div>
+    </a>
+
+    <a class="card" href="demo/bond-report.html">
+      <img class="card-image" src="demo/bond.png" alt="Bond">
+      <div class="card-body">
+        <div class="card-name">家庭安全預知系統首席執行官 · 乓德</div>
+        <div class="card-meta">
+          <span class="tag tag--template">Chat Bubbles</span>
+          <span class="tag tag--style">Higher Sensing</span>
+          <span class="tag">2D Character</span>
+        </div>
+        <div class="card-quote">"Monitoring future timelines across three city blocks."</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    Built with <a href="https://github.com/goodispeter/non-verbal-intention-interpreter">NVIIS</a> &mdash; a Claude Code skill for structured non-verbal interpretation
+  </div>
+
+</div>
+</body>
+</html>

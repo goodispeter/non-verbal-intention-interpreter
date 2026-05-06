@@ -38,7 +38,12 @@ Output:
 | <img src="./docs/demo/fat-orange.png" width="80" /> | Terminal       | [`fat-orange-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/fat-orange-report.html) |
 | <img src="./docs/demo/husky.png" width="80" />      | Medical Chart  | [`husky-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/husky-report.html)           |
 | <img src="./docs/demo/sadaharu.png" width="80" />   | Fantasy Scroll | [`sadaharu-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/sadaharu-report.html)     |
-| <img src="./docs/demo/ducks.png" width="80" />      | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/ducks-report.html)           |
+| <img src="./docs/demo/ducks.png" width="80" />       | Newspaper      | [`ducks-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/ducks-report.html)             |
+| <img src="./docs/demo/goodispeter.png" width="80" /> | SNS Story      | [`goodispeter-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/goodispeter-report.html) |
+| <img src="./docs/demo/nine.png" width="80" />        | Mystic Card    | [`nine-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/nine-report.html)               |
+| <img src="./docs/demo/bond.png" width="80" />        | Chat Bubbles   | [`bond-report.html`](https://goodispeter.github.io/non-verbal-intention-interpreter/demo/bond-report.html)               |
+
+> [**Demo Gallery**](https://goodispeter.github.io/non-verbal-intention-interpreter/) — Interactive showcase of all examples
 
 ---
 
@@ -187,7 +192,13 @@ non-verbal-intention-interpreter/
 │       ├── sadaharu.png
 │       ├── sadaharu-report.html
 │       ├── ducks.png
-│       └── ducks-report.html
+│       ├── ducks-report.html
+│       ├── goodispeter.png
+│       ├── goodispeter-report.html
+│       ├── nine.png
+│       ├── nine-report.html
+│       ├── bond.png
+│       └── bond-report.html
 ├── prompts/
 │   └── non-verbal-intention-interpreter-prompt.md
 ├── templates/
